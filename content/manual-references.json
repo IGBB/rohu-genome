@@ -1,22 +1,67 @@
 [
-{
-  "id": "url:https://github.com/manubot/rootstock",
-  "type": "webpage",
-  "URL": "https://github.com/manubot/rootstock",
-  "title": "manubot/rootstock GitHub repository",
-  "container-title": "GitHub",
-  "issued": {
-    "date-parts": [
-      [
-        2019
-      ]
-    ]
-  },
-  "author": [
     {
-      "given": "Daniel",
-      "family": "Himmelstein"
+        "id": "url:https://github.com/manubot/rootstock",
+        "type": "webpage",
+        "URL": "https://github.com/manubot/rootstock",
+        "title": "manubot/rootstock GitHub repository",
+        "container-title": "GitHub",
+        "issued": {
+            "date-parts": [
+                [
+                    2019
+                ]
+            ]
+        },
+        "author": [
+            {
+                "given": "Daniel",
+                "family": "Himmelstein"
+            }
+        ]
     }
-  ]
-}
+    {
+        "id": "http://zotero.org/users/local/gVY292am/items/GYK6YE2I",
+        "type": "article-journal",
+        "abstract": "Genome size of Indian major carps viz., rohu, catla, mrigal and kalbasu has been reported here by estimating nuclear DNA content of Feulgen-stained blood smears in microdensitometer, first of its kind in Indian carps. Genome size of Indian major carps viz., rohu, catla, mrigal and kalbasu has been reported here by estimating nuclear DNA content of Feulgen-stained blood smears in microdensitometer. The Nile tilapia (Oreochromis niloticus) genome size was taken as the internal reference standard. Although diploid chromosome number in all these species are same (2n =50), they show notable difference in their genome size viz., 1.044 pg (kalbasu), 1.047 pg (mrigal), 1.994 pg (rohu) and 2.447 pg (catla). These differences may be attributed to the content of junk DNA and degree of developmental complexity of the species. The study is first of its kind in Indian carps and the information would help in generating linkage maps for identification of trait associated genes.",
+        "container-title": "undefined",
+        "language": "en",
+        "source": "www.semanticscholar.org",
+        "title": "Estimation of genome size in Indian major carps Labeo rohita (Hamilton), Catla catla (Hamilton), Cirrhinus mrigala (Hamilton) and Labeo calbasu (Hamilton) by Feulgen microdensitometry method.",
+        "URL": "https://www.semanticscholar.org/paper/Estimation-of-genome-size-in-Indian-major-carps-and-Patel-Das/a89150ab4fc08886b113616dfab17f9ce802cc7e",
+        "author": [
+            {
+                "family": "Patel",
+                "given": "A."
+            },
+            {
+                "family": "Das",
+                "given": "P."
+            },
+            {
+                "family": "Barat",
+                "given": "A."
+            },
+            {
+                "family": "Sarangi",
+                "given": "N."
+            }
+        ],
+        "accessed": {
+			"date-parts": [
+				[
+					"2021",
+					9,
+					29
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2009"
+				]
+			]
+		}
+	}
+
 ]
