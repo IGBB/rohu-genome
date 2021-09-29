@@ -41,9 +41,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/4e8f9b1040b2456db1947fe30fc628bf48f8fb3b/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/4e8f9b1040b2456db1947fe30fc628bf48f8fb3b/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/4e8f9b1040b2456db1947fe30fc628bf48f8fb3b/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ef9aee9dda4bc0ccb7f5d6ba0120d9e8b95fdde5/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ef9aee9dda4bc0ccb7f5d6ba0120d9e8b95fdde5/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ef9aee9dda4bc0ccb7f5d6ba0120d9e8b95fdde5/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -65,9 +65,9 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/4e8f9b1040b2456db1947fe30fc628bf48f8fb3b/))
+([permalink](https://IGBB.github.io/rohu-genome/v/ef9aee9dda4bc0ccb7f5d6ba0120d9e8b95fdde5/))
 was automatically generated
-from [IGBB/rohu-genome@4e8f9b1](https://github.com/IGBB/rohu-genome/tree/4e8f9b1040b2456db1947fe30fc628bf48f8fb3b)
+from [IGBB/rohu-genome@ef9aee9](https://github.com/IGBB/rohu-genome/tree/ef9aee9dda4bc0ccb7f5d6ba0120d9e8b95fdde5)
 on September 29, 2021.
 </em></small>
 
