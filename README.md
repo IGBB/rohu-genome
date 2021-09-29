@@ -1,19 +1,17 @@
-# Automated scholarly manuscripts on GitHub
+# A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers
 
 <!-- usage note: edit the H1 title above to personalize the manuscript -->
 
-[![HTML Manuscript](https://img.shields.io/badge/manuscript-HTML-blue.svg)](https://IGBB.github.io/rohu-genome/)
-[![PDF Manuscript](https://img.shields.io/badge/manuscript-PDF-blue.svg)](https://IGBB.github.io/rohu-genome/manuscript.pdf)
+<!-- [![HTML Manuscript](https://img.shields.io/badge/manuscript-HTML-blue.svg)](https://IGBB.github.io/rohu-genome/) -->
+[![PDF Manuscript](https://img.shields.io/badge/manuscript-PDF-blue.svg)](https://github.com/IGBB/rohu-genome/blob/output/manuscript.pdf)
 [![GitHub Actions Status](https://github.com/IGBB/rohu-genome/workflows/Manubot/badge.svg)](https://github.com/IGBB/rohu-genome/actions)
-[![Travis Build Status](https://travis-ci.com/IGBB/rohu-genome.svg?branch=main)](https://travis-ci.com/IGBB/rohu-genome)
 <!-- usage note: delete CI badges above for services not used by your manuscript -->
 
 ## Manuscript description
 
 <!-- usage note: edit this section. -->
 
-This repository is a template manuscript (a.k.a. rootstock).
-Actual manuscript instances will clone this repository (see [`SETUP.md`](SETUP.md)) and replace this paragraph with a description of their manuscript.
+Genome assembly and ddRAD SNP calling for *Labeo rohita*, the rohu carp
 
 ## Manubot
 
