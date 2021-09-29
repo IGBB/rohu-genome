@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/17aa3977c95bcf4f7cce6e5015e69360ea15e016/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/17aa3977c95bcf4f7cce6e5015e69360ea15e016/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/17aa3977c95bcf4f7cce6e5015e69360ea15e016/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,9 +116,9 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/17aa3977c95bcf4f7cce6e5015e69360ea15e016/))
+([permalink](https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/))
 was automatically generated
-from [IGBB/rohu-genome@17aa397](https://github.com/IGBB/rohu-genome/tree/17aa3977c95bcf4f7cce6e5015e69360ea15e016)
+from [IGBB/rohu-genome@f366434](https://github.com/IGBB/rohu-genome/tree/f366434f52a9c968f10604d0d4f225cee4935920)
 on September 29, 2021.
 </em></small>
 
@@ -278,12 +278,14 @@ The final DNA-Seq library was submitted to Novogene company (www.en.novogene.com
 
 ### Assembly & Annotation 
 
-Nanopore data was filtered to remove the control lambda-phage and sequences shorter the 1000 bases using the nanopack tool suite [VERSION] (https://doi.org/10.1093/bioinformatics/bty149). 
-The filtered data was assembled into contigs using wtdbg2 v2.4 (https://doi.org/10.1038/s41592-019-0669-3). 
-The contigs were polished using the two iterations of racon v1.4.0 (CITE) with minimap2 [VERSION] (CITE) mapping the nanopore reads. 
-The contigs were further polished using pilon v1.23 (CITE) with bwa v0.7.10 (CITE) mapping the Illumina paired reads. 
-The contigs were scaffolded using Bionano Solve ( Solve3.4.1_09262019) (https://bionanogenomics.com/support-page/bionano-access-software/) and SALSA [VERSION] (CITE). 
-That scaffolds larger than 10Mb were linked and oriented based on the Onychostoma macrolepis genome (CITE), the most similar chromosome assembly available on NCBI, using ragtag [VERSION] (CITE).
+Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pcmid:PMC5870704] estimated the genome size using the Illumina paried reads digested into 50-mers. 
+
+Nanopore data was filtered to remove the control lambda-phage and sequences shorter the 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
+The filtered data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
+The contigs were polished using the two iterations of racon (v1.4.0) [@doi:10.1101/gr.214270.116] with minimap2 (v2.17) (@doi:10.1093/bioinformatics/bty191) mapping the nanopore reads. 
+The contigs were further polished using pilon (v1.23) [@doi:10.1371/journal.pone.0112963] with bwa (v0.7.10) [@doi:10.1093/bioinformatics/btp324] mapping the Illumina paired reads. 
+The contigs were scaffolded using Bionano Solve ( Solve3.4.1_09262019) [@url:https://bionanogenomics.com/support-page/bionano-access-software/) and SALSA (v2.3) [@doi:10.1371/journal.pcbi.1007273]. 
+That scaffolds larger than 10Mb were linked and oriented based on the Onychostoma macrolepis genome [@doi:10.1111/1755-0998.13190], the most similar chromosome assembly available on NCBI, using ragtag (v1.1.1) [@doi:10.1186/s13059-019-1829-6].
 
 RepeatModeler [VERSION] (CITE) and RepeatMasker [VERSION] (CITE) were used to create a species-specific repeat database, and mask those repeats in the genome.
 All available RNA-seq libraries for *L. rohita* (ADD TABLE) were downloaded from NCBI and mapped to the masked genome using hisat2 [VERSION] (CITE).
@@ -314,10 +316,37 @@ The raw data is available at the SRA (Sequence Read Archive) under accessions SR
 
 ### Sequencing & Assembly 
 
- - Flowcyto – 991.5Mb 
- - 10 Minion R.9.4.1 flow cells produced 130.5 Gbases in 44.7M reads (N50 = 4862) 
- - 2 lanes of Illumina HiSeq X Ten 2x150 produced 261 Gbases in 870M pairs
- - 1 lane of Illumina HiSeq X Ten 2x150 Hi-C produced 114 Gbases in 382M pairs 
+The C-value of *L. rohita* was previously reported as 1.99 pg (~1.95Gb) using Feulgen densitometry [@genome-size] or 1.5Gb using k-mer estimation [@pmcid:PMC7186481]. 
+However, the flow cytometry results [@tbl:flowcyto] show a C-value of 0.99 pg (~0.97Gb) with a standard deviation of 0.02 across all measurements. 
+The smaller C-value is also closer to the genome estimate produced by GenomeScope (0.97Gb) and the final genome assembly size of 0.95 Gb.
+
+
+| Specimen Name     | Number of Sample nuclei | Average sample fluorescence | Number of standard nuclei | Average standard fluorescence | Estimated Genome size ^2^ | HAPLOID       |
+|-------------------|-------------------------|-----------------------------|---------------------------|-------------------------------|---------------------------|---------------|
+| Fish 1 Sample 1   | 16020                   | 27350                       | 2065                      | 69247                         | 2.049857756               | 1.024928878   |
+| Fish 2 Sampe 1    | 13082                   | 25929                       | 6570                      | 66671                         | 2.018441451               | 1.0092207255  |
+| Fish 2 Sample 2   | 15402                   | 25665                       | 4354                      | 67489                         | 1.973674969               | 0.9868374845  |
+| Fish 3 Sample 1   | 15124                   | 25798                       | 4442                      | 68195                         | 1.963364176               | 0.981682088   |
+| Fish 3 Sample 2   | 14923                   | 25763                       | 4823                      | 68837                         | 1.942414254               | 0.971207127   |
+| Fish 4 Sample 1   | 13320                   | 26346                       | 5913                      | 69665                         | 1.962760927               | 0.9813804635  |
+| Fish 4 Sample 2   | 5624                    | 26612                       | 4097                      | 68876                         | 2.005288925               | 1.0026444625  |
+| Fish 5 Sample 1   | 6771                    | 25761                       | 3080                      | 68825                         | 1.942602107               | 0.9713010535  |
+| Fish 5 Sample 2   | 15926                   | 26369                       | 3352                      | 68832                         | 1.988248344               | 0.994124172   |
+| Standard only ^1^ | 3                       | 25258                       | 3311                      | 64331                         | NA                        |               |
+|                   |                         |                             |                           | Average                       | 1.982961434               | 0.9914807172  |
+|                   |                         |                             |                           | Standard Deviation            | 0.03607582                | 0.01803790999 |
+Table: Flow cytometry results for 5 *L. rohita* blood samples, measured twice. 
+1) (Trout erthrocyte nuclei) Genome size = 5.19pg
+2) Genome estimate calculated as (average sample fluorescence/ average standard fluorescence * standard genome size ) in picograms DIPLOID (i.e., 2C)
+{#tbl:flowcyto}
+
+A total of 130.5 Gb of Nanopore long reads from 44.7 million read, and 261 Gb of Illumina short reads from 870 million pairs were produced, along with 382 million pairs (114 Gb) for the Hi-C library.
+The initial *de novo* assembly consisted of 4999 contigs with an N50 of 1.28 Mb. 
+After the Bionano and HiC data was incorporated, the total number of sequences dropped to 2899 and the N50 increased to 29.9 Mb.
+The final assembly consisted of 25 chromosome length scaffolds and 2844 unplaced scaffolds, ranging in size from 1,479bp to 7.18 Mb.
+[@tbl:assembly] contains a list of assembly statistics for each step.
+The final genome size is 97.9% of the estimated genome size. 
+BUSCO analysis show the genome completely contains 98.1% of the 3640 genes in the actinopterygii_odb10 database with a 36 (1%) genes duplicated, 23 (0.6%) fragmented, and 46 (1.3%) missing.
 
 | n    | n:500 | L50 | min  | N75      | N50      | N25      | E-size   | max      | sum      | name    |
 |------|-------|-----|------|----------|----------|----------|----------|----------|----------|---------|
@@ -325,6 +354,18 @@ The raw data is available at the SRA (Sequence Read Archive) under accessions SR
 | 3709 | 3706  | 15  | 1479 | 1.13E+07 | 2.65E+07 | 3.08E+07 | 2.20E+07 | 3.79E+07 | 9.46E+08 | bionano |
 | 2899 | 2896  | 14  | 1479 | 2.64E+07 | 2.99E+07 | 3.43E+07 | 2.69E+07 | 4.45E+07 | 9.46E+08 | hic     |
 | 2872 | 2869  | 13  | 1479 | 2.88E+07 | 3.25E+07 | 3.61E+07 | 3.00E+07 | 4.53E+07 | 9.46E+08 | ragtag  |
+Table: Assembly statistics
+{#tbl:assembly}
+
+
+ 
+| 238509 | CDS              |
+| 239799 | exon             |
+| 9824   | five_prime_UTR   |
+| 24385  | gene             |
+| 24385  | mRNA             |
+| 1509   | three_prime_UTR  |
+ 
 
 ```
 ==> 99-final/Rohu.busco.genome.txt <== 
@@ -384,14 +425,7 @@ The raw data is available at the SRA (Sequence Read Archive) under accessions SR
   
 ```
 
- 
-| 238509 | CDS              |
-| 239799 | exon             |
-| 9824   | five_prime_UTR   |
-| 24385  | gene             |
-| 24385  | mRNA             |
-| 1509   | three_prime_UTR  |
- 
+
 ```
 ================================================== 
 file name: Rohu.genome.fa            
@@ -466,3 +500,5 @@ ResearchIT Iowa State University
 
 <!-- Explicitly insert bibliography here -->
 <div id="refs"></div>
+
+[@genome-size]: http://zotero.org/users/local/gVY292am/items/GYK6YE2I
