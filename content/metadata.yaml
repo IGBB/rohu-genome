@@ -77,30 +77,35 @@ authors:
     initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
     affiliations:
+      - placeholder
 
     #TODO: add Samsul Alam info
   - name: John Benzie
     initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
     affiliations:
+      - placeholder
 
     #TODO: add Samsul Alam info
   - name: Matthew Hamilton
     initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
     affiliations:
+      - placeholder
 
     #TODO: add Samsul Alam info
   - name: Attila Karsi
     initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
     affiliations:
+      - placeholder
 
     #TODO: add Samsul Alam info
   - name: Mark L. Lawrence
     initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
     affiliations:
+      - placeholder
 
   - name: Daniel G. Peterson
     initials: DGP
