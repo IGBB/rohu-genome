@@ -1,26 +1,110 @@
 ---
-title: "Manuscript Title"
+title: "A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers"
 keywords:
-  - markdown
-  - publishing
-  - manubot
+  - genome sequencing
+  - ddrad sequencing
+  - nanopore
+  - Labeo rohita
 lang: en-US
 authors:
-  - github: johndoe
-    name: John Doe
-    initials: JD
-    orcid: XXXX-XXXX-XXXX-XXXX
-    twitter: johndoe
-    email: john.doe@something.com
+  - github: maa146
+    name: Mark A. Arick II
+    initials: MAA
+    orcid: 0000-0002-7207-3052
+    email: maa146@igbb.msstate.edu
     affiliations:
-      - Department of Something, University of Whatever
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
     funders:
-      - Grant XXXXXXXX
-  - github: janeroe
-    name: Jane Roe
-    initials: JR
+      - Grant 7200AA18CA00030
+
+  - name: Chuan-Yu Hsu
+    initials: XXX
     orcid: XXXX-XXXX-XXXX-XXXX
-    email: jane.roe@whatever.edu
+    email: ch11@msstate.edu
     affiliations:
-      - Department of Something, University of Whatever
-      - Department of Whatever, University of Something
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+  - name: Zenaida Magbanua
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    email: zvm2@msstate.edu
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+  - name: Corrinne E. Grover
+    initials: CEG
+    orcid: 0000-0003-3878-5459
+    email: corrinne@iastate.edu
+    affiliations:
+      - Ecology, Evolution, and Organismal Biology Dept., Iowa State University, Ames, IA, 50010 USA
+
+  - name: Emma R. Miller
+    initials: ERM
+    orcid: 0000-0001-9009-5303
+    email: erdostal@iastate.edu
+    affiliations:
+      - Ecology, Evolution, and Organismal Biology Dept., Iowa State University, Ames, IA, 50010 USA
+
+  - name: Olga Pechanova
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    email: op2@msstate.edu
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+  - name: Charles A. Thrash
+    initials: CAT
+    orcid: XXXX-XXXX-XXXX-XXXX
+    email: cat209@msstate.edu
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+  - name: Ramey C. Youngblood
+    initials: RCY
+    orcid: XXXX-XXXX-XXXX-XXXX
+    email: ramey@igbb.msstate.edu
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+  - name: Lauren Ezzell
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
+
+    #TODO: add Samsul Alam info
+  - name: Samsul Alam
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+
+    #TODO: add Samsul Alam info
+  - name: John Benzie
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+
+    #TODO: add Samsul Alam info
+  - name: Matthew Hamilton
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+
+    #TODO: add Samsul Alam info
+  - name: Attila Karsi
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+
+    #TODO: add Samsul Alam info
+  - name: Mark L. Lawrence
+    initials: XXX
+    orcid: XXXX-XXXX-XXXX-XXXX
+    affiliations:
+
+  - name: Daniel G. Peterson
+    initials: DGP
+    orcid: 0000-0002-0274-5968
+    email: peterson@igbb.msstate.edu
+    affiliations:
+      - Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
