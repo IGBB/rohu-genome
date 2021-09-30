@@ -1,0 +1,41 @@
+#+TITLE: Trimming
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+
+#+BEGIN_SRC sh :var libs=../raw/README.org:illumina_fastq
+  cd $DIR
+  ROOT=$(git rev-parse --show-toplevel)
+
+  TRIMER=/usr/local/igbb/Trimmomatic-0.32/trimmomatic-0.32.jar
+  ADAPTERS=/usr/local/igbb/Trimmomatic-0.32/adapters/all.fa
+
+  for lib in ${!libs[@]}; do
+    forward=$ROOT/raw/$(echo ${libs[$lib]} | cut -f1 -d' ')
+    reverse=$ROOT/raw/$(echo ${libs[$lib]} | cut -f2 -d' ')
+
+    PHRED=$( zcat $forward |
+                   head -n40 |
+                   awk '{if(NR%4==0) printf("%s",$0);}' |
+                   od -A n -t u1 |
+                   awk 'BEGIN{min=100;max=0;}
+                        {for(i=1;i<=NF;i++) {if($i>max) max=$i; if($i<min) min=$i;}}
+                        END{if(max<=74 && min<59) print "33"; else if(max>73 && min>=64) print "64";}' )
+
+    java -jar $TRIMER PE -threads $PBS_NUM_PPN -phred$PHRED \
+       $forward $reverse $DIR/$lib.{PE.R1,SE.R1,PE.R2,SE.R2}.fq.gz \
+       ILLUMINACLIP:$ADAPTERS:2:30:15 LEADING:28 TRAILING:28 SLIDINGWINDOW:8:28 SLIDINGWINDOW:1:10 MINLEN:85 TOPHRED33 \
+       &> $DIR/$lib.log
+  done
+#+END_SRC
+
+#+NAME: trim_summary
+#+BEGIN_SRC sh :results output table append :var libs=../raw/README.org:illumina_fastq
+awk '{print $1 ".log"}' <<<"$libs" | 
+  xargs grep 'Input Read Pairs' | 
+  sed -e 's#.*/##' -e 's/\.log:[^:]*: / /' -e 's/ [^:)0-9]*: / /g'
+#+END_SRC
+
+#+RESULTS: trim_summary
+| Rohu_L3 | 435962832 | 354419902 | (81.30%) | 44768780 | (10.27%) | 12740931 | (2.92%) | 24033219 | (5.51%) |
+| Rohu_L4 | 434361517 | 353716562 | (81.43%) | 44399469 | (10.22%) | 12582123 | (2.90%) | 23663363 | (5.45%) |
+
