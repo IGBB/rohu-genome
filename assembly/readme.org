@@ -251,6 +251,7 @@ python $DIR/5-salsa/apps/SALSA/run_pipeline.py \
     -b $DIR/5-salsa/alignment.bed \
     -e GATC \
     -o $DIR/5-salsa/scaffolds
+#+end_src
 
 
 ** Ragtag
