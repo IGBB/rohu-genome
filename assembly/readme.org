@@ -1,0 +1,265 @@
+#+Title: Rohu Genome Assembly
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+
+* wtdbg2
+
+#+BEGIN_SRC sh :tangle 1-wtdbg2/assembly.sh
+cd $DIR/1-wtdbg2/
+ROOT=$(git rev-parse --show-toplevel)
+PATH=$PATH:$DIR/wtdbg2-2.4/
+
+wtdbg2 -x ont -g 968m -t $SLURM_CPUS_PER_TASK -i $ROOT/raw/nanopore.fq.gz -fo rohu.0
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle consensus/run.sh
+cd $DIR/1-wtdbg2/
+ROOT=$(git rev-parse --show-toplevel)
+PATH=$PATH:$DIR/wtdbg2-2.4/
+
+wtpoa-cns -t $SLURM_CPUS_PER_TASK -i $DIR/1-wtdbg2/rohu.0.ctg.lay.gz -fo rohu.raw.fa
+#+END_SRC
+
+* Racon
+#+BEGIN_SRC sh :tangle 2-racon/run.sh
+cd $DIR/2-racon/
+ROOT=$(git rev-parse --show-toplevel)
+
+ml igbb minimap2 # racon
+PATH=$PATH:$DIR/racon-v1.4.0/build/bin/
+
+reads=$ROOT/raw/nanopore.fq.gz
+
+contigs=$DIR/1-wtdbg2/rohu.raw.fa
+for iter in 1 2; do
+    consensus=$DIR/2-racon/assembly.$iter
+
+    minimap2 -t $PBS_NUM_PPN -x map-ont ${contigs} ${reads} > $consensus.paf
+    racon -t $PBS_NUM_PPN ${reads} $consensus.paf ${contigs} > ${consensus}.fa
+
+    contigs=$DIR/2-racon/assembly.$iter.fa
+done
+
+#+END_SRC
+
+* Pilon
+
+#+BEGIN_SRC sh :tangle 3-pilon/setup.sh
+cd $DIR
+ml igbb bwa
+
+bwa index -p $DIR/3-pilon/genome $DIR/2-racon/assembly.2.fa
+#+END_SRC
+
+#+BEGIN_SRC sh :var libs=../raw/readme.org:illumina_fastq[,0] :tangle 3-pilon/align.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+PATH=$PATH:/usr/local/gnu/bin/
+PATH=$PATH:/usr/local/igbb/samtools-1.4.1/bin/:/usr/local/igbb/bwa-0.7.10/bin/
+
+TRIM=$ROOT/trim/
+
+genome=$DIR/3-pilon/genome
+
+for lib in ${libs}; do
+    echo $lib
+    bwa mem -t $SLURM_CPUS_PER_TASK $genome $TRIM/${lib}.PE.R{1,2}.fq.gz |
+        samtools view -F4 -Sb > $DIR/3-pilon/frags.$lib.bam
+    bwa mem -t $SLURM_CPUS_PER_TASK $genome $TRIM/${lib}.SE.R1.fq.gz |
+        samtools view -F4 -Sb > $DIR/3-pilon/unpaired.$lib.R1.bam
+    bwa mem -t $SLURM_CPUS_PER_TASK $genome $TRIM/${lib}.SE.R2.fq.gz |
+        samtools view -F4 -Sb > $DIR/3-pilon/unpaired.$lib.R2.bam
+done;
+
+ls $DIR/3-pilon/*.bam | parallel samtools sort -m 5G -o {.}.sort.bam -T {.}.sort {}
+samtools merge $DIR/3-pilon/frags.bam $DIR/3-pilon/frags.*.sort.bam
+samtools merge $DIR/3-pilon/unpaired.bam $DIR/3-pilon/unpaired.*.sort.bam
+samtools index $DIR/3-pilon/frags.bam
+samtools index $DIR/3-pilon/unpaired.bam
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle 3-pilon/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+ml java/1.8
+
+java -Xmx400G -jar $DIR/pilon-1.23.jar \
+      --genome $DIR/2-racon/assembly.2.fa \
+      --frags $DIR/3-pilon/frags.bam \
+      --unpaired $DIR/3-pilon/unpaired.bam \
+      --output pilon \
+      --outdir $DIR/3-pilon \
+      --threads $SLURM_CPUS_PER_TASK \
+      --changes
+#+END_SRC
+
+
+* bionano
+
+#+begin_src sh :tangle 4-bionano/Rohu_Bionano_No_HiC_HS_report.txt
+
+
+Original BioNano Genome Map statistics:
+Count  = 218
+Min length (Mbp) = 0.056
+Median length (Mbp) = 1.345
+Mean length (Mbp) = 5.588
+N50 length (Mbp) = 25.246
+Max length (Mbp) = 40.723
+Total length (Mbp) = 1218.264
+
+Original NGS sequences statistics:
+Count  = 4832
+Min length (Mbp) = 0.002
+Median length (Mbp) = 0.027
+Mean length (Mbp) = 0.196
+N50 length (Mbp) = 1.289
+Max length (Mbp) = 7.868
+Total length (Mbp) = 945.477
+
+Conflict Resolution from BNG-NGS alignment:
+Number of conflict cuts made to Bionano maps: 5
+Number of conflict cuts made to NGS sequences: 147
+Number of Bionano maps to be cut: 5
+Number of NGS sequences to be cut: 99
+
+NGS FASTA sequence in hybrid scaffold statistics:
+Count  = 1375
+Min length (Mbp) = 0.035
+Median length (Mbp) = 0.260
+Mean length (Mbp) = 0.625
+N50 length (Mbp) = 1.394
+Max length (Mbp) = 7.132
+Total length (Mbp) = 858.778
+
+Hybrid scaffold FASTA statistics:
+Count  = 113
+Min length (Mbp) = 0.087
+Median length (Mbp) = 2.057
+Mean length (Mbp) = 9.212
+N50 length (Mbp) = 30.105
+Max length (Mbp) = 40.732
+Total length (Mbp) = 1040.904
+
+Hybrid scaffold FASTA plus not scaffolded NGS FASTA statistics:
+Count  = 3709
+Min length (Mbp) = 0.000
+Median length (Mbp) = 0.018
+Mean length (Mbp) = 0.304
+N50 length (Mbp) = 27.428
+Max length (Mbp) = 40.732
+Total length (Mbp) = 1127.602
+
+#+end_src
+
+Results saved in 4-bionano/210416_Rohu_ChipRun1_HS_cur_results_999225.tar.gz
+
+
+** SALSA
+
+#+begin_src sh :tangle 5-salsa/0-ref/run.sh
+cd $DIR
+
+ml singularity/3.5.2 bwa samtools
+bionano=$DIR/4-bionano/cur_results_999225/hybrid_scaffolds/
+prefix=EXP_REFINEFINAL1_bppAdjust_cmap_rohu_polished_fasta_NGScontigs_HYBRID_SCAFFOLD
+
+cat $bionano/${prefix}.fasta \
+    $bionano/${prefix}_NOT_SCAFFOLDED.fasta \
+    > $DIR/5-salsa/0-ref/rohu.fa
+
+bwa index $DIR/5-salsa/0-ref/rohu.fa
+samtools faidx $DIR/5-salsa/0-ref/rohu.fa
+#+end_src
+
+#+begin_src sh :tangle 5-salsa/1-bwa/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+RAW="$ROOT/raw/rohu.gbs-hic/X202SC20040643-Z01-F001/raw_data/R_HiC/"
+
+ml singularity/3.5.2 bwa samtools
+
+for i in 1 2; do
+    zcat $RAW/R_HiC_CKDL200153257-1a_H7Y5FCCX2_L2_$i.fq.gz |
+        bwa mem -t $SLURM_CPUS_PER_TASK $DIR/5-salsa/0-ref/rohu.fa - |
+        samtools view -bS \
+            > $DIR/5-salsa/1-bwa/R_HiC_${i}.bam
+done
+
+#+end_src
+
+#+begin_src sh :tangle 5-salsa/2-filter/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity/3.5.2 bwa samtools
+
+for i in 1 2; do
+    samtools view -h $DIR/5-salsa/1-bwa/R_HiC_${i}.bam |
+        perl $DIR/5-salsa/apps/mapping_pipeline/filter_five_end.pl |
+        samtools view -Sb - > $DIR/5-salsa/2-filter/R_HiC_${i}.bam
+done
+
+
+#+end_src
+
+#+begin_src sh :tangle 5-salsa/3-merge/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity/3.5.2 samtools
+
+perl $DIR/5-salsa/apps/mapping_pipeline/two_read_bam_combiner.pl \
+    $DIR/5-salsa/2-filter/R_HiC_{1,2}.bam \
+    $DIR/5-salsa/apps/samtools-1.12/samtools \
+    10 | # MAPQ FILTER
+    samtools view -bS -t $DIR/5-salsa/0-ref/rohu.fai |
+    samtools sort -@ 12 -m 10G \
+        -o $DIR/5-salsa/3-merge/R_HiC.bam -
+#+end_src
+
+#+begin_src sh :tangle 5-salsa/4-dedup/run.sh
+ml singularity/3.5.2 samtools picard
+
+mkdir $DIR/5-salsa/4-dedup/tmp/
+picard MarkDuplicates \
+    INPUT=$DIR/5-salsa/3-merge/R_HiC.bam \
+    OUTPUT=$DIR/5-salsa/4-dedup/R_HiC.bam \
+    TMP_DIR=$DIR/5-salsa/4-dedup/tmp/ \
+    METRICS_FILE=$DIR/5-salsa/4-dedup/metrics.txt \
+    ASSUME_SORTED=TRUE \
+    VALIDATION_STRINGENCY=LENIENT \
+    REMOVE_DUPLICATES=TRUE
+
+samtools index $DIR/5-salsa/4-dedup/R_HiC.bam
+
+perl $DIR/5-salsa/apps/mapping_pipeline/get_stats.pl  \
+    $DIR/5-salsa/4-dedup/R_HiC.bam \
+    > $DIR/5-salsa/4-dedup/stats.txt
+#+end_src
+
+#+begin_src sh :tangle 5-salsa/run.sh
+source $DIR/5-salsa/apps/SALSA/bin/activate
+
+python $DIR/5-salsa/apps/SALSA/run_pipeline.py \
+    -i 10 \
+    -a $DIR/5-salsa/0-ref/rohu.fa\
+    -l $DIR/5-salsa/0-ref/rohu.fa.fai \
+    -b $DIR/5-salsa/alignment.bed \
+    -e GATC \
+    -o $DIR/5-salsa/scaffolds
+
+
+** Ragtag
+#+begin_src sh :tangle 6-ragtag/run.sh
+cd $DIR/6-ragtag
+ml python/3
+
+source $DIR/ragtag/bin/activate
+
+ragtag.py scaffold -u -t 48 -q 60 -o $DIR/6-ragtag/high-conf-scaff -i 0.75  \
+    Om.chr.fa $DIR/5-scaffolds/scaffolds/scaffolds_FINAL.fasta
+#+end_src

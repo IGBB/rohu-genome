@@ -1,0 +1,201 @@
+#+Title: Rohu raw data
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+
+* Nanopore
+
+| Sample |       Date | QC Total Pores | Seq Total Pores |
+|--------+------------+----------------+-----------------|
+| Rohu1  | 2019-05-13 |           1306 |            1302 |
+| Rohu2  | 2019-05-13 |           1467 |            1474 |
+| Rohu3  | 2019-05-13 |           1400 |            1388 |
+| Rohu4  | 2019-05-13 |           1410 |            1386 |
+| Rohu5  | 2019-05-13 |           1417 |            1406 |
+| Rohu6  | 2019-05-30 |           1487 |            1494 |
+| Rohu7  | 2019-05-30 |           1498 |            1482 |
+| Rohu8  | 2019-05-30 |           1565 |            1535 |
+| Rohu9  | 2019-05-30 |           1446 |            1436 |
+| Rohu10 | 2019-05-30 |           1573 |            1557 |
+
+
+| Sample |       n |  n:1000 |     L50 |  min |  N80 |  N50 |  N20 | E-size |    max |     sum |
+|--------+---------+---------+---------+------+------+------+------+--------+--------+---------|
+| Rohu1  | 1957220 | 1618784 |  427744 | 1000 | 3261 | 5782 | 8786 |   6305 |  73931 | 7.079e9 |
+| Rohu2  | 3722922 | 2886649 |  777540 | 1000 | 2839 | 5003 | 7649 |   5477 |  52265 | 11.16e9 |
+| Rohu3  | 2766940 | 2210134 |  624733 | 1000 | 3100 | 5124 | 7646 |   5562 |  42859 | 9.014e9 |
+| Rohu4  | 2901001 | 2303332 |  641873 | 1000 | 3309 | 5525 | 8218 |   5993 |  59781 | 9.979e9 |
+| Rohu5  | 4498094 | 3714349 | 1097121 | 1000 | 2984 | 4713 | 6990 |   5128 | 112161 | 14.47e9 |
+| Rohu6  | 4515775 | 3570212 | 1033708 | 1000 | 2946 | 4740 | 7056 |   5115 |  76267 | 13.72e9 |
+| Rohu7  | 6718850 | 5169715 | 1474214 | 1000 | 2833 | 4675 | 7022 |   5051 |  40470 | 19.42e9 |
+| Rohu8  | 6321823 | 4939997 | 1421515 | 1000 | 2836 | 4609 | 6916 |   4993 |  41304 | 18.45e9 |
+| Rohu9  | 3851666 | 2848684 |  752528 | 1000 | 2867 | 5184 | 7916 |   5593 |  53531 | 11.15e9 |
+| Rohu10 | 7452618 | 4739134 | 1209902 | 1000 | 2335 | 4401 | 7275 |   4954 |  35090 | 16.08e9 |
+|--------+---------+---------+---------+------+------+------+------+--------+--------+---------|
+| All    | 44.71e6 |    34e6 | 9411202 | 1000 | 2870 | 4862 | 7398 |   5304 | 112161 | 130.5e9 |
+
+
+#+BEGIN_SRC sh :tangle clean.sh
+
+for lib in Rohu{6..10}; do
+  # There should only be one sub-directory; however, find outputs the given
+  # directory first
+  SUBDIR=$(find $DIR/$lib -maxdepth 1 -type d | sed -n 2p )
+
+
+  cp $SUBDIR/final_summary.txt $DIR/$lib/
+  find $SUBDIR/sequencing_summary/ -type f -exec cp {} $DIR/$lib/ \;
+
+  for file in fast5_{pass,fail}; do
+      size=$(du -sb $SUBDIR/$file/ | awk '{print $1}')
+      tar -C $SUBDIR -c $file | pv -N "$lib $file" -s $size > $DIR/$lib/$file.tar
+      split --verbose -d -b 50G $DIR/$lib/$file.tar $DIR/$lib/$file.tar.
+  done
+
+  for file in fastq_{pass,fail}; do
+      find $SUBDIR/$file -type f | xargs pv -N "$lib $file" | gzip > $DIR/$lib/$file.fq.gz
+  done
+  
+done
+
+#+END_SRC
+
+#+NAME: nanopore_fastq
+| Sample | Fastq File                       |
+|--------+----------------------------------|
+| Rohu1  | nanopore/Rohu1/fastq_pass.fq.gz  |
+| Rohu2  | nanopore/Rohu2/fastq_pass.fq.gz  |
+| Rohu3  | nanopore/Rohu3/fastq_pass.fq.gz  |
+| Rohu4  | nanopore/Rohu4/fastq_pass.fq.gz  |
+| Rohu5  | nanopore/Rohu5/fastq_pass.fq.gz  |
+| Rohu6  | nanopore/Rohu6/fastq_pass.fq.gz  |
+| Rohu7  | nanopore/Rohu7/fastq_pass.fq.gz  |
+| Rohu8  | nanopore/Rohu8/fastq_pass.fq.gz  |
+| Rohu9  | nanopore/Rohu9/fastq_pass.fq.gz  |
+| Rohu10 | nanopore/Rohu10/fastq_pass.fq.gz |
+
+
+** Read length distributions
+
+#+NAME: summaryfiles
+| Name   | Sequencing Summary                                                                                     |
+|--------+--------------------------------------------------------------------------------------------------------|
+| Rohu1  | nanopore/Rohu1/GXB01275_20190513_150052__gridion_sequencing_run_Rohu1_sequencing_summary.txt           |
+| Rohu2  | nanopore/Rohu2/GXB01275_20190513_150052_FAK81917_gridion_sequencing_run_Rohu2_sequencing_summary.txt   |
+| Rohu3  | nanopore/Rohu3/GXB01275_20190513_150051_FAK80507_gridion_sequencing_run_Rohu3_sequencing_summary.txt   |
+| Rohu4  | nanopore/Rohu4/GXB01275_20190513_150052_FAK82251_gridion_sequencing_run_Rohu4_sequencing_summary.txt   |
+| Rohu5  | nanopore/Rohu5/GXB01275_20190513_150051_FAK80473_gridion_sequencing_run_Rohu5_sequencing_summary.txt   |
+| Rohu6  | nanopore/Rohu6/GXB01275_20190530_143529_FAK94724_gridion_sequencing_run_Rohu6_sequencing_summary.txt   |
+| Rohu7  | nanopore/Rohu7/GXB01275_20190530_143528_FAK94094_gridion_sequencing_run_Rohu7_sequencing_summary.txt   |
+| Rohu8  | nanopore/Rohu8/GXB01275_20190530_143528_FAK93972_gridion_sequencing_run_Rohu8_sequencing_summary.txt   |
+| Rohu9  | nanopore/Rohu9/GXB01275_20190530_143528_FAK91802_gridion_sequencing_run_Rohu9_sequencing_summary.txt   |
+| Rohu10 | nanopore/Rohu10/GXB01275_20190530_143528_FAK93858_gridion_sequencing_run_Rohu10_sequencing_summary.txt |
+
+
+#+BEGIN_SRC sh :var files=summaryfiles[,1] :tangle nanopore/read.distro.sh
+cd $DIR
+
+pv "${files[@]}" | cut -f 14,21 | sort | uniq -c > nanopore/read.distro
+
+#+END_SRC
+
+#+BEGIN_SRC R :var files=summaryfiles :tangle nanopore/read.lengths.R
+
+library(ggplot2)
+library(dplyr)
+library(grid)
+
+summary <- read.table('nanopore/read.distro', col.names=c("Count","Length","Sample"))
+
+
+summary %>% filter(Length >=20000) %>% summarise(coverage = sum(as.numeric(Length * Count))/10^9)
+summary[summary$Length >= 10000,
+
+
+
+
+p <- ggplot(summary, aes(Length, weight=Count, group=Sample, color=Sample, fill=Sample)) +
+  geom_freqpoly(position = "stack", binwidth=.1) + scale_x_log10()
+
+ggsave("nanopore/read.distro.png", p, width=8, height=4)
+
+
+
+
+coverage <- as.data.frame(summary %>%
+  mutate(Read = cut(summary$Length, breaks=c(0,seq(1000,20000,500),Inf), labels=c(0, seq(1,20,.5)))) %>%
+  group_by(Read) %>%
+  summarise(Depth = sum(as.numeric(Length * Count))/10^9)) %>%
+  mutate(Cumulative.Depth = cumsum(Depth))
+
+coverage$Read = as.numeric(as.character(coverage$Read))
+
+plots = list('Depth'      = ggplot(coverage, aes(Read, Depth)) + ylab("Depth (Gb)") + ggtitle("Depth vs Read Length"),
+             'Cumulative' = ggplot(coverage, aes(Read, Cumulative.Depth)) + ylab("Cumulative Depth (Gb)"))
+
+plots <- lapply(plots, function(p) p + geom_line() + xlab("Read Length (kb)"));
+
+png("nanopore/coverage.png", width=960, height=960)
+grid.newpage()
+grid.draw(do.call(rbind, c(lapply(plots, ggplotGrob), size="last")))
+dev.off()
+#+END_SRC
+
+#+BEGIN_HTML
+<img src="nanopore/read.distro.png" alt="Nanopore Read Distribution" width="75%">
+<img src="nanopore/coverage.png" alt="Nanopore Read Coverage" width="75%">
+#+END_HTML
+
+** Nanopack Filtering 
+
+#+BEGIN_SRC sh
+cd /work/jmc675/
+ROOT=$(git rev-parse --show-toplevel)
+
+mkdir nanopack
+cd nanopack
+
+ml python/2.7.8
+virtualenv nano
+
+source nano/bin/activate
+
+pip install nanopack
+
+#RUN NANOPACK
+
+gunzip -c /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass.fq.gz | NanoLyse | NanoFilt -l 1000 | gzip > /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass_filtered_no_lambda.fastq.gz
+
+NanoStat --fastq /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass_filtered_no_lambda.fastq.gz --outdir /work/jmc675/rohu-genome/raw/nanopore/Rohu*/statreports
+#+END_SRC
+
+
+#+NAME: nanopore_fastq_filtered
+| Sample | Filtered Fastq File                                    |
+|--------+--------------------------------------------------------|
+| Rohu1  | nanopore/Rohu1/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu2  | nanopore/Rohu2/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu3  | nanopore/Rohu3/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu4  | nanopore/Rohu4/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu5  | nanopore/Rohu5/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu6  | nanopore/Rohu6/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu7  | nanopore/Rohu7/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu8  | nanopore/Rohu8/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu9  | nanopore/Rohu9/fastq_pass_filtered_no_lambda.fastq.gz  |
+| Rohu10 | nanopore/Rohu10/fastq_pass_filtered_no_lambda.fastq.gz |
+
+** Combine reads
+#+BEGIN_SRC sh :var READS=nanopore_fastq_filtered[,1] :tangle nanopore.combine.sh
+cd $DIR/
+ROOT=$(git rev-parse --show-toplevel)
+
+for file in ${READS[@]}; do cat $file; done > $DIR/nanopore.fq.gz
+#+END_SRC
+
+
+* Illumina
+
+#+NAME: illumina_fastq
+| Sample  | Forward                                            | Reverse                                            |
+|---------+----------------------------------------------------+----------------------------------------------------|
+| Rohu_L3 | illumina/DL_Rohu_USPD16099477_H2FW3CCX2_L3_1.fq.gz | illumina/DL_Rohu_USPD16099477_H2FW3CCX2_L3_2.fq.gz |
+| Rohu_L4 | illumina/DL_Rohu_USPD16099477_H2FW3CCX2_L4_1.fq.gz | illumina/DL_Rohu_USPD16099477_H2FW3CCX2_L4_2.fq.gz |
