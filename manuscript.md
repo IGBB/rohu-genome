@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/fa829ae0b9a8e653ea3e2fd4f3ce112434eaf51b/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/fa829ae0b9a8e653ea3e2fd4f3ce112434eaf51b/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/fa829ae0b9a8e653ea3e2fd4f3ce112434eaf51b/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,9 +116,9 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/))
+([permalink](https://IGBB.github.io/rohu-genome/v/fa829ae0b9a8e653ea3e2fd4f3ce112434eaf51b/))
 was automatically generated
-from [IGBB/rohu-genome@090fb79](https://github.com/IGBB/rohu-genome/tree/090fb7910b664b4a76f33ddd87c8edacc0570830)
+from [IGBB/rohu-genome@fa829ae](https://github.com/IGBB/rohu-genome/tree/fa829ae0b9a8e653ea3e2fd4f3ce112434eaf51b)
 on September 30, 2021.
 </em></small>
 
@@ -126,126 +126,37 @@ on September 30, 2021.
 
 
 
-+ **Mark A. Arick II**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [0000-0002-7207-3052](https://orcid.org/0000-0002-7207-3052)
-    · ![GitHub icon](images/github.svg){.inline_icon}
-    [maa146](https://github.com/maa146)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-     · Funded by Grant 7200AA18CA00030
-  </small>
-
-+ **Chuan-Yu Hsu**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Zenaida Magbanua**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Corrinne E. Grover**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [0000-0003-3878-5459](https://orcid.org/0000-0003-3878-5459)<br>
-  <small>
-     Ecology, Evolution, and Organismal Biology Dept., Iowa State University, Ames, IA, 50010 USA
-  </small>
-
-+ **Emma R. Miller**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [0000-0001-9009-5303](https://orcid.org/0000-0001-9009-5303)<br>
-  <small>
-     Ecology, Evolution, and Organismal Biology Dept., Iowa State University, Ames, IA, 50010 USA
-  </small>
-
-+ **Olga Pechanova**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Charles A. Thrash**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Ramey C. Youngblood**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Lauren Ezzell**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
-
-+ **Samsul Alam**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     placeholder
-  </small>
-
-+ **John Benzie**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     placeholder
-  </small>
-
-+ **Matthew Hamilton**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     placeholder
-  </small>
-
-+ **Attila Karsi**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     placeholder
-  </small>
-
-+ **Mark L. Lawrence**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [XXXX-XXXX-XXXX-XXXX](https://orcid.org/XXXX-XXXX-XXXX-XXXX)<br>
-  <small>
-     placeholder
-  </small>
-
-+ **Daniel G. Peterson**<br>
-    ![ORCID icon](images/orcid.svg){.inline_icon}
-    [0000-0002-0274-5968](https://orcid.org/0000-0002-0274-5968)<br>
-  <small>
-     Institute for Genomics, Biocomputing & Biotechnology, Mississippi State University, MS, 39762 USA
-  </small>
+ 
 
 
+<small>
 
-## Abstract {.page_break_before}
+</small>
 
 
+## Abstract 
+
+<!--  Abstract: ~250 words. Concise summary of the results. -->
 
 
-## Introduction {.page_break_before}
+## Introduction 
 
+<!--  Introduction: no more than 500 words. The introduction should discuss the rationale for the WGS of the particular organism/strain. -->
 
 
 ## Methods & Materials 
+
+<!--  
+Methods & Materials: should include the following (note: author may write 
+additional subheadings as appropriate – the below points are not designed 
+to be a list of complete subheadings, but rather, topics to be covered).
+ -  Organism/Strain origin and derivation 
+ -  Sequencing methods and preparation details
+ -  Data processing methods 
+ -  Data availability listing where to access all raw reads, processed data, 
+    BWTs, and other relevant data. The assembly should be uploaded to NCBI or 
+    ENA.
+ -->
 
 ### Genome Sequencing & Flowcytometry
 
@@ -297,8 +208,6 @@ Any predicted genes with an AED above 0.47 were removed from further analysis.
 The surviving genes were functionally annotated using InterProScan (v5.47-82.0) [@doi:10.1093/bioinformatics/btu031] and BLAST+ (v2.9.0) [@doi:10.1186/1471-2105-10-421] alignments against the UniprotKB Swiss-Prot database.
 Busco (v5.2.2) [@doi:10.1093/molbev/msab199] was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.
 
-Table: List of SRA accessions used in annotation pipeline.
-A table of all metadata available for these accessions can be found [[https://github.com/IGBB/rohu-genome/supp/rna-seq.sra-metadata.csv][here]].
 | BioProject  | BioSample    | Run        | Instrument          | sex            | Tissue        |
 |-------------|--------------|------------|---------------------|----------------|---------------|
 | PRJNA401304 | SAMN07602342 | SRR6003546 | Illumina HiSeq 2000 | female         | Brain         |
@@ -318,6 +227,9 @@ A table of all metadata available for these accessions can be found [[https://gi
 | PRJNA450719 | SAMN08944450 | SRR7027730 | NextSeq 500         | female         | Pooled tissue |
 | PRJNA450719 | SAMN08944449 | SRR7027731 | NextSeq 500         | male           | Pooled tissue |
 | PRJNA450719 | SAMN08944451 | SRR7027732 | NextSeq 500         | male           | Whole body    |
+
+Table: List of SRA accessions used in annotation pipeline.
+A table of all metadata available for these accessions can be found [here](https://github.com/IGBB/rohu-genome/supp/rna-seq.sra-metadata.csv) .
 {#tbl:rnaseq}
 
 ### ddRAD-Seq & SNP Discovery 
@@ -336,6 +248,14 @@ The raw data is available at the SRA (Sequence Read Archive) under accessions SR
 
 
 ## Results & Discussion 
+
+<!-- 
+Results and Discussion: Should include a description of the genomes, coverage 
+amount of genome sequenced, details of sequence variants ascertained, 
+identifications of deletions, comparison of strains/genomes (if reporting WGS 
+of multiple strains/organisms), and relevance of findings to overall 
+organism/strain catalog.
+-->
 
 ### Sequencing & Assembly 
 
@@ -358,9 +278,10 @@ The smaller C-value is also closer to the genome estimate produced by GenomeScop
 | Standard only ^1^ | 3                       | 25258                       | 3311                      | 64331                         | NA                        |               |
 |                   |                         |                             |                           | Average                       | 1.982961434               | 0.9914807172  |
 |                   |                         |                             |                           | Standard Deviation            | 0.03607582                | 0.01803790999 |
+
 Table: Flow cytometry results for 5 *L. rohita* blood samples, measured twice. 
-1) (Trout erthrocyte nuclei) Genome size = 5.19pg
-2) Genome estimate calculated as (average sample fluorescence/ average standard fluorescence * standard genome size ) in picograms DIPLOID (i.e., 2C)
+1) Trout erthrocyte nuclei: Genome size = 5.19pg.
+2) Genome estimate calculated as (average sample fluorescence/ average standard fluorescence * standard genome size ) in picograms DIPLOID (i.e., 2C).
 {#tbl:flowcyto}
 
 A total of 130.5 Gb of Nanopore long reads from 44.7 million read, and 261 Gb of Illumina short reads from 870 million pairs were produced, along with 382 million pairs (114 Gb) for the Hi-C library.
