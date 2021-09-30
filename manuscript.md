@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2021-09-29'
+date-meta: '2021-09-30'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-09-29" />
-  <meta name="citation_publication_date" content="2021-09-29" />
+  <meta name="dc.date" content="2021-09-30" />
+  <meta name="citation_publication_date" content="2021-09-30" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/f366434f52a9c968f10604d0d4f225cee4935920/))
+([permalink](https://IGBB.github.io/rohu-genome/v/090fb7910b664b4a76f33ddd87c8edacc0570830/))
 was automatically generated
-from [IGBB/rohu-genome@f366434](https://github.com/IGBB/rohu-genome/tree/f366434f52a9c968f10604d0d4f225cee4935920)
-on September 29, 2021.
+from [IGBB/rohu-genome@090fb79](https://github.com/IGBB/rohu-genome/tree/090fb7910b664b4a76f33ddd87c8edacc0570830)
+on September 30, 2021.
 </em></small>
 
 ## Authors
@@ -241,7 +241,7 @@ on September 29, 2021.
 
 
 
-# Introduction {.page_break_before}
+## Introduction {.page_break_before}
 
 
 
@@ -278,7 +278,7 @@ The final DNA-Seq library was submitted to Novogene company (www.en.novogene.com
 
 ### Assembly & Annotation 
 
-Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pcmid:PMC5870704] estimated the genome size using the Illumina paried reads digested into 50-mers. 
+Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pmcid:PMC5870704] estimated the genome size using the Illumina paried reads digested into 50-mers. 
 
 Nanopore data was filtered to remove the control lambda-phage and sequences shorter the 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
 The filtered data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
@@ -287,15 +287,38 @@ The contigs were further polished using pilon (v1.23) [@doi:10.1371/journal.pone
 The contigs were scaffolded using Bionano Solve ( Solve3.4.1_09262019) [@url:https://bionanogenomics.com/support-page/bionano-access-software/) and SALSA (v2.3) [@doi:10.1371/journal.pcbi.1007273]. 
 That scaffolds larger than 10Mb were linked and oriented based on the Onychostoma macrolepis genome [@doi:10.1111/1755-0998.13190], the most similar chromosome assembly available on NCBI, using ragtag (v1.1.1) [@doi:10.1186/s13059-019-1829-6].
 
-RepeatModeler [VERSION] (CITE) and RepeatMasker [VERSION] (CITE) were used to create a species-specific repeat database, and mask those repeats in the genome.
-All available RNA-seq libraries for *L. rohita* (ADD TABLE) were downloaded from NCBI and mapped to the masked genome using hisat2 [VERSION] (CITE).
-These alignments were used in the mikado [VERSION] (CITE) and braker2 [VERSION] (CITE) pipelines.
-Mikado uses the putative transcripts assembled from the RNA-seq alignments using stringtie [VERSION] (CITE), cufflinks [VERSION] (CITE), and trinity [VERSION] (CITE); along with the junction site prediction from portcullis [VERSION] (CITE), the alignments of the putative transcripts with uniport swiss-prot [VERSION] (CITE), and the ORFs from prodigal [VERSION] (CITE) to select the best representative for each locus.
-Braker2 [VERSION] (CITE) uses the RNA-seq alignments and the gene prediction from GeneMark [VERSION] (CITE) to train a species-specific Augustus model [VERSION] (CITE).
-Maker2 [VERSION] (CITE) predicts genes based on the new Augustus, GeneMark, and SNAP models; modifying the predictions based on the available RNA and protein evidence from the *Cyprinidae* family in the NCBI RefSeq database.
+RepeatModeler (v2.0.1) [@doi:10.1073/pnas.1921046117] and RepeatMasker (v4.1.1) [@repeatmasker] were used to create a species-specific repeat database, and mask those repeats in the genome.
+All available RNA-seq libraries for *L. rohita* [@tbl:rnaseq] were downloaded from NCBI and mapped to the masked genome using hisat2 (v2.1.0) [@doi:10.1038/s41587-019-0201-4].
+These alignments were used in the mikado (v2.0rc2) [@doi:10.1093/gigascience/giy093] and braker2 (v2.1.5) [@doi:10.1093/nargab/lqaa108] pipelines.
+Mikado uses the putative transcripts assembled from the RNA-seq alignments using stringtie (v2.1.2) [@doi:10.1186/s13059-019-1910-1], cufflinks (v2.2.1) [@doi:10.1038/nprot.2012.016], and trinity (v2.11.0) [@doi:10.1038/nbt.1883]; along with the junction site prediction from portcullis (v1.2.2) [@doi:10.1093/gigascience/giy131 ], the alignments of the putative transcripts with UniprotKB Swiss-Prot (v2021.03) [@uniprot], and the ORFs from prodigal (v2.6.3) [@doi:10.1186/1471-2105-11-119] to select the best representative for each locus.
+Braker2 uses the RNA-seq alignments and the gene prediction from GeneMark-ES (v4.61) [@doi:10.1002/0471250953.bi0406s35] to train a species-specific Augustus (v3.3.3) [@doi:10.1186/1471-2105-7-62] model.
+Maker2 (v2.31.10) [@doi:10.1186/1471-2105-12-491] predicts genes based on the new Augustus, GeneMark, and SNAP models; modifying the predictions based on the available RNA and protein evidence from the *Cyprinidae* family in the NCBI RefSeq database.
 Any predicted genes with an AED above 0.47 were removed from further analysis.
-The surviving genes were functionally annotated using InterProScan [VERSION] (CITE) and Blast [VERSION] (CITE) alignments against the uniprot swiss-prot database [VERSION] (CITE).
-Busco [VERSION] (CITE) using the actinopterygii_odb10 database was used to verify the completeness of both the genome and annotations.
+The surviving genes were functionally annotated using InterProScan (v5.47-82.0) [@doi:10.1093/bioinformatics/btu031] and BLAST+ (v2.9.0) [@doi:10.1186/1471-2105-10-421] alignments against the UniprotKB Swiss-Prot database.
+Busco (v5.2.2) [@doi:10.1093/molbev/msab199] was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.
+
+Table: List of SRA accessions used in annotation pipeline.
+A table of all metadata available for these accessions can be found [[https://github.com/IGBB/rohu-genome/supp/rna-seq.sra-metadata.csv][here]].
+| BioProject  | BioSample    | Run        | Instrument          | sex            | Tissue        |
+|-------------|--------------|------------|---------------------|----------------|---------------|
+| PRJNA401304 | SAMN07602342 | SRR6003546 | Illumina HiSeq 2000 | female         | Brain         |
+| PRJNA401304 | SAMN07602341 | SRR6003547 | Illumina HiSeq 2000 | female         | Brain         |
+| PRJNA401304 | SAMN07602344 | SRR6003548 | Illumina HiSeq 2000 | female         | Pituitary     |
+| PRJNA401304 | SAMN07602343 | SRR6003549 | Illumina HiSeq 2000 | female         | Pituitary     |
+| PRJNA401304 | SAMN07602346 | SRR6003550 | Illumina HiSeq 2000 | female         | Gonad         |
+| PRJNA401304 | SAMN07602345 | SRR6003551 | Illumina HiSeq 2000 | female         | Gonad         |
+| PRJNA401304 | SAMN07602348 | SRR6003552 | Illumina HiSeq 2000 | female         | Liver         |
+| PRJNA401304 | SAMN07602347 | SRR6003553 | Illumina HiSeq 2000 | female         | Liver         |
+| PRJNA449818 | SAMN08918388 | SRR6987066 | NextSeq 500         | female         | Pooled tissue |
+| PRJNA449818 | SAMN08918389 | SRR6987067 | NextSeq 500         | male           | Pooled tissue |
+| PRJNA449818 | SAMN08918390 | SRR6987068 | NextSeq 500         | female         | whole body    |
+| PRJNA528865 | SAMN11246839 | SRR8816555 | Illumina HiSeq 2500 | not applicable | Liver         |
+| PRJNA528865 | SAMN11246841 | SRR8816556 | Illumina HiSeq 2500 | not applicable | Liver         |
+| PRJNA528865 | SAMN11246840 | SRR8816557 | Illumina HiSeq 2500 | not applicable | Liver         |
+| PRJNA450719 | SAMN08944450 | SRR7027730 | NextSeq 500         | female         | Pooled tissue |
+| PRJNA450719 | SAMN08944449 | SRR7027731 | NextSeq 500         | male           | Pooled tissue |
+| PRJNA450719 | SAMN08944451 | SRR7027732 | NextSeq 500         | male           | Whole body    |
+{#tbl:rnaseq}
 
 ### ddRAD-Seq & SNP Discovery 
 
