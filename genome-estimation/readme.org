@@ -1,0 +1,110 @@
+#+TITLE: Genome Estimation
+#+PROPERTY:  header-args :exports results :eval never-export :var DIR=(file-name-directory buffer-file-name)
+
+
+The C-value of the Labeo rohita (Rohu) is 1.994 pg (Patel et al. 2009), or an
+approximate haploid geneome size of 1946 Mb. The kmer estimated haploid size is
+968 Mb based on 200Gb of a small insert PCR-free library made using the DNA from
+blood cells. I can see several issues that may cause this: 
+1) The model used by genomescope to estimate haploid size only works on diploid
+   genomes. Several fishes from the Cyprinidae family are polyploids due to
+   whole genome duplification[ https://doi.org/10.1002/jez.b.21350 ]. After
+   getting the newest (unpublished) version of genomescope capable of handling
+   ploidy, the best model is diploid.
+2) The illumina library and sequencing missed half the genome. This is unlikely.
+3) The C-value reported could be incorrect. It's the highest c-value in the
+   Labeo genus, and on the upper end of all c-values in the Cyprinidae family;
+   however, it is within the range of Cyprinidae.
+
+
+* Animal Genome Size DB
+#+BEGIN_EXAMPLE
+Detailed Record for Labeo rohita
+
+Common Name: Rohu labeo
+
+Taxonomy: 
+     Phylum - Chordata 
+ Sub Phylum - Vertebrata 
+Super Class - Gnathostomata 
+      Class - Osteichthyes 
+  Sub Class - Actinopterygii 
+Infra Class - Neopterygii 
+Super Order - Teleostei 
+      Order - Cypriniformes 
+     Family - Cyprinidae 
+      Genus - Labeo
+
+C-value (pg): 1.99 = 1946 Mb
+
+Chromosome Number (2n): 50
+
+Method: Feulgen Densitometry
+
+Cell Type: Red blood cells
+
+Standard Species: Oreochromis niloticus = 1.08pg
+
+References:
+Patel, A., P. Das, A. Barat, and N. Sarangi (2009). Estimation of genome size in Indian major 
+    carps Labeo rohita (Hamilton), Catla catla (Hamilton), Cirrhinus mrigala (Hamilton) and 
+    Labeo calbasu (Hamilton) by Feulgen microdensitometry method. Indian Journal of Fisheries 56: 65-67.
+
+#+END_EXAMPLE
+
+
+* Kmer Estimation
+#+BEGIN_SRC sh :var raw=../../raw/README.org:illumina_fastq  :tangle jellyfish/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+PATH=$PATH:$DIR/jellyfish-2.2.10/bin/
+
+
+kmer=$PBS_ARRAYID
+
+for data in "${raw[@]}"; do
+  readarray -t lib <<<"$data";
+
+  printf "zcat $ROOT/raw/%s\n" "${lib[@]}"
+done > $DIR/jellyfish/generators
+
+jellyfish count -t $PBS_NUM_PPN -C -m $kmer -s 1G -o $DIR/jellyfish/${kmer}mer.jf -g $DIR/jellyfish/generators -G 4
+
+jellyfish histo -t $PBS_NUM_PPN $DIR/jellyfish/${kmer}mer.jf > $DIR/jellyfish/${kmer}mer.histo
+
+#+END_SRC
+
+
+#+BEGIN_SRC sh :tangle genomescope/run.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+kmer=$PBS_ARRAYID
+
+ml r/3.4.4 python
+export R_LIBS=$DIR/genomescope/lib
+# wget -O $DIR/genomescope/genomescope.R https://raw.githubusercontent.com/schatzlab/genomescope/master/genomescope.R 
+# wget -O $DIR/genomescope/genomescope_newmodel.R \
+#          https://raw.githubusercontent.com/schatzlab/genomescope/DEoptim/genomescope_newmodel.R
+
+Rscript $DIR/genomescope/genomescope.R  $DIR/jellyfish/${kmer}mer.histo $kmer 150 $DIR/genomescope/$kmer
+
+#+END_SRC
+
+#+RESULTS
+
+#+BEGIN_EXAMPLE
+GenomeScope version 1.0
+k = 50
+
+property                      min               max
+Heterozygosity                0.230939%         0.232233%
+Genome Haploid Length         967,891,156 bp    968,202,171 bp
+Genome Repeat Length          111,861,443 bp    111,897,388 bp
+Genome Unique Length          856,029,713 bp    856,304,783 bp
+Model Fit                     94.5111%          95.6836%
+Read Error Rate               0.211507%         0.211507%
+#+END_EXAMPLE
+
+file:genomescope/50/plot.png
