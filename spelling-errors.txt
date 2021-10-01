@@ -1,13 +1,13 @@
 Acknowledgements
 actinopterygii
 AED
-ALAM
+Alam
 Arick
 Benzie
-bionano
+Bionano
 BioProject
 BioSample
-braker
+Braker
 Busco
 BUSCOs
 bwa
@@ -29,7 +29,7 @@ GeneMark
 GenomeScope
 Genomic
 GridION
-HiC
+hic
 hisat
 HiSeq
 Hsu
@@ -84,7 +84,7 @@ SRA
 SRR
 stringtie
 totla
-transcriptome
+Transcriptome
 Trimmomatic
 TruSeq
 UniprotKB
