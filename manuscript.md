@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2021-09-30'
+date-meta: '2021-10-01'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-09-30" />
-  <meta name="citation_publication_date" content="2021-09-30" />
+  <meta name="dc.date" content="2021-10-01" />
+  <meta name="citation_publication_date" content="2021-10-01" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/3b5441e1ca0f5f67d6decd77d9163d3b485cf985/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/3b5441e1ca0f5f67d6decd77d9163d3b485cf985/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/3b5441e1ca0f5f67d6decd77d9163d3b485cf985/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/a50763c91ea666c8ef5990a72c6d35764a072057/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/a50763c91ea666c8ef5990a72c6d35764a072057/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/a50763c91ea666c8ef5990a72c6d35764a072057/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/3b5441e1ca0f5f67d6decd77d9163d3b485cf985/))
+([permalink](https://IGBB.github.io/rohu-genome/v/a50763c91ea666c8ef5990a72c6d35764a072057/))
 was automatically generated
-from [IGBB/rohu-genome@3b5441e](https://github.com/IGBB/rohu-genome/tree/3b5441e1ca0f5f67d6decd77d9163d3b485cf985)
-on September 30, 2021.
+from [IGBB/rohu-genome@a50763c](https://github.com/IGBB/rohu-genome/tree/a50763c91ea666c8ef5990a72c6d35764a072057)
+on October 1, 2021.
 </em></small>
 
 ## Authors
@@ -210,9 +210,9 @@ ALAM – Rohu blood collection
 #### Flow cytometry 
 
 The genome size of *Labeo rohita* was estimated for five samples via flow cytometry using trout erythrocyte nuclei (TENs; https://www.biosure.com/tens.html) as a standard (genome size=6.5pg).
-For each sample, nuclei were stabilized in 200 ul of LB01-propidium iodide (PI) buffer as per (Pellicer & Leitch, 2014), and two drops of TENs standard were used per 50ul of fish blood.
+For each sample, nuclei were stabilized in 200 ul of LB01-propidium iodide (PI) buffer as per [@pmid:24415480], and two drops of TENs standard were used per 50ul of fish blood.
 Each sample was measured twice, totaling 10 runs overall. 
-Only measurements with greater than 5,000 nuclei and a coefficient of variation (CV) of less than 3% were retained (Pellicer & Leitch, 2014).
+Only measurements with greater than 5,000 nuclei and a coefficient of variation (CV) of less than 3% were retained [@pmid:24415480].
 
 #### Illumina short-read sequencing
 
@@ -237,7 +237,8 @@ The final DNA-Seq library was submitted to Novogene company (www.en.novogene.com
 Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pmcid:PMC5870704] estimated the genome size using the Illumina paried reads digested into 50-mers. 
 
 Nanopore data was filtered to remove the control lambda-phage and sequences shorter the 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
-The filtered data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
+Trimmomatic (v0.32) [@doi:10.1093/bioinformatics/btu170] removed adapters, trimmed low quality bases, and filtered reads shorter than 85bp.
+The filtered nanopore data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
 The contigs were polished using the two iterations of racon (v1.4.0) [@doi:10.1101/gr.214270.116] with minimap2 (v2.17) (@doi:10.1093/bioinformatics/bty191) mapping the nanopore reads. 
 The contigs were further polished using pilon (v1.23) [@doi:10.1371/journal.pone.0112963] with bwa (v0.7.10) [@doi:10.1093/bioinformatics/btp324] mapping the Illumina paired reads. 
 The contigs were scaffolded using Bionano Solve ( Solve3.4.1_09262019) [@url:https://bionanogenomics.com/support-page/bionano-access-software/) and SALSA (v2.3) [@doi:10.1371/journal.pcbi.1007273]. 
