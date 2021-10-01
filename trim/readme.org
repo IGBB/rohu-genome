@@ -2,6 +2,7 @@
 #+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
 
 
+* Illumina
 #+BEGIN_SRC sh :var libs=../raw/README.org:illumina_fastq
   cd $DIR
   ROOT=$(git rev-parse --show-toplevel)
@@ -39,3 +40,42 @@ awk '{print $1 ".log"}' <<<"$libs" |
 | Rohu_L3 | 435962832 | 354419902 | (81.30%) | 44768780 | (10.27%) | 12740931 | (2.92%) | 24033219 | (5.51%) |
 | Rohu_L4 | 434361517 | 353716562 | (81.43%) | 44399469 | (10.22%) | 12582123 | (2.90%) | 23663363 | (5.45%) |
 
+* Nanopore
+
+#+BEGIN_SRC sh :var libs=../raw/readme.org:nanopore_fastq
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+
+for lib in "${!libs[@]}"; do
+    gunzip -c $ROOT/raw/${libs[$lib]} |
+        NanoLyse |
+        NanoFilt -l 1000 |
+        gzip > $DIR/$lib.fastq.gz
+
+    NanoStat --fastq $ROOT/raw/${libs[$lib]} \
+        --outdir $DIR/$lib
+done
+#+END_SRC
+
+
+#+NAME: nanopore_fastq_filtered
+| Sample | Filtered Fastq File |
+|--------+---------------------|
+| Rohu1  | Rohu1.fastq.gz      |
+| Rohu2  | Rohu2.fastq.gz      |
+| Rohu3  | Rohu3.fastq.gz      |
+| Rohu4  | Rohu4.fastq.gz      |
+| Rohu5  | Rohu5.fastq.gz      |
+| Rohu6  | Rohu6.fastq.gz      |
+| Rohu7  | Rohu7.fastq.gz      |
+| Rohu8  | Rohu8.fastq.gz      |
+| Rohu9  | Rohu9.fastq.gz      |
+| Rohu10 | Rohu10.fastq.gz     |
+
+#+BEGIN_SRC sh :var READS=nanopore_fastq_filtered[,1] :tangle nanopore.combine.sh
+cd $DIR/
+ROOT=$(git rev-parse --show-toplevel)
+
+for file in ${READS[@]}; do cat $DIR/$file; done > $DIR/nanopore.fq.gz
+#+END_SRC

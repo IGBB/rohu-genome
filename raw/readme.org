@@ -145,52 +145,6 @@ dev.off()
 <img src="nanopore/coverage.png" alt="Nanopore Read Coverage" width="75%">
 #+END_HTML
 
-** Nanopack Filtering 
-
-#+BEGIN_SRC sh
-cd /work/jmc675/
-ROOT=$(git rev-parse --show-toplevel)
-
-mkdir nanopack
-cd nanopack
-
-ml python/2.7.8
-virtualenv nano
-
-source nano/bin/activate
-
-pip install nanopack
-
-#RUN NANOPACK
-
-gunzip -c /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass.fq.gz | NanoLyse | NanoFilt -l 1000 | gzip > /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass_filtered_no_lambda.fastq.gz
-
-NanoStat --fastq /work/jmc675/rohu-genome/raw/nanopore/Rohu*/fastq_pass_filtered_no_lambda.fastq.gz --outdir /work/jmc675/rohu-genome/raw/nanopore/Rohu*/statreports
-#+END_SRC
-
-
-#+NAME: nanopore_fastq_filtered
-| Sample | Filtered Fastq File                                    |
-|--------+--------------------------------------------------------|
-| Rohu1  | nanopore/Rohu1/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu2  | nanopore/Rohu2/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu3  | nanopore/Rohu3/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu4  | nanopore/Rohu4/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu5  | nanopore/Rohu5/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu6  | nanopore/Rohu6/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu7  | nanopore/Rohu7/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu8  | nanopore/Rohu8/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu9  | nanopore/Rohu9/fastq_pass_filtered_no_lambda.fastq.gz  |
-| Rohu10 | nanopore/Rohu10/fastq_pass_filtered_no_lambda.fastq.gz |
-
-** Combine reads
-#+BEGIN_SRC sh :var READS=nanopore_fastq_filtered[,1] :tangle nanopore.combine.sh
-cd $DIR/
-ROOT=$(git rev-parse --show-toplevel)
-
-for file in ${READS[@]}; do cat $file; done > $DIR/nanopore.fq.gz
-#+END_SRC
-
 
 * Illumina
 

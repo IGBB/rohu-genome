@@ -9,7 +9,7 @@ cd $DIR/1-wtdbg2/
 ROOT=$(git rev-parse --show-toplevel)
 PATH=$PATH:$DIR/wtdbg2-2.4/
 
-wtdbg2 -x ont -g 968m -t $SLURM_CPUS_PER_TASK -i $ROOT/raw/nanopore.fq.gz -fo rohu.0
+wtdbg2 -x ont -g 968m -t $SLURM_CPUS_PER_TASK -i $ROOT/trim/nanopore.fq.gz -fo rohu.0
 #+END_SRC
 
 #+BEGIN_SRC sh :tangle consensus/run.sh
@@ -28,7 +28,7 @@ ROOT=$(git rev-parse --show-toplevel)
 ml igbb minimap2 # racon
 PATH=$PATH:$DIR/racon-v1.4.0/build/bin/
 
-reads=$ROOT/raw/nanopore.fq.gz
+reads=$ROOT/trim/nanopore.fq.gz
 
 contigs=$DIR/1-wtdbg2/rohu.raw.fa
 for iter in 1 2; do
