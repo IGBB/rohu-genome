@@ -1,0 +1,146 @@
+#+TITLE: Annotation
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+
+
+- Reference Data
+  + Genomes
+   #+NAME: genomes
+   | Name | Fasta File                                      |
+   |------+-------------------------------------------------|
+   | Rohu | 6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta |
+
+
+  + RNA-Seq
+
+    Downloading all rohu RNA-seq data on SRA that is paired and run on a HiSeq
+    2000 or newer machine.
+    https://www.ncbi.nlm.nih.gov/Traces/study/?query_key=2&WebEnv=MCID_615711a3bfd1ef6475412c42&f=instrument_s%3An%3Aillumina%2520hiseq%25202500%2Cnextseq%2520500%3Ac&o=acc_s%3Aa#
+
+    #+NAME: sra
+    | Accession  |
+    |------------|
+    | SRR6987066 |
+    | SRR6987067 |
+    | SRR6987068 |
+    | SRR7027730 |
+    | SRR7027731 |
+    | SRR7027732 |
+    | SRR6003546 |
+    | SRR6003547 |
+    | SRR6003548 |
+    | SRR6003549 |
+    | SRR6003550 |
+    | SRR6003551 |
+    | SRR6003552 |
+    | SRR6003553 |
+    | SRR8816555 |
+    | SRR8816556 |
+    | SRR8816557 |
+
+    #+BEGIN_SRC sh :var sra=sra :tangle 0-ref/RNA-seq/sra.sh
+cd $DIR
+ROOT=$(git rev-parse --show-toplevel)
+
+cd $DIR/0-ref/RNA-seq
+
+for acc in "${sra[@]}"; do
+  #addr = ftp://ftp.sra.ebi.ac.uk/vol1/fastq/<dir1>[/<dir2>]/<run accession>
+  addr="ftp://ftp.sra.ebi.ac.uk/vol1/fastq/"
+
+  #<dir1> is the first 6 letters and numbers of the run accession ( e.g. ERR000 for ERR000916 ),
+  dir1="${acc:0:6}"
+
+  dir2=""
+  #If the run accession has seven digits then the <dir2> is 00 + the last digit of the run accession. For example, fastq files for run SRR1016916 are in directory: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR101/006/SRR1016916/.
+  #If the run accession has eight digits then the <dir2> is 0 + the last two digits of the run accession.
+  #If the run accession has nine digits then the <dir2> is the last three digits of the run accession.
+  if [ ${#acc} -gt 9 ]; then
+    tmp="000${acc:9}"
+    dir2=${tmp:(-3)}
+  fi
+
+  wget -r "$addr/$dir1/$dir2/$acc" \
+       --no-directories -nv --continue --passive-ftp \
+       -P $DIR/0-ref/RNA-seq/
+
+done
+
+#+END_SRC
+
+    #+BEGIN_SRC sh :var sra=sra :tangle 0-ref/RNA-seq/list.sh
+for i in "${sra[@]}"; do
+    if [ -f "$DIR/0-ref/RNA-seq/$i.fastq.gz" ]; then
+        echo $i "$i.fastq.gz"
+    else
+        echo $i "${i}_1.fastq.gz" "${i}_2.fastq.gz"
+    fi
+done
+#+END_SRC
+
+    #+NAME: libs
+    | Accession  | Forward               | Reverse               |
+    |------------+-----------------------+-----------------------|
+    | SRR6987066 | SRR6987066_1.fastq.gz | SRR6987066_2.fastq.gz |
+    | SRR6987067 | SRR6987067_1.fastq.gz | SRR6987067_2.fastq.gz |
+    | SRR6987068 | SRR6987068_1.fastq.gz | SRR6987068_2.fastq.gz |
+    | SRR7027730 | SRR7027730_1.fastq.gz | SRR7027730_2.fastq.gz |
+    | SRR7027731 | SRR7027731_1.fastq.gz | SRR7027731_2.fastq.gz |
+    | SRR7027732 | SRR7027732_1.fastq.gz | SRR7027732_2.fastq.gz |
+    | SRR6003546 | SRR6003546_1.fastq.gz | SRR6003546_2.fastq.gz |
+    | SRR6003547 | SRR6003547_1.fastq.gz | SRR6003547_2.fastq.gz |
+    | SRR6003548 | SRR6003548_1.fastq.gz | SRR6003548_2.fastq.gz |
+    | SRR6003549 | SRR6003549_1.fastq.gz | SRR6003549_2.fastq.gz |
+    | SRR6003550 | SRR6003550_1.fastq.gz | SRR6003550_2.fastq.gz |
+    | SRR6003551 | SRR6003551_1.fastq.gz | SRR6003551_2.fastq.gz |
+    | SRR6003552 | SRR6003552_1.fastq.gz | SRR6003552_2.fastq.gz |
+    | SRR6003553 | SRR6003553_1.fastq.gz | SRR6003553_2.fastq.gz |
+    | SRR8816555 | SRR8816555_1.fastq.gz | SRR8816555_2.fastq.gz |
+    | SRR8816556 | SRR8816556_1.fastq.gz | SRR8816556_2.fastq.gz |
+    | SRR8816557 | SRR8816557_1.fastq.gz | SRR8816557_2.fastq.gz |
+
+  + rna and protein evidence from Cyprinidae family in NCBI RefSeq database
+    (downloaded 2021/06/21)
+    #+BEGIN_SRC sh
+
+    #+END_SRC
+
+#+BEGIN_SRC sh :tangle run.sh
+ROOT=$(git rev-parse --show-toplevel)
+DIR=$ROOT/annotations/
+RNA=$DIR/0-ref/RNA-seq/
+
+make -f $DIR/pipeline/makefile \
+     UNIPROT=$DIR/0-ref/evidence/uniprot_sprot.2021_03.fa \
+     NAME=Rohu \
+     MAKER_PROTEIN=$DIR/0-ref/evidence/cyprinidae.refseq.nr.fa \
+     MAKER_ALTEST=$DIR/0-ref/evidence/cyprinidae.rna.refseq.fa \
+     MAKER_MAX_DNA_LEN=1000000 \
+     GENOME=$ROOT/assembly/6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta \
+     GENEMARK=$DIR/pipeline/gmes_linux_64 \
+     MIKADO_SPLIT=30 \
+     MIKADO_SCORE=mammalian.yaml \
+     GENOME_SPLIT=26 \
+     LIBS="SRR6987066 SRR6987067 SRR6987068 SRR7027730 SRR7027731 SRR7027732 SRR6003546 SRR6003547 SRR6003548 SRR6003549 SRR6003550 SRR6003551 SRR6003552 SRR6003553 SRR8816555 SRR8816556 SRR8816557" \
+     SRR6987066="$RNA/SRR6987066_1.fastq.gz $RNA/SRR6987066_2.fastq.gz" \
+     SRR6987067="$RNA/SRR6987067_1.fastq.gz $RNA/SRR6987067_2.fastq.gz" \
+     SRR6987068="$RNA/SRR6987068_1.fastq.gz $RNA/SRR6987068_2.fastq.gz" \
+     SRR7027730="$RNA/SRR7027730_1.fastq.gz $RNA/SRR7027730_2.fastq.gz" \
+     SRR7027731="$RNA/SRR7027731_1.fastq.gz $RNA/SRR7027731_2.fastq.gz" \
+     SRR7027732="$RNA/SRR7027732_1.fastq.gz $RNA/SRR7027732_2.fastq.gz" \
+     SRR6003546="$RNA/SRR6003546_1.fastq.gz $RNA/SRR6003546_2.fastq.gz" \
+     SRR6003547="$RNA/SRR6003547_1.fastq.gz $RNA/SRR6003547_2.fastq.gz" \
+     SRR6003548="$RNA/SRR6003548_1.fastq.gz $RNA/SRR6003548_2.fastq.gz" \
+     SRR6003549="$RNA/SRR6003549_1.fastq.gz $RNA/SRR6003549_2.fastq.gz" \
+     SRR6003550="$RNA/SRR6003550_1.fastq.gz $RNA/SRR6003550_2.fastq.gz" \
+     SRR6003551="$RNA/SRR6003551_1.fastq.gz $RNA/SRR6003551_2.fastq.gz" \
+     SRR6003552="$RNA/SRR6003552_1.fastq.gz $RNA/SRR6003552_2.fastq.gz" \
+     SRR6003553="$RNA/SRR6003553_1.fastq.gz $RNA/SRR6003553_2.fastq.gz" \
+     SRR8816555="$RNA/SRR8816555_1.fastq.gz $RNA/SRR8816555_2.fastq.gz" \
+     SRR8816556="$RNA/SRR8816556_1.fastq.gz $RNA/SRR8816556_2.fastq.gz" \
+     SRR8816557="$RNA/SRR8816557_1.fastq.gz $RNA/SRR8816557_2.fastq.gz" \
+     FILTER=0.47 \
+     LINEAGE=$DIR/0-ref/actinopterygii_odb10  $@
+
+
+#+END_SRC
