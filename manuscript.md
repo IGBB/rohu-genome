@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2021-10-01'
+date-meta: '2021-10-05'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -14,7 +14,7 @@ author-meta:
 - Corrinne E. Grover
 - Emma R. Miller
 - Olga Pechanova
-- Charles A. Thrash
+- Adam Thrash
 - Ramey C. Youngblood
 - Lauren Ezzell
 - Samsul Alam
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-10-01" />
-  <meta name="citation_publication_date" content="2021-10-01" />
+  <meta name="dc.date" content="2021-10-05" />
+  <meta name="citation_publication_date" content="2021-10-05" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -59,9 +59,9 @@ header-includes: |-
   <meta name="citation_author" content="Olga Pechanova" />
   <meta name="citation_author_institution" content="Institute for Genomics, Biocomputing &amp; Biotechnology, Mississippi State University, MS, 39762 USA" />
   <meta name="citation_author_orcid" content="XXXX-XXXX-XXXX-XXXX" />
-  <meta name="citation_author" content="Charles A. Thrash" />
+  <meta name="citation_author" content="Adam Thrash" />
   <meta name="citation_author_institution" content="Institute for Genomics, Biocomputing &amp; Biotechnology, Mississippi State University, MS, 39762 USA" />
-  <meta name="citation_author_orcid" content="XXXX-XXXX-XXXX-XXXX" />
+  <meta name="citation_author_orcid" content="0000-0002-4097-7663" />
   <meta name="citation_author" content="Ramey C. Youngblood" />
   <meta name="citation_author_institution" content="Institute for Genomics, Biocomputing &amp; Biotechnology, Mississippi State University, MS, 39762 USA" />
   <meta name="citation_author_orcid" content="XXXX-XXXX-XXXX-XXXX" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/6fb708f88995a5acaef7f3fc3fa2cad40d20d221/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/6fb708f88995a5acaef7f3fc3fa2cad40d20d221/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/6fb708f88995a5acaef7f3fc3fa2cad40d20d221/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/6fb708f88995a5acaef7f3fc3fa2cad40d20d221/))
+([permalink](https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/))
 was automatically generated
-from [IGBB/rohu-genome@6fb708f](https://github.com/IGBB/rohu-genome/tree/6fb708f88995a5acaef7f3fc3fa2cad40d20d221)
-on October 1, 2021.
+from [IGBB/rohu-genome@d84e6b3](https://github.com/IGBB/rohu-genome/tree/d84e6b3774fb56833f6ed94c181a98d88870019a)
+on October 5, 2021.
 </em></small>
 
 ## Authors
@@ -146,8 +146,8 @@ Emma R. Miller<sup>2
 Olga Pechanova<sup>1
 [![ORCID icon](images/orcid.svg){.inline_icon}](https://orcid.org/XXXX-XXXX-XXXX-XXXX)
 </sup>,
-Charles A. Thrash<sup>1
-[![ORCID icon](images/orcid.svg){.inline_icon}](https://orcid.org/XXXX-XXXX-XXXX-XXXX)
+Adam Thrash<sup>1
+[![ORCID icon](images/orcid.svg){.inline_icon}](https://orcid.org/0000-0002-4097-7663)
 </sup>,
 Ramey C. Youngblood<sup>1
 [![ORCID icon](images/orcid.svg){.inline_icon}](https://orcid.org/XXXX-XXXX-XXXX-XXXX)
