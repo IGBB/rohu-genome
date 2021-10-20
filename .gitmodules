@@ -1,0 +1,3 @@
+[submodule "gbs/pipeline"]
+	path = gbs/pipeline
+	url = https://gitlab.com/IGBB/pipelines/ddrad-seq.git
