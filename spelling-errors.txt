@@ -1,7 +1,7 @@
 Acknowledgements
 actinopterygii
 AED
-ALAM
+Alam
 Arick
 Benzie
 Bionano
@@ -16,11 +16,12 @@ contigs
 CORRINNE
 cufflinks
 Cyprinidae
-Cytometry
+cytometry
 ddRAD
+degradomics
 densitometry
-erthrocyte
 Ezzell
+FAO
 Feulgen
 flowcyto
 Flowcytometry
@@ -28,6 +29,7 @@ GenBank
 GeneMark
 GenomeScope
 genomic
+genotyping
 GridION
 hic
 hisat
@@ -37,6 +39,7 @@ Illumina
 InterProScan
 ISU
 JACTAM
+Jayanti
 Karsi
 Labeo
 LSK
@@ -44,6 +47,7 @@ macrolepis
 Magbanua
 mer
 mers
+microsatellite
 minimap
 nanopack
 Nanopore
@@ -55,6 +59,7 @@ Novogene
 odb
 Onychostoma
 ORFs
+orthogroup
 orthologs
 PCR
 Pechanova
@@ -70,11 +75,11 @@ RefSeq
 RepeatMasker
 RepeatModeler
 ResearchIT
+resequencing
 rnaseq
 rohita
-Rohu
+rohu
 SAMN
-Sampe
 Samsul
 scaffolded
 SNP
@@ -82,8 +87,9 @@ SQK
 SRA
 SRR
 stringtie
-totla
-Transcriptome
+synteny
+transcriptome
+transcriptomics
 Trimmomatic
 TruSeq
 UniprotKB
@@ -91,4 +97,4 @@ WORLDFISH
 wtdbg
 Youngblood
 Yu
-ZENAIDA
+Zenaida
