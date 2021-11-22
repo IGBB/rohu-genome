@@ -41,7 +41,6 @@ content/30.methods.md:42:Bionano
 content/30.methods.md:46:GenomeScope
 content/30.methods.md:46:Illumina
 content/30.methods.md:46:mers
-content/30.methods.md:46:paried
 content/30.methods.md:48:nanopack
 content/30.methods.md:48:Nanopore
 content/30.methods.md:49:Trimmomatic

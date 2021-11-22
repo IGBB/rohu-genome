@@ -825,6 +825,7 @@
         ]
       ]
     },
+    "abstract": "The assembly of long reads from Pacific Biosciences and Oxford Nanopore Technologies typically requires resource-intensive error-correction and consensus-generation steps to obtain high-quality assemblies. We show that the error-correction step can be omitted and that high-quality consensus sequences can be generated efficiently with a SIMD-accelerated, partial-order alignment–based, stand-alone consensus module called Racon. Based on tests with PacBio and Oxford Nanopore data sets, we show that Racon coupled with miniasm enables consensus genomes with similar or better quality than state-of-the-art methods while being an order of magnitude faster.",
     "container-title": "Genome Research",
     "DOI": "10.1101/gr.214270.116",
     "volume": "27",
@@ -1330,8 +1331,8 @@
       "date-parts": [
         [
           2021,
-          10,
-          5
+          11,
+          22
         ]
       ]
     },
@@ -1396,8 +1397,8 @@
       "date-parts": [
         [
           2021,
-          10,
-          5
+          11,
+          22
         ]
       ]
     },
@@ -1576,13 +1577,13 @@
     "container-title": "Bionano Genomics",
     "language": "en-US",
     "title": "Bionano Access Software",
-    "URL": "https://bionanogenomics.com/support-page/bionano-access-software/",
+    "URL": "http://bionanogenomics.com/support-page/bionano-access-software/",
     "accessed": {
       "date-parts": [
         [
           "2021",
-          10,
-          5
+          11,
+          22
         ]
       ]
     },

@@ -1,14 +1,14 @@
 Acknowledgements
 actinopterygii
 AED
-Alam
+ALAM
 Arick
 Benzie
-bionano
+Bionano
 BioProject
 BioSample
 braker
-Busco
+BUSCO
 BUSCOs
 bwa
 Chuan
@@ -16,7 +16,7 @@ contigs
 CORRINNE
 cufflinks
 Cyprinidae
-cytometry
+Cytometry
 ddRAD
 densitometry
 erthrocyte
@@ -27,7 +27,7 @@ Flowcytometry
 GenBank
 GeneMark
 GenomeScope
-Genomic
+genomic
 GridION
 hic
 hisat
@@ -46,7 +46,7 @@ mer
 mers
 minimap
 nanopack
-nanopore
+Nanopore
 NCBI
 NextSeq
 ng
@@ -56,7 +56,6 @@ odb
 Onychostoma
 ORFs
 orthologs
-paried
 PCR
 Pechanova
 picograms
@@ -92,4 +91,4 @@ WORLDFISH
 wtdbg
 Youngblood
 Yu
-Zenaida
+ZENAIDA

@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2021-10-05'
+date-meta: '2021-11-22'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-10-05" />
-  <meta name="citation_publication_date" content="2021-10-05" />
+  <meta name="dc.date" content="2021-11-22" />
+  <meta name="citation_publication_date" content="2021-11-22" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/bf3d9f34ad825c90480be0ffdd8d9d44eb4d8ca1/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/bf3d9f34ad825c90480be0ffdd8d9d44eb4d8ca1/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/bf3d9f34ad825c90480be0ffdd8d9d44eb4d8ca1/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/d84e6b3774fb56833f6ed94c181a98d88870019a/))
+([permalink](https://IGBB.github.io/rohu-genome/v/bf3d9f34ad825c90480be0ffdd8d9d44eb4d8ca1/))
 was automatically generated
-from [IGBB/rohu-genome@d84e6b3](https://github.com/IGBB/rohu-genome/tree/d84e6b3774fb56833f6ed94c181a98d88870019a)
-on October 5, 2021.
+from [IGBB/rohu-genome@bf3d9f3](https://github.com/IGBB/rohu-genome/tree/bf3d9f34ad825c90480be0ffdd8d9d44eb4d8ca1)
+on November 22, 2021.
 </em></small>
 
 ## Authors
@@ -228,15 +228,15 @@ A total of 10 flow cell runs were conducted for the genome assembly.
 #### Hi-C sequencing
 
 One hundred µl of fish blood was subjected to the Hi-C library preparation using the Proximo Hi-C Animal Kit (Phase Genomics, Seattle, WA, USA). 
-The final DNA-Seq library was submitted to Novogene company (www.en.novogene.com) for 1 lane of PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing run.
+The final DNA-Seq library was submitted to Novogene (www.en.novogene.com) for 1 lane of PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing.
 
 #### Bionano 
 
 ### Assembly & Annotation 
 
-Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pmcid:PMC5870704] estimated the genome size using the Illumina paried reads digested into 50-mers. 
+Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pmcid:PMC5870704] estimated the genome size using the Illumina paired reads digested into 50-mers. 
 
-Nanopore data was filtered to remove the control lambda-phage and sequences shorter the 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
+Nanopore data was filtered to remove the control lambda-phage and sequences shorter than 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
 Trimmomatic (v0.32) [@doi:10.1093/bioinformatics/btu170] removed adapters, trimmed low quality bases, and filtered reads shorter than 85bp.
 The filtered nanopore data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
 The contigs were polished using the two iterations of racon (v1.4.0) [@doi:10.1101/gr.214270.116] with minimap2 (v2.17) (@doi:10.1093/bioinformatics/bty191) mapping the nanopore reads. 
@@ -247,7 +247,7 @@ That scaffolds larger than 10Mb were linked and oriented based on the Onychostom
 RepeatModeler (v2.0.1) [@doi:10.1073/pnas.1921046117] and RepeatMasker (v4.1.1) [@repeatmasker] were used to create a species-specific repeat database, and mask those repeats in the genome.
 All available RNA-seq libraries for *L. rohita* [@tbl:rnaseq] were downloaded from NCBI and mapped to the masked genome using hisat2 (v2.1.0) [@doi:10.1038/s41587-019-0201-4].
 These alignments were used in the mikado (v2.0rc2) [@doi:10.1093/gigascience/giy093] and braker2 (v2.1.5) [@doi:10.1093/nargab/lqaa108] pipelines.
-Mikado uses the putative transcripts assembled from the RNA-seq alignments using stringtie (v2.1.2) [@doi:10.1186/s13059-019-1910-1], cufflinks (v2.2.1) [@doi:10.1038/nprot.2012.016], and trinity (v2.11.0) [@doi:10.1038/nbt.1883]; along with the junction site prediction from portcullis (v1.2.2) [@doi:10.1093/gigascience/giy131 ], the alignments of the putative transcripts with UniprotKB Swiss-Prot (v2021.03) [@uniprot], and the ORFs from prodigal (v2.6.3) [@doi:10.1186/1471-2105-11-119] to select the best representative for each locus.
+Mikado uses the putative transcripts assembled from the RNA-seq alignments generated via stringtie (v2.1.2) [@doi:10.1186/s13059-019-1910-1], cufflinks (v2.2.1) [@doi:10.1038/nprot.2012.016], and trinity (v2.11.0) [@doi:10.1038/nbt.1883]; along with the junction site prediction from portcullis (v1.2.2) [@doi:10.1093/gigascience/giy131 ], the alignments of the putative transcripts with UniprotKB Swiss-Prot (v2021.03) [@uniprot], and the ORFs from prodigal (v2.6.3) [@doi:10.1186/1471-2105-11-119] to select the best representative for each locus.
 Braker2 uses the RNA-seq alignments and the gene prediction from GeneMark-ES (v4.61) [@doi:10.1002/0471250953.bi0406s35] to train a species-specific Augustus (v3.3.3) [@doi:10.1186/1471-2105-7-62] model.
 Maker2 (v2.31.10) [@doi:10.1186/1471-2105-12-491] predicts genes based on the new Augustus, GeneMark, and SNAP models; modifying the predictions based on the available RNA and protein evidence from the *Cyprinidae* family in the NCBI RefSeq database.
 Any predicted genes with an AED above 0.47 were removed from further analysis.
@@ -288,7 +288,7 @@ A table of all metadata available for these accessions can be found [here](https
 
 ### Data Availability 
 
-The data used for the *L. rohita* genome and annotation is available at NCBI under the BioProject PRJNA650519. 
+The data used for the *L. rohita* genome and annotation are available at NCBI under the BioProject PRJNA650519. 
 The assembled genome sequence and annotations are available at GenBank under accessions JACTAM000000000. 
 The raw data is available at the SRA (Sequence Read Archive) under accessions SRR12580210 – SRR12580221. 
 
