@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2021-11-22'
+date-meta: '2022-02-07'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-11-22" />
-  <meta name="citation_publication_date" content="2021-11-22" />
+  <meta name="dc.date" content="2022-02-07" />
+  <meta name="citation_publication_date" content="2022-02-07" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/))
+([permalink](https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/))
 was automatically generated
-from [IGBB/rohu-genome@ad3915b](https://github.com/IGBB/rohu-genome/tree/ad3915b21c840ce0c6dddd604f694e2bb2515221)
-on November 22, 2021.
+from [IGBB/rohu-genome@ac1ca5b](https://github.com/IGBB/rohu-genome/tree/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814)
+on February 7, 2022.
 </em></small>
 
 ## Authors
@@ -253,6 +253,7 @@ Maker2 (v2.31.10) [@doi:10.1186/1471-2105-12-491] predicts genes based on the ne
 Any predicted genes with an AED above 0.47 were removed from further analysis.
 The surviving genes were functionally annotated using InterProScan (v5.47-82.0) [@doi:10.1093/bioinformatics/btu031] and BLAST+ (v2.9.0) [@doi:10.1186/1471-2105-10-421] alignments against the UniprotKB Swiss-Prot database.
 Busco (v5.2.2) [@doi:10.1093/molbev/msab199] was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.
+Lastly, genes spanning large gaps or completely contained within another gene on the opposite strand were removed using a custom perl script (GITHUB).
 
 | BioProject  | BioSample    | Run        | Instrument          | sex            | Tissue        |
 |-------------|--------------|------------|---------------------|----------------|---------------|
@@ -336,9 +337,9 @@ After the Bionano and HiC data was incorporated, the total number of sequences d
 The final assembly consisted of 25 chromosome length scaffolds and 2844 unplaced scaffolds, ranging in size from 1,479bp to 7.18 Mb.
 Table [@tbl:assembly] contains a common assembly statistics for each step.
 The final genome size is 97.9% of the estimated genome size. 
-The annotation pipeline produced 34,590 primary transcripts, 24,385 surviving the AED filter. 
-BUSCO analysis show the genome completely contains 98.1% of the 3640 orthologs in the actinopterygii_odb10 database with 36 (1%) duplicated;
-however, the filtered transcriptome only contained 80% of the total orthologs complete with 70 duplicated.
+The annotation pipeline produced 51,079 primary transcripts, 31,274 surviving the AED, gap, and overlapping filters. 
+BUSCO analysis show the genome completely contains 98.1% of the 3640 orthologs in the actinopterygii_odb10 database with 37 (1%) duplicated;
+while, the filtered transcriptome contains 84.5% of the total orthologs complete with 74 duplicated.
 A complete comparison of the BUSCO analyses can be found in Table [@tbl:busco].
 
 | n    | n:500 | L50 | min  | N75      | N50      | N25      | E-size   | max      | sum      | name    |
@@ -352,11 +353,11 @@ Table: Assembly statistics for each stage of the assembly
 
 | Type                                | Genome | Unfiltered Transcriptome | Filtered Transcriptome |
 |-------------------------------------|--------|--------------------------|------------------------|
-| Complete BUSCOs (C)                 | 3571   | 3036                     | 2915                   |
-| Complete and single-copy BUSCOs (S) | 3535   | 2962                     | 2845                   |
-| Complete and duplicated BUSCOs (D)  | 36     | 74                       | 70                     |
-| Fragmented BUSCOs (F)               | 23     | 225                      | 200                    |
-| Missing BUSCOs (M)                  | 46     | 379                      | 525                    |
+| Complete BUSCOs (C)                 | 3571   | 3139                     | 3078                   |
+| Complete and single-copy BUSCOs (S) | 3534   | 3064                     | 3001                   |
+| Complete and duplicated BUSCOs (D)  | 37     | 75                       | 74                     |
+| Fragmented BUSCOs (F)               | 23     | 192                      | 170                    |
+| Missing BUSCOs (M)                  | 46     | 309                      | 392                    |
 | Total BUSCO groups searched         | 3640   | 3640                     | 3640                   |
 Table: BUSCO analysis for the genome and transcriptome, before and after AED filtering.
 {#tbl:busco}
@@ -423,6 +424,7 @@ The query was compared to classified sequences in "Rohu-families.fa"
  
 ```
 _Comparative genomics_
+
 _So, I might recommend doing some sort of comparative genomics here or throughout. This becomes relevant when suggesting this genome is an improvement. BUSCO comparison, number of genes predicted, orthogroup analysis, synteny, etc._
 
 _SNP discovery and population similarities among rohu fisheries_

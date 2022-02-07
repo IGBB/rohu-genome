@@ -1,10 +1,10 @@
 Acknowledgements
 actinopterygii
 AED
-Alam
+ALAM
 Arick
 Benzie
-Bionano
+bionano
 BioProject
 BioSample
 braker
@@ -16,7 +16,7 @@ contigs
 CORRINNE
 cufflinks
 Cyprinidae
-cytometry
+Cytometry
 ddRAD
 degradomics
 densitometry
@@ -50,7 +50,7 @@ mers
 microsatellite
 minimap
 nanopack
-Nanopore
+nanopore
 NCBI
 NextSeq
 ng
@@ -78,7 +78,7 @@ ResearchIT
 resequencing
 rnaseq
 rohita
-rohu
+Rohu
 SAMN
 Samsul
 scaffolded

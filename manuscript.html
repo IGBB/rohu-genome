@@ -19,7 +19,7 @@
   <meta name="author" content="Attila Karsi" />
   <meta name="author" content="Mark L. Lawrence" />
   <meta name="author" content="Daniel G. Peterson" />
-  <meta name="dcterms.date" content="2021-11-22" />
+  <meta name="dcterms.date" content="2022-02-07" />
   <meta name="keywords" content="genome sequencing, ddrad sequencing, nanopore, Labeo rohita" />
   <title>A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers</title>
   <style>
@@ -61,8 +61,8 @@
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2021-11-22" />
-  <meta name="citation_publication_date" content="2021-11-22" />
+  <meta name="dc.date" content="2022-02-07" />
+  <meta name="citation_publication_date" content="2022-02-07" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -120,9 +120,9 @@
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -136,10 +136,10 @@
 </header>
 <p><small><em>
 This manuscript
-(<a href="https://IGBB.github.io/rohu-genome/v/ad3915b21c840ce0c6dddd604f694e2bb2515221/">permalink</a>)
+(<a href="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/">permalink</a>)
 was automatically generated
-from <a href="https://github.com/IGBB/rohu-genome/tree/ad3915b21c840ce0c6dddd604f694e2bb2515221">IGBB/rohu-genome@ad3915b</a>
-on November 22, 2021.
+from <a href="https://github.com/IGBB/rohu-genome/tree/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814">IGBB/rohu-genome@ac1ca5b</a>
+on February 7, 2022.
 </em></small></p>
 <h2 id="authors">Authors</h2>
 <p>Mark A. Arick II<sup>1
@@ -240,7 +240,8 @@ Braker2 uses the RNA-seq alignments and the gene prediction from GeneMark-ES (v4
 Maker2 (v2.31.10) <span class="citation" data-cites="UdSgHXyu">[<a href="#ref-UdSgHXyu" role="doc-biblioref">26</a>]</span> predicts genes based on the new Augustus, GeneMark, and SNAP models; modifying the predictions based on the available RNA and protein evidence from the <em>Cyprinidae</em> family in the NCBI RefSeq database.
 Any predicted genes with an AED above 0.47 were removed from further analysis.
 The surviving genes were functionally annotated using InterProScan (v5.47-82.0) <span class="citation" data-cites="N1v57w5y">[<a href="#ref-N1v57w5y" role="doc-biblioref">27</a>]</span> and BLAST+ (v2.9.0) <span class="citation" data-cites="nEsJGUWa">[<a href="#ref-nEsJGUWa" role="doc-biblioref">28</a>]</span> alignments against the UniprotKB Swiss-Prot database.
-Busco (v5.2.2) <span class="citation" data-cites="Vq0QVho4">[<a href="#ref-Vq0QVho4" role="doc-biblioref">29</a>]</span> was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.</p>
+Busco (v5.2.2) <span class="citation" data-cites="Vq0QVho4">[<a href="#ref-Vq0QVho4" role="doc-biblioref">29</a>]</span> was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.
+Lastly, genes spanning large gaps or completely contained within another gene on the opposite strand were removed using a custom perl script (GITHUB).</p>
 <div id="tbl:rnaseq" class="tablenos">
 <table id="tbl:rnaseq">
 <caption><span>Table 1:</span> List of SRA accessions used in annotation pipeline.
@@ -560,9 +561,9 @@ After the Bionano and HiC data was incorporated, the total number of sequences d
 The final assembly consisted of 25 chromosome length scaffolds and 2844 unplaced scaffolds, ranging in size from 1,479bp to 7.18 Mb.
 Table [<a href="#tbl:assembly">3</a>] contains a common assembly statistics for each step.
 The final genome size is 97.9% of the estimated genome size.
-The annotation pipeline produced 34,590 primary transcripts, 24,385 surviving the AED filter.
-BUSCO analysis show the genome completely contains 98.1% of the 3640 orthologs in the actinopterygii_odb10 database with 36 (1%) duplicated;
-however, the filtered transcriptome only contained 80% of the total orthologs complete with 70 duplicated.
+The annotation pipeline produced 51,079 primary transcripts, 31,274 surviving the AED, gap, and overlapping filters.
+BUSCO analysis show the genome completely contains 98.1% of the 3640 orthologs in the actinopterygii_odb10 database with 37 (1%) duplicated;
+while, the filtered transcriptome contains 84.5% of the total orthologs complete with 74 duplicated.
 A complete comparison of the BUSCO analyses can be found in Table [<a href="#tbl:busco">4</a>].</p>
 <div id="tbl:assembly" class="tablenos">
 <table id="tbl:assembly">
@@ -655,32 +656,32 @@ A complete comparison of the BUSCO analyses can be found in Table [<a href="#tbl
 <tr class="odd">
 <td>Complete BUSCOs (C)</td>
 <td>3571</td>
-<td>3036</td>
-<td>2915</td>
+<td>3139</td>
+<td>3078</td>
 </tr>
 <tr class="even">
 <td>Complete and single-copy BUSCOs (S)</td>
-<td>3535</td>
-<td>2962</td>
-<td>2845</td>
+<td>3534</td>
+<td>3064</td>
+<td>3001</td>
 </tr>
 <tr class="odd">
 <td>Complete and duplicated BUSCOs (D)</td>
-<td>36</td>
+<td>37</td>
+<td>75</td>
 <td>74</td>
-<td>70</td>
 </tr>
 <tr class="even">
 <td>Fragmented BUSCOs (F)</td>
 <td>23</td>
-<td>225</td>
-<td>200</td>
+<td>192</td>
+<td>170</td>
 </tr>
 <tr class="odd">
 <td>Missing BUSCOs (M)</td>
 <td>46</td>
-<td>379</td>
-<td>525</td>
+<td>309</td>
+<td>392</td>
 </tr>
 <tr class="even">
 <td>Total BUSCO groups searched</td>
@@ -750,8 +751,8 @@ RepeatMasker version 4.1.1 , default mode
 run with rmblastn version 2.10.0+ 
 The query was compared to classified sequences in &quot;Rohu-families.fa&quot; 
  </code></pre>
-<p><em>Comparative genomics</em>
-<em>So, I might recommend doing some sort of comparative genomics here or throughout. This becomes relevant when suggesting this genome is an improvement. BUSCO comparison, number of genes predicted, orthogroup analysis, synteny, etc.</em></p>
+<p><em>Comparative genomics</em></p>
+<p><em>So, I might recommend doing some sort of comparative genomics here or throughout. This becomes relevant when suggesting this genome is an improvement. BUSCO comparison, number of genes predicted, orthogroup analysis, synteny, etc.</em></p>
 <p><em>SNP discovery and population similarities among rohu fisheries</em></p>
 <p><em>Labeo rohita</em> is an important aquaculture fish in many areas of south Asia [I don’t know how to put in this reference FAO (2019) Food and Agricultural Organization. Yearbook of Fishery and Aquaculture Statistics 2017].</p>
 <p>The high fecundity and relative ease of cultivation has made rohu successful in breeding programs, leading to the generation of a fast-growing strain called Jayanti
@@ -779,7 +780,7 @@ Recently, a draft genome was published for L. rohita along with pooled resequenc
 <div class="csl-left-margin">5. </div><div class="csl-right-inline"><strong>Trimmomatic: a flexible trimmer for Illumina sequence data</strong> <div class="csl-block">Anthony M Bolger, Marc Lohse, Bjoern Usadel</div> <em>Bioinformatics</em> (2014-08-01) <a href="https://doi.org/f6cj5w">https://doi.org/f6cj5w</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/bioinformatics/btu170">10.1093/bioinformatics/btu170</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/24695404">24695404</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4103590">PMC4103590</a></div></div>
 </div>
 <div id="ref-9l1p27cN" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">6. </div><div class="csl-right-inline"><strong>Fast and accurate long-read assembly with wtdbg2</strong> <div class="csl-block">Jue Ruan, Heng Li</div> <em>Nature Methods</em> (2019-12-09) <a href="https://doi.org/ggd8j9">https://doi.org/ggd8j9</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/s41592-019-0669-3">10.1038/s41592-019-0669-3</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31819265">31819265</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7004874">PMC7004874</a></div></div>
+<div class="csl-left-margin">6. </div><div class="csl-right-inline"><strong>Fast and accurate long-read assembly with wtdbg2</strong> <div class="csl-block">Jue Ruan, Heng Li</div> <em>Nature Methods</em> (2020-02) <a href="https://doi.org/ggd8j9">https://doi.org/ggd8j9</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/s41592-019-0669-3">10.1038/s41592-019-0669-3</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31819265">31819265</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7004874">PMC7004874</a></div></div>
 </div>
 <div id="ref-zY4KP2bZ" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">7. </div><div class="csl-right-inline"><strong>Fast and accurate de novo genome assembly from long uncorrected reads</strong> <div class="csl-block">Robert Vaser, Ivan Sović, Niranjan Nagarajan, Mile Šikić</div> <em>Genome Research</em> (2017-05) <a href="https://doi.org/gfkmzr">https://doi.org/gfkmzr</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1101/gr.214270.116">10.1101/gr.214270.116</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/28100585">28100585</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5411768">PMC5411768</a></div></div>
@@ -791,64 +792,64 @@ Recently, a draft genome was published for L. rohita along with pooled resequenc
 <div class="csl-left-margin">9. </div><div class="csl-right-inline"><strong>Pilon: An Integrated Tool for Comprehensive Microbial Variant Detection and Genome Assembly Improvement</strong> <div class="csl-block">Bruce J Walker, Thomas Abeel, Terrance Shea, Margaret Priest, Amr Abouelliel, Sharadha Sakthikumar, Christina A Cuomo, Qiandong Zeng, Jennifer Wortman, Sarah K Young, Ashlee M Earl</div> <em>PLoS ONE</em> (2014-11-19) <a href="https://doi.org/gfkmz5">https://doi.org/gfkmz5</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1371/journal.pone.0112963">10.1371/journal.pone.0112963</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/25409509">25409509</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4237348">PMC4237348</a></div></div>
 </div>
 <div id="ref-roi5bwXL" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">10. </div><div class="csl-right-inline"><strong>Fast and accurate short read alignment with Burrows-Wheeler transform</strong> <div class="csl-block">H Li, R Durbin</div> <em>Bioinformatics</em> (2009-05-18) <a href="https://doi.org/dqt59j">https://doi.org/dqt59j</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/bioinformatics/btp324">10.1093/bioinformatics/btp324</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/19451168">19451168</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2705234">PMC2705234</a></div></div>
+<div class="csl-left-margin">10. </div><div class="csl-right-inline"><strong>Fast and accurate short read alignment with Burrows-Wheeler transform</strong> <div class="csl-block">H Li, R Durbin</div> <em>Bioinformatics</em> (2009-07-15) <a href="https://doi.org/dqt59j">https://doi.org/dqt59j</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/bioinformatics/btp324">10.1093/bioinformatics/btp324</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/19451168">19451168</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2705234">PMC2705234</a></div></div>
 </div>
 <div id="ref-wgWE6D4o" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">11. </div><div class="csl-right-inline"><strong>Bionano Access Software</strong> <div class="csl-block">Bionano Genomics</div> <a href="http://bionanogenomics.com/support-page/bionano-access-software/">http://bionanogenomics.com/support-page/bionano-access-software/</a></div>
+<div class="csl-left-margin">11. </div><div class="csl-right-inline"><strong>Bionano Access Software</strong> <div class="csl-block">Bionano Genomics</div> <a href="https://bionanogenomics.com/support-page/bionano-access-software/">https://bionanogenomics.com/support-page/bionano-access-software/</a></div>
 </div>
 <div id="ref-KEqlQin" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">12. </div><div class="csl-right-inline"><strong>Integrating Hi-C links with assembly graphs for chromosome-scale assembly</strong> <div class="csl-block">Jay Ghurye, Arang Rhie, Brian P Walenz, Anthony Schmitt, Siddarth Selvaraj, Mihai Pop, Adam M Phillippy, Sergey Koren</div> <em>PLOS Computational Biology</em> (2019-08-21) <a href="https://doi.org/gf74qw">https://doi.org/gf74qw</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1371/journal.pcbi.1007273">10.1371/journal.pcbi.1007273</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31433799">31433799</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6719893">PMC6719893</a></div></div>
 </div>
 <div id="ref-GNj8xY3t" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">13. </div><div class="csl-right-inline"><strong>Chromosome‐level genome assembly of a cyprinid fish &lt;i&gt;Onychostoma macrolepis&lt;/i&gt; by integration of nanopore sequencing, Bionano and Hi‐C technology</strong> <div class="csl-block">Lina Sun, Tian Gao, Feilong Wang, Zuliang Qin, Longxia Yan, Wenjing Tao, Minghui Li, Canbiao Jin, Li Ma, Thomas D Kocher, Deshou Wang</div> <em>Molecular Ecology Resources</em> (2020-07-20) <a href="https://doi.org/gmx33w">https://doi.org/gmx33w</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1111/1755-0998.13190">10.1111/1755-0998.13190</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/32419357">32419357</a></div></div>
+<div class="csl-left-margin">13. </div><div class="csl-right-inline"><strong>Chromosome‐level genome assembly of a cyprinid fish &lt;i&gt;Onychostoma macrolepis&lt;/i&gt; by integration of nanopore sequencing, Bionano and Hi‐C technology</strong> <div class="csl-block">Lina Sun, Tian Gao, Feilong Wang, Zuliang Qin, Longxia Yan, Wenjing Tao, Minghui Li, Canbiao Jin, Li Ma, Thomas D Kocher, Deshou Wang</div> <em>Molecular Ecology Resources</em> (2020-09) <a href="https://doi.org/gmx33w">https://doi.org/gmx33w</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1111/1755-0998.13190">10.1111/1755-0998.13190</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/32419357">32419357</a></div></div>
 </div>
 <div id="ref-zePiKkRw" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">14. </div><div class="csl-right-inline"><strong>RaGOO: fast and accurate reference-guided scaffolding of draft genomes</strong> <div class="csl-block">Michael Alonge, Sebastian Soyk, Srividya Ramakrishnan, Xingang Wang, Sara Goodwin, Fritz J Sedlazeck, Zachary B Lippman, Michael C Schatz</div> <em>Genome Biology</em> (2019-10-28) <a href="https://doi.org/ggctnf">https://doi.org/ggctnf</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/s13059-019-1829-6">10.1186/s13059-019-1829-6</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31661016">31661016</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6816165">PMC6816165</a></div></div>
+<div class="csl-left-margin">14. </div><div class="csl-right-inline"><strong>RaGOO: fast and accurate reference-guided scaffolding of draft genomes</strong> <div class="csl-block">Michael Alonge, Sebastian Soyk, Srividya Ramakrishnan, Xingang Wang, Sara Goodwin, Fritz J Sedlazeck, Zachary B Lippman, Michael C Schatz</div> <em>Genome Biology</em> (2019-12) <a href="https://doi.org/ggctnf">https://doi.org/ggctnf</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/s13059-019-1829-6">10.1186/s13059-019-1829-6</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31661016">31661016</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6816165">PMC6816165</a></div></div>
 </div>
 <div id="ref-DUW8OYnu" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">15. </div><div class="csl-right-inline"><strong>RepeatModeler2 for automated genomic discovery of transposable element families</strong> <div class="csl-block">Jullien M Flynn, Robert Hubley, Clément Goubert, Jeb Rosen, Andrew G Clark, Cédric Feschotte, Arian F Smit</div> <em>Proceedings of the National Academy of Sciences</em> (2020-04-28) <a href="https://doi.org/ggsnv2">https://doi.org/ggsnv2</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1073/pnas.1921046117">10.1073/pnas.1921046117</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/32300014">32300014</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7196820">PMC7196820</a></div></div>
 </div>
 <div id="ref-1GLBRcU8y" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">16. </div><div class="csl-right-inline"><strong>Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype</strong> <div class="csl-block">Daehwan Kim, Joseph M Paggi, Chanhee Park, Christopher Bennett, Steven L Salzberg</div> <em>Nature Biotechnology</em> (2019-08-02) <a href="https://doi.org/gf5395">https://doi.org/gf5395</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/s41587-019-0201-4">10.1038/s41587-019-0201-4</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31375807">31375807</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7605509">PMC7605509</a></div></div>
+<div class="csl-left-margin">16. </div><div class="csl-right-inline"><strong>Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype</strong> <div class="csl-block">Daehwan Kim, Joseph M Paggi, Chanhee Park, Christopher Bennett, Steven L Salzberg</div> <em>Nature Biotechnology</em> (2019-08) <a href="https://doi.org/gf5395">https://doi.org/gf5395</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/s41587-019-0201-4">10.1038/s41587-019-0201-4</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31375807">31375807</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7605509">PMC7605509</a></div></div>
 </div>
 <div id="ref-Nc6oNbiA" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">17. </div><div class="csl-right-inline"><strong>Leveraging multiple transcriptome assembly methods for improved gene structure annotation</strong> <div class="csl-block">Luca Venturini, Shabhonam Caim, Gemy George Kaithakottil, Daniel Lee Mapleson, David Swarbreck</div> <em>GigaScience</em> (2018-08) <a href="https://doi.org/gmx7k4">https://doi.org/gmx7k4</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/gigascience/giy093">10.1093/gigascience/giy093</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/30052957">30052957</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6105091">PMC6105091</a></div></div>
+<div class="csl-left-margin">17. </div><div class="csl-right-inline"><strong>Leveraging multiple transcriptome assembly methods for improved gene structure annotation</strong> <div class="csl-block">Luca Venturini, Shabhonam Caim, Gemy George Kaithakottil, Daniel Lee Mapleson, David Swarbreck</div> <em>GigaScience</em> (2018-08-01) <a href="https://doi.org/gmx7k4">https://doi.org/gmx7k4</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/gigascience/giy093">10.1093/gigascience/giy093</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/30052957">30052957</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6105091">PMC6105091</a></div></div>
 </div>
 <div id="ref-Sq0xBB4s" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">18. </div><div class="csl-right-inline"><strong>BRAKER2: automatic eukaryotic genome annotation with GeneMark-EP+ and AUGUSTUS supported by a protein database</strong> <div class="csl-block">Tomáš Brůna, Katharina J Hoff, Alexandre Lomsadze, Mario Stanke, Mark Borodovsky</div> <em>NAR Genomics and Bioinformatics</em> (2021-03) <a href="https://doi.org/gmx7k6">https://doi.org/gmx7k6</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/nargab/lqaa108">10.1093/nargab/lqaa108</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/33575650">33575650</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7787252">PMC7787252</a></div></div>
+<div class="csl-left-margin">18. </div><div class="csl-right-inline"><strong>BRAKER2: automatic eukaryotic genome annotation with GeneMark-EP+ and AUGUSTUS supported by a protein database</strong> <div class="csl-block">Tomáš Brůna, Katharina J Hoff, Alexandre Lomsadze, Mario Stanke, Mark Borodovsky</div> <em>NAR Genomics and Bioinformatics</em> (2021-01-06) <a href="https://doi.org/gmx7k6">https://doi.org/gmx7k6</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/nargab/lqaa108">10.1093/nargab/lqaa108</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/33575650">33575650</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7787252">PMC7787252</a></div></div>
 </div>
 <div id="ref-1F8s8oDfw" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">19. </div><div class="csl-right-inline"><strong>Transcriptome assembly from long-read RNA-seq alignments with StringTie2</strong> <div class="csl-block">Sam Kovaka, Aleksey V Zimin, Geo M Pertea, Roham Razaghi, Steven L Salzberg, Mihaela Pertea</div> <em>Genome Biology</em> (2019-12-16) <a href="https://doi.org/ghrk2k">https://doi.org/ghrk2k</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/s13059-019-1910-1">10.1186/s13059-019-1910-1</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31842956">31842956</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6912988">PMC6912988</a></div></div>
+<div class="csl-left-margin">19. </div><div class="csl-right-inline"><strong>Transcriptome assembly from long-read RNA-seq alignments with StringTie2</strong> <div class="csl-block">Sam Kovaka, Aleksey V Zimin, Geo M Pertea, Roham Razaghi, Steven L Salzberg, Mihaela Pertea</div> <em>Genome Biology</em> (2019-12) <a href="https://doi.org/ghrk2k">https://doi.org/ghrk2k</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/s13059-019-1910-1">10.1186/s13059-019-1910-1</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31842956">31842956</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6912988">PMC6912988</a></div></div>
 </div>
 <div id="ref-14kgcZI3s" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">20. </div><div class="csl-right-inline"><strong>Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks</strong> <div class="csl-block">Cole Trapnell, Adam Roberts, Loyal Goff, Geo Pertea, Daehwan Kim, David R Kelley, Harold Pimentel, Steven L Salzberg, John L Rinn, Lior Pachter</div> <em>Nature Protocols</em> (2012-03-01) <a href="https://doi.org/f4pbzd">https://doi.org/f4pbzd</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/nprot.2012.016">10.1038/nprot.2012.016</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/22383036">22383036</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3334321">PMC3334321</a></div></div>
+<div class="csl-left-margin">20. </div><div class="csl-right-inline"><strong>Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks</strong> <div class="csl-block">Cole Trapnell, Adam Roberts, Loyal Goff, Geo Pertea, Daehwan Kim, David R Kelley, Harold Pimentel, Steven L Salzberg, John L Rinn, Lior Pachter</div> <em>Nature Protocols</em> (2012-03) <a href="https://doi.org/f4pbzd">https://doi.org/f4pbzd</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/nprot.2012.016">10.1038/nprot.2012.016</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/22383036">22383036</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3334321">PMC3334321</a></div></div>
 </div>
 <div id="ref-oU9Lbgmd" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">21. </div><div class="csl-right-inline"><strong>Full-length transcriptome assembly from RNA-Seq data without a reference genome</strong> <div class="csl-block">Manfred G Grabherr, Brian J Haas, Moran Yassour, Joshua Z Levin, Dawn A Thompson, Ido Amit, Xian Adiconis, Lin Fan, Raktima Raychowdhury, Qiandong Zeng, … Aviv Regev</div> <em>Nature Biotechnology</em> (2011-05-15) <a href="https://doi.org/b2bctj">https://doi.org/b2bctj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/nbt.1883">10.1038/nbt.1883</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/21572440">21572440</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3571712">PMC3571712</a></div></div>
+<div class="csl-left-margin">21. </div><div class="csl-right-inline"><strong>Full-length transcriptome assembly from RNA-Seq data without a reference genome</strong> <div class="csl-block">Manfred G Grabherr, Brian J Haas, Moran Yassour, Joshua Z Levin, Dawn A Thompson, Ido Amit, Xian Adiconis, Lin Fan, Raktima Raychowdhury, Qiandong Zeng, … Aviv Regev</div> <em>Nature Biotechnology</em> (2011-07) <a href="https://doi.org/b2bctj">https://doi.org/b2bctj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1038/nbt.1883">10.1038/nbt.1883</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/21572440">21572440</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3571712">PMC3571712</a></div></div>
 </div>
 <div id="ref-B9kt43k8" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">22. </div><div class="csl-right-inline"><strong>Efficient and accurate detection of splice junctions from RNA-seq with Portcullis</strong> <div class="csl-block">Daniel Mapleson, Luca Venturini, Gemy Kaithakottil, David Swarbreck</div> <em>GigaScience</em> (2018-12) <a href="https://doi.org/gkzg5r">https://doi.org/gkzg5r</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/gigascience/giy131">10.1093/gigascience/giy131</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/30418570">30418570</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302956">PMC6302956</a></div></div>
+<div class="csl-left-margin">22. </div><div class="csl-right-inline"><strong>Efficient and accurate detection of splice junctions from RNA-seq with Portcullis</strong> <div class="csl-block">Daniel Mapleson, Luca Venturini, Gemy Kaithakottil, David Swarbreck</div> <em>GigaScience</em> (2018-12-01) <a href="https://doi.org/gkzg5r">https://doi.org/gkzg5r</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/gigascience/giy131">10.1093/gigascience/giy131</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/30418570">30418570</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302956">PMC6302956</a></div></div>
 </div>
 <div id="ref-lX665mdh" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">23. </div><div class="csl-right-inline"><strong>Prodigal: prokaryotic gene recognition and translation initiation site identification</strong> <div class="csl-block">Doug Hyatt, Gwo-Liang Chen, Philip F LoCascio, Miriam L Land, Frank W Larimer, Loren J Hauser</div> <em>BMC Bioinformatics</em> (2010-03-08) <a href="https://doi.org/cktxnm">https://doi.org/cktxnm</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-11-119">10.1186/1471-2105-11-119</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/20211023">20211023</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2848648">PMC2848648</a></div></div>
+<div class="csl-left-margin">23. </div><div class="csl-right-inline"><strong>Prodigal: prokaryotic gene recognition and translation initiation site identification</strong> <div class="csl-block">Doug Hyatt, Gwo-Liang Chen, Philip F LoCascio, Miriam L Land, Frank W Larimer, Loren J Hauser</div> <em>BMC Bioinformatics</em> (2010-12) <a href="https://doi.org/cktxnm">https://doi.org/cktxnm</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-11-119">10.1186/1471-2105-11-119</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/20211023">20211023</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2848648">PMC2848648</a></div></div>
 </div>
 <div id="ref-7OpVD07l" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">24. </div><div class="csl-right-inline"><strong>Eukaryotic Gene Prediction Using GeneMark.hmm‐E and GeneMark‐ES</strong> <div class="csl-block">Mark Borodovsky, Alex Lomsadze</div> <em>Current Protocols in Bioinformatics</em> (2011-09-07) <a href="https://doi.org/b75r2g">https://doi.org/b75r2g</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1002/0471250953.bi0406s35">10.1002/0471250953.bi0406s35</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/21901742">21901742</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3204378">PMC3204378</a></div></div>
+<div class="csl-left-margin">24. </div><div class="csl-right-inline"><strong>Eukaryotic Gene Prediction Using GeneMark.hmm‐E and GeneMark‐ES</strong> <div class="csl-block">Mark Borodovsky, Alex Lomsadze</div> <em>Current Protocols in Bioinformatics</em> (2011-09) <a href="https://doi.org/b75r2g">https://doi.org/b75r2g</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1002/0471250953.bi0406s35">10.1002/0471250953.bi0406s35</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/21901742">21901742</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3204378">PMC3204378</a></div></div>
 </div>
 <div id="ref-5gYwalTK" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">25. </div><div class="csl-right-inline"><strong>Gene prediction in eukaryotes with a generalized hidden Markov model that uses hints from external sources</strong> <div class="csl-block">Mario Stanke, Oliver Schöffmann, Burkhard Morgenstern, Stephan Waack</div> <em>BMC Bioinformatics</em> (2006-02-09) <a href="https://doi.org/cv8xsn">https://doi.org/cv8xsn</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-7-62">10.1186/1471-2105-7-62</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/16469098">16469098</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1409804">PMC1409804</a></div></div>
+<div class="csl-left-margin">25. </div><div class="csl-right-inline"><strong>Gene prediction in eukaryotes with a generalized hidden Markov model that uses hints from external sources</strong> <div class="csl-block">Mario Stanke, Oliver Schöffmann, Burkhard Morgenstern, Stephan Waack</div> <em>BMC Bioinformatics</em> (2006-12) <a href="https://doi.org/cv8xsn">https://doi.org/cv8xsn</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-7-62">10.1186/1471-2105-7-62</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/16469098">16469098</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1409804">PMC1409804</a></div></div>
 </div>
 <div id="ref-UdSgHXyu" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">26. </div><div class="csl-right-inline"><strong>MAKER2: an annotation pipeline and genome-database management tool for second-generation genome projects</strong> <div class="csl-block">Carson Holt, Mark Yandell</div> <em>BMC Bioinformatics</em> (2011-12-22) <a href="https://doi.org/fz39nj">https://doi.org/fz39nj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-12-491">10.1186/1471-2105-12-491</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/22192575">22192575</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3280279">PMC3280279</a></div></div>
+<div class="csl-left-margin">26. </div><div class="csl-right-inline"><strong>MAKER2: an annotation pipeline and genome-database management tool for second-generation genome projects</strong> <div class="csl-block">Carson Holt, Mark Yandell</div> <em>BMC Bioinformatics</em> (2011-12) <a href="https://doi.org/fz39nj">https://doi.org/fz39nj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-12-491">10.1186/1471-2105-12-491</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/22192575">22192575</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3280279">PMC3280279</a></div></div>
 </div>
 <div id="ref-N1v57w5y" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">27. </div><div class="csl-right-inline"><strong>InterProScan 5: genome-scale protein function classification</strong> <div class="csl-block">P Jones, D Binns, H-Y Chang, M Fraser, W Li, C McAnulla, H McWilliam, J Maslen, A Mitchell, G Nuka, … S Hunter</div> <em>Bioinformatics</em> (2014-01-21) <a href="https://doi.org/f53532">https://doi.org/f53532</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/bioinformatics/btu031">10.1093/bioinformatics/btu031</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/24451626">24451626</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3998142">PMC3998142</a></div></div>
+<div class="csl-left-margin">27. </div><div class="csl-right-inline"><strong>InterProScan 5: genome-scale protein function classification</strong> <div class="csl-block">P Jones, D Binns, H-Y Chang, M Fraser, W Li, C McAnulla, H McWilliam, J Maslen, A Mitchell, G Nuka, … S Hunter</div> <em>Bioinformatics</em> (2014-05-01) <a href="https://doi.org/f53532">https://doi.org/f53532</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/bioinformatics/btu031">10.1093/bioinformatics/btu031</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/24451626">24451626</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3998142">PMC3998142</a></div></div>
 </div>
 <div id="ref-nEsJGUWa" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">28. </div><div class="csl-right-inline"><strong>BLAST+: architecture and applications</strong> <div class="csl-block">Christiam Camacho, George Coulouris, Vahram Avagyan, Ning Ma, Jason Papadopoulos, Kevin Bealer, Thomas L Madden</div> <em>BMC Bioinformatics</em> (2009-12-15) <a href="https://doi.org/cnjxgz">https://doi.org/cnjxgz</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-10-421">10.1186/1471-2105-10-421</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/20003500">20003500</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2803857">PMC2803857</a></div></div>
+<div class="csl-left-margin">28. </div><div class="csl-right-inline"><strong>BLAST+: architecture and applications</strong> <div class="csl-block">Christiam Camacho, George Coulouris, Vahram Avagyan, Ning Ma, Jason Papadopoulos, Kevin Bealer, Thomas L Madden</div> <em>BMC Bioinformatics</em> (2009-12) <a href="https://doi.org/cnjxgz">https://doi.org/cnjxgz</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2105-10-421">10.1186/1471-2105-10-421</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/20003500">20003500</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2803857">PMC2803857</a></div></div>
 </div>
 <div id="ref-Vq0QVho4" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">29. </div><div class="csl-right-inline"><strong>BUSCO Update: Novel and Streamlined Workflows along with Broader and Deeper Phylogenetic Coverage for Scoring of Eukaryotic, Prokaryotic, and Viral Genomes</strong> <div class="csl-block">Mosè Manni, Matthew R Berkeley, Mathieu Seppey, Felipe A Simão, Evgeny M Zdobnov</div> <em>Molecular Biology and Evolution</em> (2021-10-01) <a href="https://doi.org/gmgv52">https://doi.org/gmgv52</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/molbev/msab199">10.1093/molbev/msab199</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/34320186">34320186</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8476166">PMC8476166</a></div></div>
+<div class="csl-left-margin">29. </div><div class="csl-right-inline"><strong>BUSCO Update: Novel and Streamlined Workflows along with Broader and Deeper Phylogenetic Coverage for Scoring of Eukaryotic, Prokaryotic, and Viral Genomes</strong> <div class="csl-block">Mosè Manni, Matthew R Berkeley, Mathieu Seppey, Felipe A Simão, Evgeny M Zdobnov</div> <em>Molecular Biology and Evolution</em> (2021-09-27) <a href="https://doi.org/gmgv52">https://doi.org/gmgv52</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1093/molbev/msab199">10.1093/molbev/msab199</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/34320186">34320186</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8476166">PMC8476166</a></div></div>
 </div>
 <div id="ref-2k3nqSpe" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">30. </div><div class="csl-right-inline"><a href="http://zotero.org/users/local/gVY292am/items/GYK6YE2I">http://zotero.org/users/local/gVY292am/items/GYK6YE2I</a></div>
@@ -857,10 +858,10 @@ Recently, a draft genome was published for L. rohita along with pooled resequenc
 <div class="csl-left-margin">31. </div><div class="csl-right-inline"><strong>&lt;i&gt;De novo&lt;/i&gt; Assembly and Genome-Wide SNP Discovery in Rohu Carp, &lt;i&gt;Labeo rohita&lt;/i&gt;</strong> <div class="csl-block">Paramananda Das, Lakshman Sahoo, Sofia P Das, Amrita Bit, Chaitanya G Joshi, Basdeo Kushwaha, Dinesh Kumar, Tejas M Shah, Ankit T Hinsu, Namrata Patel, … Joykrushna Jena</div> <em>Frontiers in genetics</em> (2020-04-21) <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7186481/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7186481/</a> <div class="csl-block">DOI: <a href="https://doi.org/10.3389/fgene.2020.00386">10.3389/fgene.2020.00386</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/32373166">32373166</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7186481">PMC7186481</a></div></div>
 </div>
 <div id="ref-1Hd37EDan" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">32. </div><div class="csl-right-inline"><strong>Status of genetic and genomic approaches for delineating biological information and improving aquaculture production of farmed rohu, &lt;i&gt;Labeo rohita&lt;/i&gt; (Ham, 1822)</strong> <div class="csl-block">Kiran D Rasal, Jitendra Kumar Sundaray</div> <em>Reviews in Aquaculture</em> (2020-06-11) <a href="https://doi.org/gnj5hk">https://doi.org/gnj5hk</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1111/raq.12444">10.1111/raq.12444</a></div></div>
+<div class="csl-left-margin">32. </div><div class="csl-right-inline"><strong>Status of genetic and genomic approaches for delineating biological information and improving aquaculture production of farmed rohu, &lt;i&gt;Labeo rohita&lt;/i&gt; (Ham, 1822)</strong> <div class="csl-block">Kiran D Rasal, Jitendra Kumar Sundaray</div> <em>Reviews in Aquaculture</em> (2020-11) <a href="https://doi.org/gnj5hk">https://doi.org/gnj5hk</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1111/raq.12444">10.1111/raq.12444</a></div></div>
 </div>
 <div id="ref-USLcrYsW" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">33. </div><div class="csl-right-inline"><strong>A molecular tool for parentage analysis in Indian major carp, Labeo rohita (Hamilton, 1822)</strong> <div class="csl-block">L Sahoo, PK Meher, K Das Mahapatra, JN Saha, P Jayasankar, P Das</div> <em>Aquaculture International</em> (2016-12-24) <a href="https://doi.org/gbgqt5">https://doi.org/gbgqt5</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1007/s10499-016-0104-z">10.1007/s10499-016-0104-z</a></div></div>
+<div class="csl-left-margin">33. </div><div class="csl-right-inline"><strong>A molecular tool for parentage analysis in Indian major carp, Labeo rohita (Hamilton, 1822)</strong> <div class="csl-block">L Sahoo, PK Meher, K Das Mahapatra, JN Saha, P Jayasankar, P Das</div> <em>Aquaculture International</em> (2017-06) <a href="https://doi.org/gbgqt5">https://doi.org/gbgqt5</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1007/s10499-016-0104-z">10.1007/s10499-016-0104-z</a></div></div>
 </div>
 <div id="ref-U0nH39nP" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">34. </div><div class="csl-right-inline"><strong>A linkage map of transcribed single nucleotide polymorphisms in rohu (Labeo rohita) and QTL associated with resistance to Aeromonas hydrophila</strong> <div class="csl-block">Nicholas Robinson, Matthew Baranski, Kanta Mahapatra, Jatindra Saha, Sweta Das, Jashobanta Mishra, Paramananda Das, Matthew Kent, Mariann Arnyasi, Pramoda Sahoo</div> <em>BMC Genomics</em> (2014) <a href="https://doi.org/gb3g4v">https://doi.org/gb3g4v</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1186/1471-2164-15-541">10.1186/1471-2164-15-541</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/24984705">24984705</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4226992">PMC4226992</a></div></div>
@@ -872,7 +873,7 @@ Recently, a draft genome was published for L. rohita along with pooled resequenc
 <div class="csl-left-margin">36. </div><div class="csl-right-inline"><strong>Single Nucleotide Polymorphisms (SNPs) Reveal Sibship Among Founders of a Bangladeshi Rohu (Labeo rohita) Breeding Population</strong> <div class="csl-block">Matthew Gray Hamilton, Wagdy Mekkawy, Andrzej Kilian, John AH Benzie</div> <em>Frontiers in Genetics</em> (2019-06-19) <a href="https://doi.org/gnj5hm">https://doi.org/gnj5hm</a> <div class="csl-block">DOI: <a href="https://doi.org/10.3389/fgene.2019.00597">10.3389/fgene.2019.00597</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31275363">31275363</a> · PMCID: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6593075">PMC6593075</a></div></div>
 </div>
 <div id="ref-RRMEOwZ6" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">37. </div><div class="csl-right-inline"><strong>Molecular characterization, computational analysis and expression profiling of &lt;i&gt;Dmrt1&lt;/i&gt; gene in Indian major carp, &lt;i&gt;Labeo rohita&lt;/i&gt; (Hamilton 1822)</strong> <div class="csl-block">L Sahoo, S Sahoo, M Mohanty, M Sankar, S Dixit, P Das, KD Rasal, MA Rather, JK Sundaray</div> <em>Animal Biotechnology</em> (2019-12-27) <a href="https://doi.org/gnj5hj">https://doi.org/gnj5hj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1080/10495398.2019.1707683">10.1080/10495398.2019.1707683</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31880491">31880491</a></div></div>
+<div class="csl-left-margin">37. </div><div class="csl-right-inline"><strong>Molecular characterization, computational analysis and expression profiling of &lt;i&gt;Dmrt1&lt;/i&gt; gene in Indian major carp, &lt;i&gt;Labeo rohita&lt;/i&gt; (Hamilton 1822)</strong> <div class="csl-block">L Sahoo, S Sahoo, M Mohanty, M Sankar, S Dixit, P Das, KD Rasal, MA Rather, JK Sundaray</div> <em>Animal Biotechnology</em> (2021-08-02) <a href="https://doi.org/gnj5hj">https://doi.org/gnj5hj</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1080/10495398.2019.1707683">10.1080/10495398.2019.1707683</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31880491">31880491</a></div></div>
 </div>
 <div id="ref-HUT5rWB4" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">38. </div><div class="csl-right-inline"><strong>Revealing liver specific microRNAs linked with carbohydrate metabolism of farmed carp, Labeo rohita (Hamilton, 1822)</strong> <div class="csl-block">Kiran D Rasal, Mir Asif Iquebal, Amrendra Pandey, Parmeswari Behera, Sarika Jaiswal, Manohar Vasam, Sangita Dixit, Mustafa Raza, Lakshman Sahoo, Samiran Nandi, … Jitendra Kumar Sundaray</div> <em>Genomics</em> (2020-01) <a href="https://doi.org/gnj5hh">https://doi.org/gnj5hh</a> <div class="csl-block">DOI: <a href="https://doi.org/10.1016/j.ygeno.2019.07.010">10.1016/j.ygeno.2019.07.010</a> · PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/31325488">31325488</a></div></div>
