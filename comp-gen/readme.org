@@ -1,0 +1,611 @@
+#+TITLE: Comparative genomes
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+* Rohu Assemblies
+  #+begin_src sh
+apps/gffread-0.12.7.Linux_x86_64/gffread -g 0-ref/rohu.fa -y 0-ref/rohu.protein.fa 0-ref/rohu.gff3
+  #+end_src
+
+- Genomes
+  #+Name: rohu-genomes
+  #+Caption: Genome fasta files
+  | Name | sequence                                                                          |
+  |------+-----------------------------------------------------------------------------------|
+  | IGBB | 0-ref/rohu.fa                                                                     |
+  | CIFA | 0-ref/ncbi/rohu/GCA_004120215.1/GCA_004120215.1_ASM412021v1_genomic.fna           |
+  | HRRL | 0-ref/ncbi/rohu/GCA_017311145.1/GCA_017311145.1_HRRL_Labeo_rohita_001_genomic.fna |
+
+- Proteins
+  #+Name: proteins
+  #+Caption: Protein fasta files
+  | Name          | sequence                                    |
+  |---------------+---------------------------------------------|
+  | GCA_004120215 | 0-ref/ncbi/rohu/GCA_004120215.1/protein.faa |
+  | Rohu          | 0-ref/rohu.protein.fa                       |
+
+
+** Assembly Stats
+
+- Abyss-fac stats
+  #+begin_src sh :tangle 1-stats/stats.rohu.sh :var genomes=genomes[,1]
+ml singularity/3.5.2
+abyss-fac () { singularity exec apps/abyss_2.3.4--hd403d74_0.sif abyss-fac "$@";}
+
+abyss-fac "${genomes[@]}"
+  #+end_src
+
+  #+RESULTS:
+  | name          |     n | n:500 | L50 |  min |     N75 |     N50 |     N25 |  E-size |     max |     sum |
+  |---------------+-------+-------+-----+------+---------+---------+---------+---------+---------+---------|
+  | GCA_004120215 | 13623 | 13617 | 182 |  500 |  774698 | 2006958 | 4279019 | 2905260 | 15.15e6 | 1.427e9 |
+  | GCA_017311145 | 13660 | 13650 | 182 |  500 |  774698 | 2006958 | 4279019 | 2905216 | 15.15e6 | 1.427e9 |
+  | Rohu          |  2869 |  2869 |  13 | 1479 | 28.79e6 |  32.5e6 | 36.06e6 | 30.03e6 | 45.29e6 | 945.5e6 |
+- Length distribution
+  #+begin_src sh :tangle 1-stats/length.rohu/run.sh :var genomes=genomes
+ml singularity/3.5.2
+samtools () { singularity exec apps/samtools_v1.9-4-deb_cv1.sif samtools "$@" ; }
+
+for name in "${!genomes[@]}"; do
+    samtools faidx "${genomes[$name]}"
+    cut -f 2 "${genomes[$name]}.fai" > 1-stats/length.rohu/$name.len
+done
+
+
+#+end_src
+
+  #+begin_src R
+library(tidyverse)
+library(scales)
+files <- list.files('1-stats/length.rohu/', pattern="*.len", full.names = T)
+names(files) <- sub('1-stats/length.rohu/(.*).len', '\\1', files)
+
+lengths <- lapply(files, read.table, header=F, col.names=c("Length")) %>%
+  bind_rows(.id="Genome")
+
+p <- ggplot(lengths, aes(Length, weight=Length, group=Genome)) +
+  geom_histogram(bins = 500) +
+  scale_y_continuous(breaks=breaks_extended(), labels=label_number_si(), expand = c(0,0)) +
+  scale_x_log10(breaks=breaks_log(n=10), labels=label_number_si(), limits=c(3000, 80000000)) +
+  facet_grid(rows = "Genome", scales='free') +
+  ylab("Number of Bases in Bin") +
+  xlab("Length (bp, log scale)")
+
+ggsave('1-stats/length.rohu.hires.png', p, width=8, height=6)
+ggsave('1-stats/length.rohu.lores.png', p, width=8, height=6,dpi=72)
+#+end_src
+
+
+   #+Name: len-distro
+   #+Caption: Length distribution of genomic contigs for each assembly
+   [[./1-stats/length.rohu.lores.png]]
+
+** Busco
+
+#+begin_src sh :tangle 1-busco/get.sh
+wget https://busco-data.ezlab.org/v4/data/lineages/actinopterygii_odb10.2021-02-19.tar.gz |
+    tar -xz -C $DIR/1-busco
+#+end_src
+
+*** Genomic
+#+begin_src sh :tangle 1-busco/rohu/run.sh :var data=rohu-genomes
+
+ml singularity/3.5.2
+busco () { singularity exec apps/busco_v5.2.2_cv1.sif busco "$@" ; }
+
+for name in "${!data[@]}"; do
+   echo singularity exec apps/busco_v5.2.2_cv1.sif busco -i "${data[$name]}" \
+         --out_path "$DIR/1-busco/rohu/" \
+         -o "${name}" \
+         -m geno \
+         -l $DIR/1-busco/actinopterygii_odb10 \
+         --tar \
+         --offline \
+         -c 10
+
+done
+#+end_src
+
+#+NAME: long-busco-rohu
+#+begin_src sh
+find 1-busco/rohu/ -name full_table.tsv |
+    xargs awk 'BEGIN{ print "Species\tComplete\tDuplicated\tFragmented\tMissing\t";}
+              FNR==1 {
+                if(spec)
+                    print spec, c["Complete"], c["Duplicated"], c["Fragmented"], c["Missing"];
+
+                spec=FILENAME;
+                sub("1-busco/rohu/", "", spec)
+                sub("/run_actinopterygii_odb10/full_table.tsv", "", spec)
+
+                delete c;
+                delete _;
+               }
+               !/#/ && !_[$1]++ {
+                 c[$2]++;
+               }
+               END{
+                    print spec, c["Complete"], c["Duplicated"], c["Fragmented"], c["Missing"];
+                    }' OFS="\t"
+#+end_src
+
+#+RESULTS: long-busco-rohu
+| Species | Complete | Duplicated | Fragmented | Missing |
+| IGBB    |     3535 |         36 |         23 |      46 |
+| CIFA    |     2324 |       1131 |         27 |     158 |
+| HRRL    |     2324 |       1131 |         27 |     158 |
+
+#+header: :width 900 :height 100
+#+begin_src R :var data=long-busco-rohu :results output graphics file :file 1-busco/rohu/busco.summary.png
+library(tidyverse)
+
+colnames(data) <- data[1,]
+data <- data[-1,]
+
+data <-  data %>%
+  mutate(Species = factor(sub("_", " ", Species))) %>%
+  mutate(Species = fct_reorder(Species, Complete))%>%
+  gather(key=key, value=value, -Species) %>%
+  group_by(Species) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(label = ifelse(value > 150, value, NA),
+         label_y = cumsum(value) - (value/2))
+
+## align label location
+## breaks = c(700,1700, 2400, 3500)
+## data <- data %>%
+##   mutate(label_y = breaks[sapply(label_y, function(y) which.min(abs(breaks-y)))])
+
+ggplot(data, aes(Species, value, fill=fct_rev(key))) +
+  geom_col() +
+  geom_text(aes(label=label, y=label_y), color='#333333') +
+  coord_flip() +
+  scale_fill_manual(values = rev(c('#33a02c','#b2df8a', '#fdbf6f', '#fb9a99'))) +
+  scale_y_continuous(expand=c(0,0)) +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.title = element_blank(),
+        plot.background = element_rect(fill='white'))
+
+#+end_src
+
+#+RESULTS:
+[[file:1-busco/rohu/busco.summary.png]]
+
+
+
+- Compare GCA_004120215 and GCA_017311145
+  Full table of busco locations for GCA_004120215 and GCA_017311145. All buscos have the same stand and location between the two genomes.
+  #+begin_src sh
+  grep -v '^#' GCA_?????????/run_actinopterygii_odb10/full_table.tsv |
+    sed 's#/run_actinopterygii_odb10/full_table.tsv:#\t#' |
+    sort -k2,2 |
+    head
+  #+end_src
+
+  #+RESULTS:
+  | GCA_004120215 | 100028at7898 | Fragmented | QBIY01012082.1    | 1663956 | 1664576 | - | 238.9 | 156 |                                                |                                                 |
+  | GCA_017311145 | 100028at7898 | Fragmented | JAFDUU010012109.1 | 1663956 | 1664576 | - | 238.9 | 156 |                                                |                                                 |
+  | GCA_004120215 | 100034at7898 | Complete   | QBIY01012255.1    |  212215 |  215459 | - | 438.1 | 228 | https://www.orthodb.org/v10?query=100034at7898 | transmembrane protein 101                       |
+  | GCA_017311145 | 100034at7898 | Complete   | JAFDUU010012282.1 |  212215 |  215459 | - | 438.1 | 228 | https://www.orthodb.org/v10?query=100034at7898 | transmembrane protein 101                       |
+  | GCA_004120215 | 100096at7898 | Complete   | QBIY01012533.1    | 1023874 | 1028993 | - | 347.3 | 253 | https://www.orthodb.org/v10?query=100096at7898 | General transcription factor IIH, polypeptide 3 |
+  | GCA_017311145 | 100096at7898 | Complete   | JAFDUU010012560.1 | 1023874 | 1028993 | - | 347.3 | 253 | https://www.orthodb.org/v10?query=100096at7898 | General transcription factor IIH, polypeptide 3 |
+  | GCA_004120215 | 100113at7898 | Complete   | QBIY01012633.1    | 1304102 | 1310289 | - | 393.4 | 233 | https://www.orthodb.org/v10?query=100113at7898 | iron-sulfur protein NUBPL isoform X1            |
+  | GCA_017311145 | 100113at7898 | Complete   | JAFDUU010012660.1 | 1304102 | 1310289 | - | 393.4 | 233 | https://www.orthodb.org/v10?query=100113at7898 | iron-sulfur protein NUBPL isoform X1            |
+  | GCA_004120215 | 100156at7898 | Complete   | QBIY01013293.1    |  773860 |  781295 | + | 629.5 | 382 | https://www.orthodb.org/v10?query=100156at7898 | protein LTV1 homolog                            |
+  | GCA_017311145 | 100156at7898 | Complete   | JAFDUU010013319.1 |  773860 |  781295 | + | 629.5 | 382 | https://www.orthodb.org/v10?query=100156at7898 | protein LTV1 homolog                            |
+
+** Orthofinder
+
+
+#+begin_src sh :tangle 3-orthofinder/copy.sh :var proteins=proteins
+for name in "${!proteins[@]}"; do
+    tr '.' 'X' < "${proteins[$name]}" > 3-orthofinder/$name.fa
+done
+
+#+end_src
+
+#+begin_src sh :tangle 3-orthofinder/run.sh
+ml singularity/3.5.2
+orthofinder () { singularity exec apps/orthofinder_2.5.4.sif orthofinder "$@" ; }
+
+orthofinder -f 3-orthofinder/
+#+end_src
+
+
+- Rohus Only
+  #+begin_src sh
+  head -11 3-orthofinder/OrthoFinder/Results_Feb07/Comparative_Genomics_Statistics/Statistics_PerSpecies.tsv
+  #+end_src
+
+  #+RESULTS:
+  |                                                     | GCA_004120215 |  Rohu |
+  |-----------------------------------------------------+---------------+-------|
+  | Number of genes                                     |         37438 | 31274 |
+  | Number of genes in orthogroups                      |         32459 | 27112 |
+  | Number of unassigned genes                          |          4979 |  4162 |
+  | Percentage of genes in orthogroups                  |          86.7 |  86.7 |
+  | Percentage of unassigned genes                      |          13.3 |  13.3 |
+  | Number of orthogroups containing species            |         17839 | 15969 |
+  | Percentage of orthogroups containing species        |          96.7 |  86.6 |
+  | Number of species-specific orthogroups              |          2478 |   608 |
+  | Number of genes in species-specific orthogroups     |          8451 |  5850 |
+  | Percentage of genes in species-specific orthogroups |          22.6 |  18.7 |
+
+
+
+
+** Dotplot
+
+#+begin_src sh :tangle 2-dotplot/rohu/run.sh :var data=rohu-genomes :var names=rohu-genomes[,0]
+cd $DIR/
+
+for(( i=0; i<${#data[@]}; i++)); do
+    convert -background white -fill black -size 3000x3000 -gravity center "label:${names[$i]/_/ }" $DIR/2-dotplot/rohu/${names[$i]}-${names[$i]}.png
+    for(( j=0; j<${#data[@]}; j++)); do
+        [[ $i == $j ]] && continue
+        make -C $DIR/2-dotplot/rohu -f $DIR/apps/dotplot/dotplot.mk \
+            REFERENCE="$DIR/${data[${names[$i]}]}" \
+            GENOME="$DIR/${data[${names[$j]}]}" \
+            NAME="${names[$i]}-${names[$j]}" \
+            CPUS=20
+    done
+done
+
+#+end_src
+
+#+begin_src sh
+montage -density 500 -tile 3x0 -label "" $DIR/2-dotplot/rohu/*-*.png -geometry 300x300  $DIR/2-dotplot/rohu.png
+#+end_src
+
+* Cypriniformes
+
+#+NAME: carp-datasets
+#+CAPTION: All annotated Cypriniforme genomes from NCBI
+| Organism Scientific Name     | Assembly Name         | Assembly Accession | Level      | Contig N50 |       Size | Submission Date | Gene Count |
+|------------------------------+-----------------------+--------------------+------------+------------+------------+-----------------+------------|
+| Anabarilius grahami          | BGI_Agra_1.0          | GCA_003731715.1    | Scaffold   |      36058 |  991887266 |      2018-11-15 |      23906 |
+| Danionella translucida       | ASM722483v1           | GCA_007224835.1    | Scaffold   |     133131 |  735303417 |      2019-07-22 |      35803 |
+| Triplophysa tibetana         | ASM836982v1           | GCA_008369825.1    | Chromosome |    2833080 |  652930317 |      2019-09-12 |      24398 |
+| Onychostoma macrolepis       | ASM1243209v1          | GCA_012432095.1    | Chromosome |   10809623 |  886569841 |      2020-04-17 |      24754 |
+| Pimephales promelas          | EPA_FHM_2.0           | GCA_016745375.1    | Scaffold   |     295770 | 1066412313 |      2021-01-24 |      26150 |
+| Danio rerio                  | GRCz11                | GCF_000002035.6    | Chromosome |    1422317 | 1373454788 |      2017-05-09 |      40031 |
+| Sinocyclocheilus anshuiensis | SAMN03320099.WGS_v1.1 | GCF_001515605.1    | Scaffold   |      17271 | 1632701648 |      2015-12-14 |      52005 |
+| Sinocyclocheilus rhinocerous | SAMN03320098_v1.1     | GCF_001515625.1    | Scaffold   |      18758 | 1655769822 |      2015-12-14 |      53875 |
+| Sinocyclocheilus grahami     | SAMN03320097.WGS_v1.1 | GCF_001515645.1    | Scaffold   |      29354 | 1750271176 |      2015-12-16 |      55200 |
+| Carassius auratus            | ASM336829v1           | GCF_003368295.1    | Chromosome |     821153 | 1820618472 |      2018-08-09 |      83650 |
+| Cyprinus carpio              | ASM1834038v1          | GCF_018340385.1    | Chromosome |    1558716 | 1680118328 |      2021-05-12 |      59559 |
+| Puntigrus tetrazona          | ASM1883169v1          | GCF_018831695.1    | Chromosome |    1423374 |  730801986 |      2021-06-10 |      40303 |
+
+- Genomes
+  #+NAME: carp-genomes
+  #+CAPTION: location of genome sequences
+  | Triplophysa tibetana         | 0-ref/ncbi/cypriniformes/GCA_008369825.1/GCA_008369825.1.genome.fa |
+  | Pimephales promelas          | 0-ref/ncbi/cypriniformes/GCA_016745375.1/GCA_016745375.1.genome.fa |
+  | Sinocyclocheilus anshuiensis | 0-ref/ncbi/cypriniformes/GCF_001515605.1/GCF_001515605.1.genome.fa |
+  | Puntigrus tetrazona          | 0-ref/ncbi/cypriniformes/GCF_018831695.1/GCF_018831695.1.genome.fa |
+  | Cyprinus carpio              | 0-ref/ncbi/cypriniformes/GCF_018340385.1/GCF_018340385.1.genome.fa |
+  | Danionella translucida       | 0-ref/ncbi/cypriniformes/GCA_007224835.1/GCA_007224835.1.genome.fa |
+  | Danio rerio                  | 0-ref/ncbi/cypriniformes/GCF_000002035.6/GCF_000002035.6.genome.fa |
+  | Sinocyclocheilus rhinocerous | 0-ref/ncbi/cypriniformes/GCF_001515625.1/GCF_001515625.1.genome.fa |
+  | Carassius auratus            | 0-ref/ncbi/cypriniformes/GCF_003368295.1/GCF_003368295.1.genome.fa |
+  | Onychostoma macrolepis       | 0-ref/ncbi/cypriniformes/GCA_012432095.1/GCA_012432095.1.genome.fa |
+  | Anabarilius grahami          | 0-ref/ncbi/cypriniformes/GCA_003731715.1/GCA_003731715.1.genome.fa |
+  | Sinocyclocheilus grahami     | 0-ref/ncbi/cypriniformes/GCF_001515645.1/GCF_001515645.1.genome.fa |
+  | Labeo rohita                 | 0-ref/rohu.fa                                                      |
+
+  #+begin_src sh :var files=carp-genomes[,1]
+
+cp 0-ref/ncbi/cypriniformes/GCA_001270105.1/GCA_001270105.1{_ASM127010v1_genomic.fna,.genome.fa}
+cp 0-ref/ncbi/cypriniformes/GCA_003731715.1/GCA_003731715.1{_BGI_Agra_1.0_genomic.fna,.genome.fa}
+cp 0-ref/ncbi/cypriniformes/GCA_004120215.1/GCA_004120215.1{_ASM412021v1_genomic.fna,.genome.fa}
+cp 0-ref/ncbi/cypriniformes/GCA_007224835.1/GCA_007224835.1{_ASM722483v1_genomic.fna,.genome.fa}
+cp 0-ref/ncbi/cypriniformes/GCA_016745375.1/GCA_016745375.1{_EPA_FHM_2.0_genomic.fna,.genome.fa}
+
+cat 0-ref/ncbi/cypriniformes/GCF_001515605.1/{chrMT.fna,unplaced.scaf.fna} \
+    > 0-ref/ncbi/cypriniformes/GCF_001515605.1/GCF_001515605.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_001515625.1/{chrMT.fna,unplaced.scaf.fna} \
+    > 0-ref/ncbi/cypriniformes/GCF_001515625.1/GCF_001515625.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_001515645.1/{chrMT.fna,unplaced.scaf.fna} \
+    > 0-ref/ncbi/cypriniformes/GCF_001515645.1/GCF_001515645.1.genome.fa
+
+cat 0-ref/ncbi/cypriniformes/GCA_008369825.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCA_008369825.1/GCA_008369825.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCA_012432095.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCA_012432095.1/GCA_012432095.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_000002035.6/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_000002035.6/GCF_000002035.6.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_000951615.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_000951615.1/GCF_000951615.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_003368295.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_003368295.1/GCF_003368295.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_018340385.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_018340385.1/GCF_018340385.1.genome.fa
+cat 0-ref/ncbi/cypriniformes/GCF_018831695.1/{chr*,unplaced.scaf}.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_018831695.1/GCF_018831695.1.genome.fa
+
+
+
+  #+end_src
+- Chromosome
+  #+NAME: carp-chr
+  #+CAPTION: location of genome sequences
+  | Triplophysa_tibetana   | 0-ref/ncbi/cypriniformes/GCA_008369825.1/GCA_008369825.1.chr.fa |
+  | Puntigrus_tetrazona    | 0-ref/ncbi/cypriniformes/GCF_018831695.1/GCF_018831695.1.chr.fa |
+  | Cyprinus_carpio        | 0-ref/ncbi/cypriniformes/GCF_018340385.1/GCF_018340385.1.chr.fa |
+  | Danio_rerio            | 0-ref/ncbi/cypriniformes/GCF_000002035.6/GCF_000002035.6.chr.fa |
+  | Carassius_auratus      | 0-ref/ncbi/cypriniformes/GCF_003368295.1/GCF_003368295.1.chr.fa |
+  | Onychostoma_macrolepis | 0-ref/ncbi/cypriniformes/GCA_012432095.1/GCA_012432095.1.chr.fa |
+  | Labeo_rohita           | 0-ref/rohu.chr.fa                                               |
+
+  #+begin_src sh :var files=carp-genomes[,1]
+
+cat 0-ref/ncbi/cypriniformes/GCA_008369825.1/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCA_008369825.1/GCA_008369825.1.chr.fa
+cat 0-ref/ncbi/cypriniformes/GCA_012432095.1/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCA_012432095.1/GCA_012432095.1.chr.fa
+cat 0-ref/ncbi/cypriniformes/GCF_000002035.6/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_000002035.6/GCF_000002035.6.chr.fa
+cat 0-ref/ncbi/cypriniformes/GCF_003368295.1/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_003368295.1/GCF_003368295.1.chr.fa
+cat 0-ref/ncbi/cypriniformes/GCF_018340385.1/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_018340385.1/GCF_018340385.1.chr.fa
+cat 0-ref/ncbi/cypriniformes/GCF_018831695.1/chr*.fna  \
+    > 0-ref/ncbi/cypriniformes/GCF_018831695.1/GCF_018831695.1.chr.fa
+
+ml singularity/3.5.2
+samtools () { singularity exec apps/samtools_v1.9-4-deb_cv1.sif samtools "$@" ; }
+
+awk '/Chr/ {print $1}' 0-ref/rohu.fa.fai | samtools faidx -r - 0-ref/rohu.fa > 0-ref/rohu.chr.fa
+
+  #+end_src
+
+- Proteins
+  #+NAME: carp-proteins
+  #+CAPTION: location of genome sequences
+  | Triplophysa tibetana         | 0-ref/ncbi/cypriniformes/GCA_008369825.1/protein.faa |
+  | Pimephales promelas          | 0-ref/ncbi/cypriniformes/GCA_016745375.1/protein.faa |
+  | Sinocyclocheilus anshuiensis | 0-ref/ncbi/cypriniformes/GCF_001515605.1/protein.faa |
+  | Puntigrus tetrazona          | 0-ref/ncbi/cypriniformes/GCF_018831695.1/protein.faa |
+  | Cyprinus carpio              | 0-ref/ncbi/cypriniformes/GCF_018340385.1/protein.faa |
+  | Danionella translucida       | 0-ref/ncbi/cypriniformes/GCA_007224835.1/protein.faa |
+  | Danio rerio                  | 0-ref/ncbi/cypriniformes/GCF_000002035.6/protein.faa |
+  | Sinocyclocheilus rhinocerous | 0-ref/ncbi/cypriniformes/GCF_001515625.1/protein.faa |
+  | Carassius auratus            | 0-ref/ncbi/cypriniformes/GCF_003368295.1/protein.faa |
+  | Onychostoma macrolepis       | 0-ref/ncbi/cypriniformes/GCA_012432095.1/protein.faa |
+  | Anabarilius grahami          | 0-ref/ncbi/cypriniformes/GCA_003731715.1/protein.faa |
+  | Sinocyclocheilus grahami     | 0-ref/ncbi/cypriniformes/GCF_001515645.1/protein.faa |
+  | Labeo rohita                 | 0-ref/rohu.protein.fa                                |
+
+** Busco
+
+
+*** Genomic
+#+begin_src sh :tangle 1-busco/cypriniformes/run.sh :var data=carp-genomes
+
+ml singularity/3.5.2
+busco () { singularity exec apps/busco_v5.2.2_cv1.sif busco "$@" ; }
+
+for name in "${!data[@]}"; do
+   echo singularity exec apps/busco_v5.2.2_cv1.sif busco -i "${data[$name]}" \
+         --out_path "$DIR/1-busco/cypriniformes/" \
+         -o "${name/ /_}" \
+         -m geno \
+         -l $DIR/1-busco/actinopterygii_odb10 \
+         --tar \
+         --offline \
+         -c 10
+
+done
+#+end_src
+
+# Wide fromat busco report
+#+begin_src sh
+find 1-busco/cypriniformes/ -name short_summary.txt |
+    xargs awk 'FNR==1 {
+                   spec=FILENAME;
+                   sub("1-busco/cypriniformes/", "", spec)
+                   sub("/run_actinopterygii_odb10/short_summary.txt", "", spec)
+                   head = head "\t" spec
+               }
+               !/#/ && /BUSCO/ {
+                   lines[FNR] = lines[FNR] "\t" $1
+               }
+               FNR==NR {
+                   $1 = "";
+                   label[FNR] = $0;
+              }
+
+               END {print head; for( line in lines ) print label[line] lines[line]}'
+#+end_src
+
+#+NAME: long-busco
+#+begin_src sh
+find 1-busco/cypriniformes/ -name full_table.tsv |
+    xargs awk 'BEGIN{ print "Species\tComplete\tDuplicated\tFragmented\tMissing\t";}
+              FNR==1 {
+                if(spec)
+                    print spec, c["Complete"], c["Duplicated"], c["Fragmented"], c["Missing"];
+
+                spec=FILENAME;
+                sub("1-busco/cypriniformes/", "", spec)
+                sub("/run_actinopterygii_odb10/full_table.tsv", "", spec)
+
+                delete c;
+                delete _;
+               }
+               !/#/ && !_[$1]++ {
+                 c[$2]++;
+               }
+               END{
+                    print spec, c["Complete"], c["Duplicated"], c["Fragmented"], c["Missing"];
+                    }' OFS="\t"
+#+end_src
+
+#+RESULTS: long-busco
+| Species                      | Complete | Duplicated | Fragmented | Missing |
+| Onychostoma_macrolepis       |     3500 |         42 |         29 |      69 |
+| Danio_rerio                  |     3435 |         57 |         63 |      85 |
+| Sinocyclocheilus_grahami     |     1786 |       1623 |        104 |     127 |
+| Puntigrus_tetrazona          |     3396 |        162 |         26 |      56 |
+| Cyprinus_carpio              |     1348 |       2209 |         28 |      55 |
+| Danionella_translucida       |     3190 |         98 |         97 |     255 |
+| Labeo_rohita                 |     3535 |         36 |         23 |      46 |
+| Carassius_auratus            |     1357 |       2220 |         26 |      37 |
+| Anabarilius_grahami          |     3496 |         40 |         41 |      63 |
+| Triplophysa_tibetana         |     3430 |         85 |         22 |     103 |
+| Pimephales_promelas          |     3431 |         93 |         52 |      64 |
+| Sinocyclocheilus_rhinocerous |     1397 |       2129 |         48 |      66 |
+| Sinocyclocheilus_anshuiensis |     1317 |       2247 |         36 |      40 |
+
+#+header: :width 900 :height 300
+#+begin_src R :var data=long-busco :results output graphics file :file 1-busco/cypriniformes/busco.summary.png
+library(tidyverse)
+
+colnames(data) <- data[1,]
+data <- data[-1,]
+
+data <-  data %>%
+  mutate(Species = factor(sub("_", " ", Species))) %>%
+  mutate(Species = fct_reorder(Species, Complete))%>%
+  gather(key=key, value=value, -Species) %>%
+  group_by(Species) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(label = ifelse(value > 150, value, NA),
+         label_y = cumsum(value) - (value/2))
+
+## align label location
+breaks = c(700,1700, 2400, 3477, 3512)
+data <- data %>%
+  mutate(label_y = breaks[sapply(label_y, function(y) which.min(abs(breaks-y)))])
+
+ggplot(data, aes(Species, value, fill=fct_rev(key))) +
+  geom_col() +
+  geom_text(aes(label=label, y=label_y), color='#333333') +
+  coord_flip() +
+  scale_fill_manual(values = rev(c('#33a02c','#b2df8a', '#fdbf6f', '#fb9a99'))) +
+  scale_y_continuous(expand=c(0,0)) +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.title = element_blank(),
+        plot.background = element_rect(fill='white'))
+
+#+end_src
+
+*** Protein
+#+begin_src sh :tangle 1-busco/prot.run.sh :var proteins=proteins[2:3,]
+
+ml singularity/3.5.2
+busco () { singularity exec apps/busco_v5.2.2_cv1.sif busco "$@" ; }
+
+for name in "${!proteins[@]}"; do
+    busco -i "${proteins[$name]}" \
+        -o $name.prot \
+        -m prot \
+        -l actinopterygii_odb10 \
+        --tar \
+        -c 6
+done
+#+end_src
+
+
+** Dotplot
+
+#+begin_src sh :tangle 2-dotplot/cypriniformes/run.sh :var data=carp-chr :var names=carp-chr[,0]
+cd $DIR/
+
+for(( i=0; i<${#data[@]}; i++)); do
+    rm $DIR/2-dotplot/cypriniformes/${names[$i]}-${names[$i]}.png
+    convert -background white -fill black -size 3000x3000 -gravity center "label:${names[$i]/_/ }" $DIR/2-dotplot/cypriniformes/${names[$i]}-${names[$i]}.png
+    for(( j=0; j<${#data[@]}; j++)); do
+        [[ $i == $j ]] && continue;
+        make -C $DIR/2-dotplot/cypriniformes -f $DIR/apps/dotplot/dotplot.mk \
+            REFERENCE="$DIR/${data[${names[$i]}]}" \
+            GENOME="$DIR/${data[${names[$j]}]}" \
+            NAME="${names[$i]}-${names[$j]}" \
+            CPUS=20
+    done
+done
+
+#+end_src
+
+#+begin_src sh
+montage -density 500 -tile 7x0 -label "" $DIR/2-dotplot/cypriniformes/*-*.png -geometry 300x300  $DIR/2-dotplot/cypriniformes.png
+#+end_src
+
+
+#+begin_src  sh :results raw
+
+PNGS=$DIR/2-dotplot/cypriniformes
+
+montage -density 500 -tile 5x0 -label "" \
+    $PNGS/Carassius_auratus-Carassius_auratus.png \
+    $PNGS/Carassius_auratus-Cyprinus_carpio.png \
+    $PNGS/Carassius_auratus-Labeo_rohita.png \
+    $PNGS/Carassius_auratus-Onychostoma_macrolepis.png \
+    $PNGS/Carassius_auratus-Puntigrus_tetrazona.png \
+    $PNGS/Cyprinus_carpio-Carassius_auratus.png \
+    $PNGS/Cyprinus_carpio-Cyprinus_carpio.png \
+    $PNGS/Cyprinus_carpio-Labeo_rohita.png \
+    $PNGS/Cyprinus_carpio-Onychostoma_macrolepis.png \
+    $PNGS/Cyprinus_carpio-Puntigrus_tetrazona.png \
+    $PNGS/Labeo_rohita-Carassius_auratus.png \
+    $PNGS/Labeo_rohita-Cyprinus_carpio.png \
+    $PNGS/Labeo_rohita-Labeo_rohita.png \
+    $PNGS/Labeo_rohita-Onychostoma_macrolepis.png \
+    $PNGS/Labeo_rohita-Puntigrus_tetrazona.png \
+    $PNGS/Onychostoma_macrolepis-Carassius_auratus.png \
+    $PNGS/Onychostoma_macrolepis-Cyprinus_carpio.png \
+    $PNGS/Onychostoma_macrolepis-Labeo_rohita.png \
+    $PNGS/Onychostoma_macrolepis-Onychostoma_macrolepis.png \
+    $PNGS/Onychostoma_macrolepis-Puntigrus_tetrazona.png \
+    $PNGS/Puntigrus_tetrazona-Carassius_auratus.png \
+    $PNGS/Puntigrus_tetrazona-Cyprinus_carpio.png \
+    $PNGS/Puntigrus_tetrazona-Labeo_rohita.png \
+    $PNGS/Puntigrus_tetrazona-Onychostoma_macrolepis.png \
+    $PNGS/Puntigrus_tetrazona-Puntigrus_tetrazona.png \
+    -geometry 300x300 $DIR/2-dotplot/cypriniformes.rm-uninformative.png
+
+#+end_src
+
+#+RESULTS:
+
+** Orthofinder
+
+
+#+begin_src sh :tangle 3-orthofinder/cypriniformes/copy.sh :var proteins=carp-proteins
+for name in "${!proteins[@]}"; do
+    tr '.' 'X' < "$DIR/${proteins[$name]}" > $DIR/3-orthofinder/cypriniformes/${name/ /_}.fa
+done
+
+#+end_src
+
+#+begin_src sh :tangle 3-orthofinder/cypriniformes/run.sh
+ml singularity/3.5.2
+orthofinder () { singularity exec $DIR/apps/orthofinder_2.5.4.sif orthofinder "$@" ; }
+
+orthofinder -f $DIR/3-orthofinder/cypriniformes
+
+#+end_src
+
+
+#+begin_src sh
+head -11 3-orthofinder/cypriniformes/OrthoFinder/Results_Feb11/Comparative_Genomics_Statistics/Statistics_PerSpecies.tsv
+#+end_src
+
+|                              | Number of Genes | Genes in Orthogroups | Unassigned Genes | Orthogroups Containing Species | Species-specific Orthogroups | Genes in Species-specific Orthogroups |
+|------------------------------+-----------------+----------------------+------------------+--------------------------------+------------------------------+---------------------------------------|
+| Anabarilius grahami          |           23906 | 21942 (91.8%)        | 1964 (8.2%)      | 15217 (51.5%)                  |                          180 | 888 (3.7%)                            |
+| Carassius auratus            |           96703 | 93988 (97.2%)        | 2715 (2.8%)      | 21896 (74.2%)                  |                          472 | 1775 (1.8%)                           |
+| Cyprinus carpio              |           80686 | 78684 (97.5%)        | 2002 (2.5%)      | 21584 (73.1%)                  |                          287 | 964 (1.2%)                            |
+| Danio rerio                  |           52829 | 51951 (98.3%)        | 878  (1.7%)      | 20671 (70.0%)                  |                          392 | 2184 (4.1%)                           |
+| Danionella translucida       |           35381 | 32943 (93.1%)        | 2438 (6.9%)      | 19073 (64.6%)                  |                          540 | 1941 (5.5%)                           |
+| Labeo rohita                 |           31274 | 29904 (95.6%)        | 1370 (4.4%)      | 18740 (63.5%)                  |                          161 | 1581 (5.1%)                           |
+| Onychostoma macrolepis       |           24754 | 24483 (98.9%)        | 271  (1.1%)      | 19276 (65.3%)                  |                          137 | 603 (2.4%)                            |
+| Pimephales promelas          |           47578 | 45412 (95.4%)        | 2166 (4.6%)      | 19884 (67.4%)                  |                          506 | 1826 (3.8%)                           |
+| Puntigrus tetrazona          |           48681 | 48094 (98.8%)        | 587  (1.2%)      | 20582 (69.7%)                  |                          129 | 517 (1.1%)                            |
+| Sinocyclocheilus anshuiensis |           68474 | 66456 (97.1%)        | 2018 (2.9%)      | 21485 (72.8%)                  |                          114 | 344 (0.5%)                            |
+| Sinocyclocheilus grahami     |           67410 | 63316 (93.9%)        | 4094 (6.1%)      | 22326 (75.6%)                  |                          338 | 793 (1.2%)                            |
+| Sinocyclocheilus rhinocerous |           68562 | 65831 (96.0%)        | 2731 (4.0%)      | 21884 (74.1%)                  |                          172 | 414 (0.6%)                            |
+| Triplophysa tibetana         |           24310 | 23279 (95.8%)        | 1031 (4.2%)      | 18734 (63.5%)                  |                          125 | 480 (2.0%)                            |
