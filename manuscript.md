@@ -6,7 +6,7 @@ keywords:
 - nanopore
 - Labeo rohita
 lang: en-US
-date-meta: '2022-02-07'
+date-meta: '2022-02-14'
 author-meta:
 - Mark A. Arick II
 - Chuan-Yu Hsu
@@ -33,8 +33,8 @@ header-includes: |-
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2022-02-07" />
-  <meta name="citation_publication_date" content="2022-02-07" />
+  <meta name="dc.date" content="2022-02-14" />
+  <meta name="citation_publication_date" content="2022-02-14" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -92,9 +92,9 @@ header-includes: |-
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -116,10 +116,10 @@ manubot-clear-requests-cache: false
 
 <small><em>
 This manuscript
-([permalink](https://IGBB.github.io/rohu-genome/v/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814/))
+([permalink](https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/))
 was automatically generated
-from [IGBB/rohu-genome@ac1ca5b](https://github.com/IGBB/rohu-genome/tree/ac1ca5b108201827ebe2e7f8b6fba3fdd9a6a814)
-on February 7, 2022.
+from [IGBB/rohu-genome@ec78ab9](https://github.com/IGBB/rohu-genome/tree/ec78ab9bc8d0a4dd947ce42da331c04b96be8692)
+on February 14, 2022.
 </em></small>
 
 ## Authors
@@ -209,51 +209,96 @@ ALAM – Rohu blood collection
 
 #### Flow cytometry 
 
-The genome size of *Labeo rohita* was estimated for five samples via flow cytometry using trout erythrocyte nuclei (TENs; https://www.biosure.com/tens.html) as a standard (genome size=6.5pg).
-For each sample, nuclei were stabilized in 200 ul of LB01-propidium iodide (PI) buffer as per [@pmid:24415480], and two drops of TENs standard were used per 50ul of fish blood.
-Each sample was measured twice, totaling 10 runs overall. 
-Only measurements with greater than 5,000 nuclei and a coefficient of variation (CV) of less than 3% were retained [@pmid:24415480].
+The genome size of *Labeo rohita* was estimated for five samples via flow
+cytometry using trout erythrocyte nuclei (TENs;
+https://www.biosure.com/tens.html) as a standard (genome size=6.5pg). For each
+sample, nuclei were stabilized in 200 ul of LB01-propidium iodide (PI) buffer as
+per [@pmid:24415480], and two drops of TENs standard were used per 50ul of fish
+blood. Each sample was measured twice, totaling 10 runs overall. Only
+measurements with greater than 5,000 nuclei and a coefficient of variation (CV)
+of less than 3% were retained [@pmid:24415480].
 
 #### Illumina short-read sequencing
 
-A total of 2 µg of extracted genomic DNA was used for DNA-Seq library preparation using Illumina TruSeq DNA PCR-free Library Prep Kit (Illumina, San Diego, CA, USA). 
-The final DNA-Seq library with the insert size range of 350 bp to 450 bp was submitted to Novogene company (www.en.novogene.com) for total of 2 lanes of PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing.
+A total of 2 µg of extracted genomic DNA was used for DNA-Seq library
+preparation using Illumina TruSeq DNA PCR-free Library Prep Kit (Illumina, San
+Diego, CA, USA). The final DNA-Seq library with the insert size range of 350 bp
+to 450 bp was submitted to Novogene company (www.en.novogene.com) for total of 2
+lanes of PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing.
 
 #### Oxford Nanopore sequencing
 
-For each Nanopore sequencing run, 2 to 2.5 µg of genomic DNA was used in the library preparation with Nanopore Genomic DNA Ligation Sequencing Kit SQK-LSK 109 (Oxford Nanopore Technologies, Oxford, UK).
-The final library (about 700 to 750 ng) was loaded on a Nanopore Flow Cell R9.4.1 (Oxford Nanopore Technologies, Oxford, UK) and sequenced on GridION sequencer (Oxford Nanopore Technologies, Oxford, UK) for 48 hours. 
-A total of 10 flow cell runs were conducted for the genome assembly.
+For each Nanopore sequencing run, 2 to 2.5 µg of genomic DNA was used in the
+library preparation with Nanopore Genomic DNA Ligation Sequencing Kit SQK-LSK
+109 (Oxford Nanopore Technologies, Oxford, UK). The final library (about 700 to
+750 ng) was loaded on a Nanopore Flow Cell R9.4.1 (Oxford Nanopore Technologies,
+Oxford, UK) and sequenced on GridION sequencer (Oxford Nanopore Technologies,
+Oxford, UK) for 48 hours. A total of 10 flow cell runs were conducted for the
+genome assembly.
 
 #### Hi-C sequencing
 
-One hundred µl of fish blood was subjected to the Hi-C library preparation using the Proximo Hi-C Animal Kit (Phase Genomics, Seattle, WA, USA). 
-The final DNA-Seq library was submitted to Novogene (www.en.novogene.com) for 1 lane of PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing.
+One hundred µl of fish blood was subjected to the Hi-C library preparation using
+the Proximo Hi-C Animal Kit (Phase Genomics, Seattle, WA, USA). The final
+DNA-Seq library was submitted to Novogene (www.en.novogene.com) for 1 lane of
+PE150 Illumina HiSeq X-Ten (Illumina, San Diego, CA, USA) sequencing.
 
 #### Bionano 
 
 ### Assembly & Annotation 
 
-Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0) [@pmcid:PMC5870704] estimated the genome size using the Illumina paired reads digested into 50-mers. 
+Jellyfish (v2.2.10) [@doi:10.1093/bioinformatics/btr011] and GenomeScope (v1.0)
+[@pmcid:PMC5870704] estimated the genome size using the Illumina paired reads
+digested into 50-mers.
 
-Nanopore data was filtered to remove the control lambda-phage and sequences shorter than 1000 bases using the nanopack tool suite (v1.0.1) [@doi:10.1093/bioinformatics/bty149]. 
-Trimmomatic (v0.32) [@doi:10.1093/bioinformatics/btu170] removed adapters, trimmed low quality bases, and filtered reads shorter than 85bp.
-The filtered nanopore data was assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. 
-The contigs were polished using the two iterations of racon (v1.4.0) [@doi:10.1101/gr.214270.116] with minimap2 (v2.17) (@doi:10.1093/bioinformatics/bty191) mapping the nanopore reads. 
-The contigs were further polished using pilon (v1.23) [@doi:10.1371/journal.pone.0112963] with bwa (v0.7.10) [@doi:10.1093/bioinformatics/btp324] mapping the Illumina paired reads. 
-The contigs were scaffolded using Bionano Solve ( Solve3.4.1_09262019) [@url:https://bionanogenomics.com/support-page/bionano-access-software/) and SALSA (v2.3) [@doi:10.1371/journal.pcbi.1007273]. 
-That scaffolds larger than 10Mb were linked and oriented based on the Onychostoma macrolepis genome [@doi:10.1111/1755-0998.13190], the most similar chromosome assembly available on NCBI, using ragtag (v1.1.1) [@doi:10.1186/s13059-019-1829-6].
+Nanopore data was filtered to remove the control lambda-phage and sequences
+shorter than 1000 bases using the nanopack tool suite (v1.0.1)
+[@doi:10.1093/bioinformatics/bty149]. Trimmomatic (v0.32)
+[@doi:10.1093/bioinformatics/btu170] removed adapters, trimmed low quality
+bases, and filtered reads shorter than 85bp. The filtered nanopore data was
+assembled into contigs using wtdbg2 (v2.4) [@doi:10.1038/s41592-019-0669-3]. The
+contigs were polished using the two iterations of racon (v1.4.0)
+[@doi:10.1101/gr.214270.116] with minimap2 (v2.17)
+(@doi:10.1093/bioinformatics/bty191) mapping the nanopore reads. The contigs
+were further polished using pilon (v1.23) [@doi:10.1371/journal.pone.0112963]
+with bwa (v0.7.10) [@doi:10.1093/bioinformatics/btp324] mapping the Illumina
+paired reads. The contigs were scaffolded using Bionano Solve (
+Solve3.4.1_09262019)
+[@url:https://bionanogenomics.com/support-page/bionano-access-software/) and
+SALSA (v2.3) [@doi:10.1371/journal.pcbi.1007273]. That scaffolds larger than
+10Mb were linked and oriented based on the Onychostoma macrolepis genome
+[@doi:10.1111/1755-0998.13190], the most similar chromosome assembly available
+on NCBI, using ragtag (v1.1.1) [@doi:10.1186/s13059-019-1829-6].
 
-RepeatModeler (v2.0.1) [@doi:10.1073/pnas.1921046117] and RepeatMasker (v4.1.1) [@repeatmasker] were used to create a species-specific repeat database, and mask those repeats in the genome.
-All available RNA-seq libraries for *L. rohita* [@tbl:rnaseq] were downloaded from NCBI and mapped to the masked genome using hisat2 (v2.1.0) [@doi:10.1038/s41587-019-0201-4].
-These alignments were used in the mikado (v2.0rc2) [@doi:10.1093/gigascience/giy093] and braker2 (v2.1.5) [@doi:10.1093/nargab/lqaa108] pipelines.
-Mikado uses the putative transcripts assembled from the RNA-seq alignments generated via stringtie (v2.1.2) [@doi:10.1186/s13059-019-1910-1], cufflinks (v2.2.1) [@doi:10.1038/nprot.2012.016], and trinity (v2.11.0) [@doi:10.1038/nbt.1883]; along with the junction site prediction from portcullis (v1.2.2) [@doi:10.1093/gigascience/giy131 ], the alignments of the putative transcripts with UniprotKB Swiss-Prot (v2021.03) [@uniprot], and the ORFs from prodigal (v2.6.3) [@doi:10.1186/1471-2105-11-119] to select the best representative for each locus.
-Braker2 uses the RNA-seq alignments and the gene prediction from GeneMark-ES (v4.61) [@doi:10.1002/0471250953.bi0406s35] to train a species-specific Augustus (v3.3.3) [@doi:10.1186/1471-2105-7-62] model.
-Maker2 (v2.31.10) [@doi:10.1186/1471-2105-12-491] predicts genes based on the new Augustus, GeneMark, and SNAP models; modifying the predictions based on the available RNA and protein evidence from the *Cyprinidae* family in the NCBI RefSeq database.
-Any predicted genes with an AED above 0.47 were removed from further analysis.
-The surviving genes were functionally annotated using InterProScan (v5.47-82.0) [@doi:10.1093/bioinformatics/btu031] and BLAST+ (v2.9.0) [@doi:10.1186/1471-2105-10-421] alignments against the UniprotKB Swiss-Prot database.
-Busco (v5.2.2) [@doi:10.1093/molbev/msab199] was used to verify the completeness of both the genome and annotations against the actinopterygii_odb10 database.
-Lastly, genes spanning large gaps or completely contained within another gene on the opposite strand were removed using a custom perl script (GITHUB).
+RepeatModeler (v2.0.1) [@doi:10.1073/pnas.1921046117] and RepeatMasker (v4.1.1)
+[@repeatmasker] were used to create a species-specific repeat database, and mask
+those repeats in the genome. All available RNA-seq libraries for *L. rohita*
+[@tbl:rnaseq] were downloaded from NCBI and mapped to the masked genome using
+hisat2 (v2.1.0) [@doi:10.1038/s41587-019-0201-4]. These alignments were used in
+the mikado (v2.0rc2) [@doi:10.1093/gigascience/giy093] and braker2 (v2.1.5)
+[@doi:10.1093/nargab/lqaa108] pipelines. Mikado uses the putative transcripts
+assembled from the RNA-seq alignments generated via stringtie (v2.1.2)
+[@doi:10.1186/s13059-019-1910-1], cufflinks (v2.2.1)
+[@doi:10.1038/nprot.2012.016], and trinity (v2.11.0) [@doi:10.1038/nbt.1883];
+along with the junction site prediction from portcullis (v1.2.2)
+[@doi:10.1093/gigascience/giy131 ], the alignments of the putative transcripts
+with UniprotKB Swiss-Prot (v2021.03) [@uniprot], and the ORFs from prodigal
+(v2.6.3) [@doi:10.1186/1471-2105-11-119] to select the best representative for
+each locus. Braker2 uses the RNA-seq alignments and the gene prediction from
+GeneMark-ES (v4.61) [@doi:10.1002/0471250953.bi0406s35] to train a
+species-specific Augustus (v3.3.3) [@doi:10.1186/1471-2105-7-62] model. Maker2
+(v2.31.10) [@doi:10.1186/1471-2105-12-491] predicts genes based on the new
+Augustus, GeneMark, and SNAP models; modifying the predictions based on the
+available RNA and protein evidence from the *Cyprinidae* family in the NCBI
+RefSeq database. Any predicted genes with an AED above 0.47 were removed from
+further analysis. The surviving genes were functionally annotated using
+InterProScan (v5.47-82.0) [@doi:10.1093/bioinformatics/btu031] and BLAST+
+(v2.9.0) [@doi:10.1186/1471-2105-10-421] alignments against the UniprotKB
+Swiss-Prot database. Busco (v5.2.2) [@doi:10.1093/molbev/msab199] was used to
+verify the completeness of both the genome and annotations against the
+actinopterygii_odb10 database. Lastly, genes spanning large gaps or completely
+contained within another gene on the opposite strand were removed using a custom
+perl script (https://github.com/IGBB/rohu-genome/).
 
 | BioProject  | BioSample    | Run        | Instrument          | sex            | Tissue        |
 |-------------|--------------|------------|---------------------|----------------|---------------|
@@ -275,9 +320,49 @@ Lastly, genes spanning large gaps or completely contained within another gene on
 | PRJNA450719 | SAMN08944449 | SRR7027731 | NextSeq 500         | male           | Pooled tissue |
 | PRJNA450719 | SAMN08944451 | SRR7027732 | NextSeq 500         | male           | Whole body    |
 
-Table: List of SRA accessions used in annotation pipeline.
-A table of all metadata available for these accessions can be found [here](https://github.com/IGBB/rohu-genome/supp/rna-seq.sra-metadata.csv) .
+Table: List of SRA accessions used in annotation pipeline. 
+A table of all metadata available for these accessions can be found
+[here](https://github.com/IGBB/rohu-genome/supp/rna-seq.sra-metadata.csv).
 {#tbl:rnaseq}
+
+### Comparitive Genomics
+
+The assenbly statistics, length distributions, BUSCO completeness scorse, and
+sequence similarity via dot-plots were compared between the IGBB /Labeo rohita/
+genome (reported here) and the two other rohu genomes avaliable on NCBI (CIFA:
+GCA\_004120215.1, HRRL: GCA\_017311145.1), as well as all annotated
+Cypriniformes genomes from NCBI [@tbl:genomes]. Assembly statistics were
+calculated using `abyss-fac` from the ABySS (v2.3.4)
+[@doi:10.1101/gr.214346.116]. Lengths distributions were calculated and graphed
+using samtools (v1.9) [@doi:10.1093/gigascience/giab008] and the R tidyverse
+package [@doi:10.21105/joss.01686]. BUSCO (v5.2.2) [@doi:10.1093/molbev/msab199]
+with the actinopterygii\_odb10 database was used to find the BUSCO scores for
+each genome. Minimap2 (v2.17-r941) [@doi:10.1093/bioinformatics/bty191] and the
+pafCoordsDotPlotly R script (https://github.com/tpoorten/dotPlotly) were used to
+create dot-plots. For the Cypriniformes data-set, only chromosome level
+assemblies were included in the dot-plots. The /Danio rerio/ and /Triplophysa
+tibetana/ genomes were also excluded from the dot-plots since few of the
+alignments passed the default quality filter in pafCoordsDotPlotly. The
+annotated genes were also compared to all annotated Cypriniformes using
+OrthoFinder (v2.5.4) [@doi:10.1186/s13059-019-1832-y].
+ 
+| Organism Scientific Name     | Assembly Name          | Assembly Accession | Level      | Contig N50 | Size       | Submission Date | Gene Count |
+|------------------------------|------------------------|--------------------|------------|------------|------------|-----------------|------------|
+| Anabarilius grahami          | BGI\_Agra\_1.0         | GCA\_003731715.1   | Scaffold   | 36058      | 991887266  | 2018-11-15      | 23906      |
+| Carassius auratus            | ASM336829v1            | GCF\_003368295.1   | Chromosome | 821153     | 1820618472 | 2018-08-09      | 83650      |
+| Cyprinus carpio              | ASM1834038v1           | GCF\_018340385.1   | Chromosome | 1558716    | 1680118328 | 2021-05-12      | 59559      |
+| Danionella translucida       | ASM722483v1            | GCA\_007224835.1   | Scaffold   | 133131     | 735303417  | 2019-07-22      | 35803      |
+| Danio rerio                  | GRCz11                 | GCF\_000002035.6   | Chromosome | 1422317    | 1373454788 | 2017-05-09      | 40031      |
+| Onychostoma macrolepis       | ASM1243209v1           | GCA\_012432095.1   | Chromosome | 10809623   | 886569841  | 2020-04-17      | 24754      |
+| Pimephales promelas          | EPA\_FHM\_2.0          | GCA\_016745375.1   | Scaffold   | 295770     | 1066412313 | 2021-01-24      | 26150      |
+| Puntigrus tetrazona          | ASM1883169v1           | GCF\_018831695.1   | Chromosome | 1423374    | 730801986  | 2021-06-10      | 40303      |
+| Sinocyclocheilus anshuiensis | SAMN03320099.WGS\_v1.1 | GCF\_001515605.1   | Scaffold   | 17271      | 1632701648 | 2015-12-14      | 52005      |
+| Sinocyclocheilus grahami     | SAMN03320097.WGS\_v1.1 | GCF\_001515645.1   | Scaffold   | 29354      | 1750271176 | 2015-12-16      | 55200      |
+| Sinocyclocheilus rhinocerous | SAMN03320098\_v1.1     | GCF\_001515625.1   | Scaffold   | 18758      | 1655769822 | 2015-12-14      | 53875      |
+| Triplophysa tibetana         | ASM836982v1            | GCA\_008369825.1   | Chromosome | 2833080    | 652930317  | 2019-09-12      | 24398      |
+
+Table: List of Cypriniformes genomes used in comparitive analyses
+{#tbl:genomes}
 
 ### ddRAD-Seq & SNP Discovery 
 
@@ -289,9 +374,11 @@ A table of all metadata available for these accessions can be found [here](https
 
 ### Data Availability 
 
-The data used for the *L. rohita* genome and annotation are available at NCBI under the BioProject PRJNA650519. 
-The assembled genome sequence and annotations are available at GenBank under accessions JACTAM000000000. 
-The raw data is available at the SRA (Sequence Read Archive) under accessions SRR12580210 – SRR12580221. 
+The data used for the *L. rohita* genome and annotation are available at NCBI
+under the BioProject PRJNA650519. The assembled genome sequence and annotations
+are available at GenBank under accessions JACTAM000000000. The raw data is
+available at the SRA (Sequence Read Archive) under accessions SRR12580210 –
+SRR12580221.
 
 
 ## Results & Discussion 
@@ -423,17 +510,52 @@ run with rmblastn version 2.10.0+
 The query was compared to classified sequences in "Rohu-families.fa" 
  
 ```
-_Comparative genomics_
 
-_So, I might recommend doing some sort of comparative genomics here or throughout. This becomes relevant when suggesting this genome is an improvement. BUSCO comparison, number of genes predicted, orthogroup analysis, synteny, etc._
+### Comparative genomics
+
+## /Labeo Rohita/
+
+| Name | n     | n:500 | L50 | min  | N75     | N50     | N25     | E-size  | max     | sum     |
+|------|-------|-------|-----|------|---------|---------|---------|---------|---------|---------|
+| CIFA | 13623 | 13617 | 182 | 500  | 774698  | 2006958 | 4279019 | 2905260 | 15.15e6 | 1.427e9 |
+| HRRL | 13660 | 13650 | 182 | 500  | 774698  | 2006958 | 4279019 | 2905216 | 15.15e6 | 1.427e9 |
+| IGBB | 2869  | 2869  | 13  | 1479 | 28.79e6 | 32.5e6  | 36.06e6 | 30.03e6 | 45.29e6 | 945.5e6 |
+
+Table: Assembly stats for rohu genomes
+{#tbl:assembly-stats}
+
+![
+Length distribution of scaffolds for each rohu assembly
+](../comp-gen/1-stats/length.rohu.hires.png "Length distro")[#fig:len-distro]
+
+![
+BUSCO score for each rohu genome
+](../comp-gen/1-busco/rohu/busco.summary.png "Rohu BUSCOs")
+
+![
+Dot-plots comparing sequence similarity between rohu genomes
+](../comp-gen/2-dotplot/rohu.png)
 
 _SNP discovery and population similarities among rohu fisheries_
 
-_Labeo rohita_ is an important aquaculture fish in many areas of south Asia [I don’t know how to put in this reference FAO (2019) Food and Agricultural Organization. Yearbook of Fishery and Aquaculture Statistics 2017]. 
+_Labeo rohita_ is an important aquaculture fish in many areas of south Asia [I
+don’t know how to put in this reference FAO (2019) Food and Agricultural
+Organization. Yearbook of Fishery and Aquaculture Statistics 2017].
 
-The high fecundity and relative ease of cultivation has made rohu successful in breeding programs, leading to the generation of a fast-growing strain called Jayanti 
-Historically, rohu breeding and research has relied on low-throughput information, such as cloning individual genes of interest (reviewed in [@doi:10.1111/raq.12444]) or microsatellite-based selective breeding [@doi:10.1007/s10499-016-0104-z]; however, recent years have seen increased interest in applying high-throughput methods to rohu breeding, such as SNP panels [@doi:10.1186/1471-2164-15-541] [@doi:10.1016/J.GENREP.2016.12.004], genotyping-by-sequencing [@doi:10.3389/fgene.2019.00597], transcriptomics [@doi:10.1186/1471-2164-15-541] [@doi:10.1080/10495398.2019.1707683], and degradomics [@doi:10.1016/j.ygeno.2019.07.010]. 
-Recently, a draft genome was published for L. rohita along with pooled resequencing from three individuals in 10 populations [@doi:10.3389/fgene.2020.00386]; however, genetic diversity and divergence among the populations was not reported.
+The high fecundity and relative ease of cultivation has made rohu successful in
+breeding programs, leading to the generation of a fast-growing strain called
+Jayanti Historically, rohu breeding and research has relied on low-throughput
+information, such as cloning individual genes of interest (reviewed in
+[@doi:10.1111/raq.12444]) or microsatellite-based selective breeding
+[@doi:10.1007/s10499-016-0104-z]; however, recent years have seen increased
+interest in applying high-throughput methods to rohu breeding, such as SNP
+panels [@doi:10.1186/1471-2164-15-541] [@doi:10.1016/J.GENREP.2016.12.004],
+genotyping-by-sequencing [@doi:10.3389/fgene.2019.00597], transcriptomics
+[@doi:10.1186/1471-2164-15-541] [@doi:10.1080/10495398.2019.1707683], and
+degradomics [@doi:10.1016/j.ygeno.2019.07.010]. Recently, a draft genome was
+published for L. rohita along with pooled resequencing from three individuals in
+10 populations [@doi:10.3389/fgene.2020.00386]; however, genetic diversity and
+divergence among the populations was not reported.
 
 
 
