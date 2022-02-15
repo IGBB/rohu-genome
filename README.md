@@ -1,7 +1,7 @@
 # Output directory containing the formatted manuscript
 
 The [`gh-pages`](https://github.com/IGBB/rohu-genome/tree/gh-pages) branch hosts the contents of this directory at <https://IGBB.github.io/rohu-genome/>.
-The permalink for this webpage version is <https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/>.
+The permalink for this webpage version is <https://IGBB.github.io/rohu-genome/v/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72/>.
 To redirect to the permalink for the latest manuscript version at anytime, use the link <https://IGBB.github.io/rohu-genome/v/freeze/>.
 
 ## Files
@@ -35,4 +35,4 @@ Verifying timestamps with the `ots verify` command requires running a local bitc
 ## Source
 
 The manuscripts in this directory were built from
-[`ec78ab9bc8d0a4dd947ce42da331c04b96be8692`](https://github.com/IGBB/rohu-genome/commit/ec78ab9bc8d0a4dd947ce42da331c04b96be8692).
+[`5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72`](https://github.com/IGBB/rohu-genome/commit/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72).
