@@ -11,11 +11,11 @@ auratus
 avaliable
 Benzie
 BGI
-Bionano
+bionano
 BioProject
 BioSample
-braker
-busco
+Braker
+Busco
 BUSCOs
 bwa
 Carassius
@@ -25,7 +25,7 @@ CIFA
 Comparitive
 Contig
 contigs
-CORRINNE
+Corrinne
 cufflinks
 Cyprinidae
 Cypriniformes
@@ -37,6 +37,7 @@ ddRAD
 degradomics
 densitometry
 distro
+dotplot
 Ezzell
 FAO
 Feulgen
@@ -72,7 +73,7 @@ Magbanua
 mer
 mers
 microsatellite
-Minimap
+minimap
 nanopack
 Nanopore
 NCBI
@@ -84,6 +85,7 @@ odb
 Onychostoma
 ORFs
 OrthoFinder
+Orthogroups
 orthologs
 pafCoordsDotPlotly
 PCR
@@ -108,7 +110,7 @@ resequencing
 rhinocerous
 rnaseq
 rohita
-Rohu
+rohu
 SAMN
 Samsul
 samtools

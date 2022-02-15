@@ -19,7 +19,7 @@
   <meta name="author" content="Attila Karsi" />
   <meta name="author" content="Mark L. Lawrence" />
   <meta name="author" content="Daniel G. Peterson" />
-  <meta name="dcterms.date" content="2022-02-14" />
+  <meta name="dcterms.date" content="2022-02-15" />
   <meta name="keywords" content="genome sequencing, ddrad sequencing, nanopore, Labeo rohita" />
   <title>A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers</title>
   <style>
@@ -61,8 +61,8 @@
   <meta name="citation_title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="og:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
   <meta property="twitter:title" content="A high-quality chromosome-level genome assembly of rohu carp, Labeo rohita, and discovery of SNP markers" />
-  <meta name="dc.date" content="2022-02-14" />
-  <meta name="citation_publication_date" content="2022-02-14" />
+  <meta name="dc.date" content="2022-02-15" />
+  <meta name="citation_publication_date" content="2022-02-15" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -120,9 +120,9 @@
   <meta name="citation_fulltext_html_url" content="https://IGBB.github.io/rohu-genome/" />
   <meta name="citation_pdf_url" content="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://IGBB.github.io/rohu-genome/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/" />
-  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/" />
-  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://IGBB.github.io/rohu-genome/v/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72/" />
+  <meta name="manubot_html_url_versioned" content="https://IGBB.github.io/rohu-genome/v/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72/" />
+  <meta name="manubot_pdf_url_versioned" content="https://IGBB.github.io/rohu-genome/v/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -136,10 +136,10 @@
 </header>
 <p><small><em>
 This manuscript
-(<a href="https://IGBB.github.io/rohu-genome/v/ec78ab9bc8d0a4dd947ce42da331c04b96be8692/">permalink</a>)
+(<a href="https://IGBB.github.io/rohu-genome/v/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72/">permalink</a>)
 was automatically generated
-from <a href="https://github.com/IGBB/rohu-genome/tree/ec78ab9bc8d0a4dd947ce42da331c04b96be8692">IGBB/rohu-genome@ec78ab9</a>
-on February 14, 2022.
+from <a href="https://github.com/IGBB/rohu-genome/tree/5350e6f1612cdf80dc3f8355a6eb4f5b75ca2a72">IGBB/rohu-genome@5350e6f</a>
+on February 15, 2022.
 </em></small></p>
 <h2 id="authors">Authors</h2>
 <p>Mark A. Arick II<sup>1
@@ -776,6 +776,7 @@ The smaller C-value is also closer to the genome estimate produced by GenomeScop
 The initial <em>de novo</em> assembly consisted of 4999 contigs with an N50 of 1.28 Mb.
 After the Bionano and HiC data was incorporated, the total number of sequences dropped to 2899 and the N50 increased to 29.9 Mb.
 The final assembly consisted of 25 chromosome length scaffolds and 2844 unplaced scaffolds, ranging in size from 1,479bp to 7.18 Mb.
+The chromosome scaffold consist of one to eight sequences with all but three made from three or fewer sequences.
 Table [<a href="#tbl:assembly">4</a>] contains a common assembly statistics for each step.
 The final genome size is 97.9% of the estimated genome size.
 The annotation pipeline produced 51,079 primary transcripts, 31,274 surviving the AED, gap, and overlapping filters.
@@ -969,7 +970,7 @@ run with rmblastn version 2.10.0+
 The query was compared to classified sequences in &quot;Rohu-families.fa&quot; 
  </code></pre>
 <h3 id="comparative-genomics">Comparative genomics</h3>
-<h2 id="labeo-rohita">/Labeo Rohita/</h2>
+<h4 id="labeo-rohita">Labeo Rohita</h4>
 <div id="tbl:assembly-stats" class="tablenos">
 <table id="tbl:assembly-stats">
 <caption><span>Table 6:</span> Assembly stats for rohu genomes
@@ -1032,13 +1033,157 @@ The query was compared to classified sequences in &quot;Rohu-families.fa&quot;
 </tbody>
 </table>
 </div>
-<p><img src="../comp-gen/1-stats/length.rohu.hires.png" title="Length distro" alt="Length distribution of scaffolds for each rohu assembly" />[#fig:len-distro]</p>
-<figure>
-<img src="../comp-gen/1-busco/rohu/busco.summary.png" alt="BUSCO score for each rohu genome" /><figcaption aria-hidden="true">BUSCO score for each rohu genome</figcaption>
-</figure>
-<figure>
-<img src="../comp-gen/2-dotplot/rohu.png" alt="Dot-plots comparing sequence similarity between rohu genomes" /><figcaption aria-hidden="true">Dot-plots comparing sequence similarity between rohu genomes</figcaption>
-</figure>
+<p><img src="../comp-gen/1-stats/length.rohu.hires.png" title="Length distro" alt="Length distribution of scaffolds for each rohu assembly. Each bar represents the number of bases contained in scaffolds of a particular length." />[#fig:len-distro]</p>
+<p><img src="../comp-gen/1-busco/rohu/busco.summary.png" title="Rohu BUSCOs" alt="BUSCO score for each rohu genome" />[#fig:busco-rohu]</p>
+<p><img src="../comp-gen/2-dotplot/rohu.png" alt="Dot-plots comparing sequence similarity between rohu genomes" />[#fig:dotplot-rohu]</p>
+<h4 id="cypriniformes">Cypriniformes</h4>
+<p><img src="../comp-gen/1-busco/cypriniformes/busco.summary.png" title="Rohu BUSCOs" alt="BUSCO score for each rohu genome" />[#fig:busco-carps]</p>
+<p><img src="../comp-gen/2-dotplot/cypriniformes.rm-uninformative.png" alt="Dot-plots comparing sequence similarity between rohu genomes" />[#fig:dotplot-carps]</p>
+<div id="tbl:orthofinder" class="tablenos">
+<table id="tbl:orthofinder">
+<caption><span>Table 7:</span> Summary statistics per species from OrthoFinder.
+</caption>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 17%" />
+<col style="width: 15%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Number of Genes</th>
+<th>Genes in Orthogroups</th>
+<th>Unassigned Genes</th>
+<th>Orthogroups Containing Species</th>
+<th>Species-specific Orthogroups</th>
+<th>Genes in Species-specific Orthogroups</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Anabarilius grahami</td>
+<td>23906</td>
+<td>21942 (91.8%)</td>
+<td>1964 (8.2%)</td>
+<td>15217 (51.5%)</td>
+<td>180</td>
+<td>888 (3.7%)</td>
+</tr>
+<tr class="even">
+<td>Carassius auratus</td>
+<td>96703</td>
+<td>93988 (97.2%)</td>
+<td>2715 (2.8%)</td>
+<td>21896 (74.2%)</td>
+<td>472</td>
+<td>1775 (1.8%)</td>
+</tr>
+<tr class="odd">
+<td>Cyprinus carpio</td>
+<td>80686</td>
+<td>78684 (97.5%)</td>
+<td>2002 (2.5%)</td>
+<td>21584 (73.1%)</td>
+<td>287</td>
+<td>964 (1.2%)</td>
+</tr>
+<tr class="even">
+<td>Danio rerio</td>
+<td>52829</td>
+<td>51951 (98.3%)</td>
+<td>878 (1.7%)</td>
+<td>20671 (70.0%)</td>
+<td>392</td>
+<td>2184 (4.1%)</td>
+</tr>
+<tr class="odd">
+<td>Danionella translucida</td>
+<td>35381</td>
+<td>32943 (93.1%)</td>
+<td>2438 (6.9%)</td>
+<td>19073 (64.6%)</td>
+<td>540</td>
+<td>1941 (5.5%)</td>
+</tr>
+<tr class="even">
+<td>Labeo rohita</td>
+<td>31274</td>
+<td>29904 (95.6%)</td>
+<td>1370 (4.4%)</td>
+<td>18740 (63.5%)</td>
+<td>161</td>
+<td>1581 (5.1%)</td>
+</tr>
+<tr class="odd">
+<td>Onychostoma macrolepis</td>
+<td>24754</td>
+<td>24483 (98.9%)</td>
+<td>271 (1.1%)</td>
+<td>19276 (65.3%)</td>
+<td>137</td>
+<td>603 (2.4%)</td>
+</tr>
+<tr class="even">
+<td>Pimephales promelas</td>
+<td>47578</td>
+<td>45412 (95.4%)</td>
+<td>2166 (4.6%)</td>
+<td>19884 (67.4%)</td>
+<td>506</td>
+<td>1826 (3.8%)</td>
+</tr>
+<tr class="odd">
+<td>Puntigrus tetrazona</td>
+<td>48681</td>
+<td>48094 (98.8%)</td>
+<td>587 (1.2%)</td>
+<td>20582 (69.7%)</td>
+<td>129</td>
+<td>517 (1.1%)</td>
+</tr>
+<tr class="even">
+<td>Sinocyclocheilus anshuiensis</td>
+<td>68474</td>
+<td>66456 (97.1%)</td>
+<td>2018 (2.9%)</td>
+<td>21485 (72.8%)</td>
+<td>114</td>
+<td>344 (0.5%)</td>
+</tr>
+<tr class="odd">
+<td>Sinocyclocheilus grahami</td>
+<td>67410</td>
+<td>63316 (93.9%)</td>
+<td>4094 (6.1%)</td>
+<td>22326 (75.6%)</td>
+<td>338</td>
+<td>793 (1.2%)</td>
+</tr>
+<tr class="even">
+<td>Sinocyclocheilus rhinocerous</td>
+<td>68562</td>
+<td>65831 (96.0%)</td>
+<td>2731 (4.0%)</td>
+<td>21884 (74.1%)</td>
+<td>172</td>
+<td>414 (0.6%)</td>
+</tr>
+<tr class="odd">
+<td>Triplophysa tibetana</td>
+<td>24310</td>
+<td>23279 (95.8%)</td>
+<td>1031 (4.2%)</td>
+<td>18734 (63.5%)</td>
+<td>125</td>
+<td>480 (2.0%)</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p><em>SNP discovery and population similarities among rohu fisheries</em></p>
 <p><em>Labeo rohita</em> is an important aquaculture fish in many areas of south Asia [I
 don’t know how to put in this reference FAO (2019) Food and Agricultural
