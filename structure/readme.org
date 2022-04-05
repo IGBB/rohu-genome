@@ -1,0 +1,196 @@
+#+TITLE: Population Structure
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+
+* All
+1) convert vcf to ped file
+  #+begin_src sh :tangle 1-convert.sh
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity
+vcftools () {
+    singularity exec -B$ROOT \
+        /apps/singularity-3/vcftools/vcftools-v0.1.16-1-deb_cv1.sif \
+        vcftools $@
+}
+
+
+awk '{print $1, NR}' OFS="\t" FS="\t" \
+    $ROOT/assembly/6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta.fai \
+    > $DIR/chr-map.all
+
+
+# Remove lines with missing alt
+zcat $DIR/fish.pass2.90pct.all.recode.vcf.gz |
+    awk '/^#/ || $5 != "."' > $DIR/fish.vcf
+
+vcftools --vcf $DIR/fish.vcf \
+    --remove-indv SRR12102514 \
+    --chrom-map $DIR/chr-map.all \
+    --remove-indels \
+    --plink \
+    --out $DIR/fish
+
+  #+end_src
+
+2) Run LEA
+   #+NAME: run-lea
+   #+begin_src R :tangle 2-run-lea.R
+library(LEA)
+
+
+ped2geno("fish.ped", "fish.geno")
+#vcf2geno("fish.vcf", "fish.geno")
+snmf("fish.geno",
+     K = 1:10,
+     entropy = T,
+     repetitions = 10,
+     project = "new",
+     ploidy=2,
+     CPU = 48)
+
+   #+end_src
+
+3) Cross-Entropy
+   #+name: graph-entropy
+   #+header: :var project.dir="fish.snmfProject"
+   #+header: :results output graphics file :file fish.entropy.png
+   #+begin_src R :width 800 :height 400
+library(tidyverse)
+library(LEA)
+
+project.dir <- scan(text=project.dir, what="character", allowEscapes = T)
+#Load snmf project
+project = load.snmfProject(project.dir)
+
+# Get best Ks by finding minimum min, mean, and max cross entropy
+summary.info = summary(project)$crossEntropy
+
+                                        # Plot the mean cross entropy.
+# Get the mean from summary_info and convert the rownames to column "K".
+# Remove "K = " from the K column.
+# Rename the "summary_info[2, ]" column to "mean".
+# Pass this information to ggplot.
+# Add a horizontal red line at the minimum cross entropy.
+# Plot the cross entropy by K as a scatterplot.
+# Set the x-axis labels from 1-10.
+# Change the x-axis and y-axis labels and the title.
+# Remove the legend.
+as.data.frame(t(summary.info)) %>%
+  tibble::rownames_to_column("K") %>%
+  mutate(K = factor(as.numeric(substring(K, 4)))) %>%
+  ggplot() +
+  geom_hline(aes(yintercept = min(summary.info[2,]), color = "red")) +
+  geom_pointrange(aes(x = K, ymin=min, y = mean, ymax=max)) +
+  labs(title = "Cross-entropy versus K", x = "Number of ancestral populations (K)", y = "Cross-entropy") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        panel.grid.major.x=element_blank(),
+        panel.grid.minor.x=element_blank(),
+        plot.background = element_rect(fill="white"))
+
+
+
+  #+end_src
+
+  [[./fish.entropy.png]]
+
+   #+name: selected-runs
+   #+header: :var project.dir="fish.snmfProject"
+   #+begin_src R :colnames yes :rownames yes
+library(LEA)
+
+project.dir <- scan(text=project.dir, what="character", allowEscapes = T)
+project = load.snmfProject(project.dir)
+
+
+## Get relevent data for each run
+summary = data.frame(
+  'K' = sapply(project@runs, slot, "K"),
+  'run' = sapply(project@runs, slot, "run"),
+  'crossEntropy' = sapply(project@runs, slot, "crossEntropy"),
+  'file' = sapply(project@runs, slot, "Q.output.file"))
+
+## Find the top 5 with lowest cross entropy
+index = head(order(summary$crossEntropy), n=5)
+
+summary[index,]
+   #+end_src
+
+   #+RESULTS: selected-runs
+   |    | K | run |       crossEntropy | file         |
+   |----+---+-----+--------------------+--------------|
+   | 51 | 1 |   6 | 0.0783959533321844 | fish_r6.1.Q  |
+   | 91 | 1 |  10 | 0.0784233170853525 | fish_r10.1.Q |
+   | 71 | 1 |   8 | 0.0784372243261066 | fish_r8.1.Q  |
+   | 52 | 2 |   6 | 0.0785278984525492 | fish_r6.2.Q  |
+   | 92 | 2 |  10 | 0.0785511115852912 | fish_r10.2.Q |
+
+4) Membership
+
+     #+header: :var prefix="fish"
+     #+header: :results output graphics file :file fish.structure.png
+     #+begin_src R :width 600 :height 900
+    library(data.table)
+library(tidyverse)
+library(hues)
+library(LEA)
+
+prefix <- scan(text=prefix, what="character", allowEscapes = T)
+project = load.snmfProject(paste0(prefix, ".snmfProject"))
+
+sample.names <- fread(paste0(prefix, ".ped"),
+                      select = 1,
+                      header=F,
+                      stringsAsFactors=F,
+                      col.names=c("sample"))
+
+
+meta.data <- read.csv("../raw/Rohu_sampling_data.csv")
+
+
+r = data.frame("K"=2, "Run"=6)
+
+  raw.data <- as.data.frame(Q(project, K=r$K, run=r$Run))
+
+  data.order <- dist(raw.data) %>%
+    hclust(method="ave") %>%
+    as.dendrogram %>%
+    order.dendrogram
+
+  data <- cbind(sample=sample.names$sample, raw.data)
+
+  ordered.data <- data[data.order, ] %>%
+    merge(meta.data, by.x="sample", by.y="Barcode", all.x=T) %>%
+    select("sample", starts_with('V'), "location"="Population") %>%
+    filter(!is.na(location)) %>%
+    mutate(sample=fct_reorder(factor(sample), V1)) %>%
+    gather(-c("sample", "location"), key="cluster", value="percent")
+
+plot<-  ggplot(ordered.data, aes(y = percent, x =sample, fill=cluster)) +
+    geom_col(width = 1) +
+    labs(title = paste0("Membership in ", r$K, " Inferred Populations"),
+         y = "Membership",
+         x = "Sample",
+         fill = "Population") +
+    scale_y_continuous(labels=scales::percent, expand = c(0,0)) +
+    scale_x_discrete(expand = c(0,0)) +
+    coord_flip() +
+    theme_minimal() +
+    theme( plot.background = element_rect(fill="white"),
+          axis.text.y=element_blank(),
+          legend.position = 'bottom') +
+    guides(fill=guide_legend(nrow=1)) +
+    facet_grid(rows='location',scales="free_y", space = "free")
+
+
+  plot + scale_fill_manual(values = c("#61acd0","#3d7287"))
+
+
+
+     #+end_src
+
+     #+RESULTS:
+     [[file:fish.structure.png]]
+
+     [[./fish.structure.png]]
