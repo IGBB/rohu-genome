@@ -56,7 +56,7 @@ done
   #+begin_src R
 library(tidyverse)
 library(scales)
-files <- list.files('1-stats/length.rohu/', pattern="*.len", full.names = T)
+files <- list.files('1-stats/length.rohu', pattern="*.len", full.names = T)
 names(files) <- sub('1-stats/length.rohu/(.*).len', '\\1', files)
 
 lengths <- lapply(files, read.table, header=F, col.names=c("Length")) %>%
@@ -73,6 +73,9 @@ p <- ggplot(lengths, aes(Length, weight=Length, group=Genome)) +
 ggsave('1-stats/length.rohu.hires.png', p, width=8, height=6)
 ggsave('1-stats/length.rohu.lores.png', p, width=8, height=6,dpi=72)
 #+end_src
+
+#+RESULTS:
+: 1-stats/length.rohu.lores.png
 
 
    #+Name: len-distro
@@ -458,8 +461,9 @@ find 1-busco/cypriniformes/ -name full_table.tsv |
 | Sinocyclocheilus_rhinocerous |     1397 |       2129 |         48 |      66 |
 | Sinocyclocheilus_anshuiensis |     1317 |       2247 |         36 |      40 |
 
+#+header: :var data=long-busco
 #+header: :width 900 :height 300
-#+begin_src R :var data=long-busco :results output graphics file :file 1-busco/cypriniformes/busco.summary.png
+#+begin_src R :results output graphics file :file 1-busco/cypriniformes/busco.summary.png
 library(tidyverse)
 
 colnames(data) <- data[1,]
@@ -609,3 +613,77 @@ head -11 3-orthofinder/cypriniformes/OrthoFinder/Results_Feb11/Comparative_Genom
 | Sinocyclocheilus grahami     |           67410 | 63316 (93.9%)        | 4094 (6.1%)      | 22326 (75.6%)                  |                          338 | 793 (1.2%)                            |
 | Sinocyclocheilus rhinocerous |           68562 | 65831 (96.0%)        | 2731 (4.0%)      | 21884 (74.1%)                  |                          172 | 414 (0.6%)                            |
 | Triplophysa tibetana         |           24310 | 23279 (95.8%)        | 1031 (4.2%)      | 18734 (63.5%)                  |                          125 | 480 (2.0%)                            |
+
+#+begin_src R
+library(tidyverse)
+library(ggrepel)
+
+data <- read.delim("3-orthofinder/cypriniformes/OrthoFinder/Results_Feb11/Comparative_Genomics_Statistics/Statistics_PerSpecies.tsv", nrows=10)
+data %>%
+  column_to_rownames('X') %>%
+  t %>%
+  as.data.frame %>%
+  rownames_to_column('Species') %>%
+  ggplot(aes(`Percentage of genes in orthogroups`,
+             `Percentage of orthogroups containing species`)) +
+  geom_point() +
+  geom_label_repel(aes(label=Species))
+#+end_src
+
+* Combined
+
+#+header: :var data=long-busco
+#+header: :width 900 :height 300
+#+begin_src R :results output graphics file :file 1-busco/cypriniformes/busco.summary.png
+library(tidyverse)
+
+rohu.data <- read.delim("1-busco/rohu/table.txt",header=F)
+cypr.data <- read.delim("1-busco/cypriniformes/table.txt",header=F)
+
+colnames(rohu.data) <- rohu.data[1,]
+rohu.data <- rohu.data[-1,]
+rohu.data$Lab <- rohu.data$Species
+rohu.data$Species <- "Labeo rohita"
+rohu.data <- rohu.data[!grepl("HRRL", rohu.data$Lab),]
+
+colnames(cypr.data) <- cypr.data[1,]
+cypr.data <- cypr.data[-1,]
+cypr.data <- cypr.data[!grepl("Labeo_rohita", cypr.data$Species),]
+cypr.data$Lab <- ""
+
+data <- rbind(rohu.data, cypr.data) %>%
+  mutate(Species = factor(sub("_", " ", Species))) %>%
+  mutate(Species = fct_reorder(Species, desc(Complete)))%>%
+  gather(key=key, value=value, -Species, -Lab) %>%
+  group_by(Species, Lab) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(label = ifelse(value > 150, value, NA),
+         label_y = cumsum(value) - (value/2))
+data$Species = relevel(data$Species, "Labeo rohita")
+
+data
+## align label location
+breaks = c(700,1700, 2400, 3477, 3512)
+data <- data %>%
+  mutate(label_y = breaks[sapply(label_y, function(y) which.min(abs(breaks-y)))])
+
+ggplot(data, aes(Lab, value, fill=fct_rev(key))) +
+  geom_col() +
+  geom_text(aes(label=label, y=label_y), color='#333333') +
+  coord_flip() +
+  scale_fill_manual(values = rev(c('#33a02c','#b2df8a', '#fdbf6f', '#fb9a99'))) +
+  scale_y_continuous(expand=c(0,0)) +
+  facet_grid(rows="Species", scales='free', space = 'free', switch='y') +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.title = element_blank(),
+        plot.background = element_rect(fill='white'),
+        strip.text.y.left = element_text(angle=0, hjust=1),
+        strip.placement = 'outside') +
+  theme(panel.spacing = unit(0, "lines"))
+
+#+end_src
+
+#+RESULTS:
+[[file:1-busco/cypriniformes/busco.summary.png]]
