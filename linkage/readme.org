@@ -1,0 +1,95 @@
+#+TITLE: Linkage map from Sahoo 2015
+
+- Get microsatellite sequences
+  GenBank accessions from supp. data in [[./genbank.acc]]
+
+  #+begin_src sh :tangle get_seqs.sh
+PATH=~/.local/edirect:$PATH
+efetch -format fasta -db nuccore -input genbank.acc > genbank.fa
+  #+end_src
+  
+- Transcribe Fig1 from Sahoo 2015
+  Saved in [[./linkage.map]]
+
+  #+begin_src sh
+comm <(sort -k1,1 tmp|cut -f1 ) <(sort -k1,1 linkage.map | cut -f1 ) | less
+  #+end_src
+
+  Several ids in Fig1 were not found in supp. data:
+  - CC-46 ::
+  - IL-822 ::
+  - Lr-251 :: Not 251; however there is a 251a. Appending 'a'
+  - Lr-271ad :: There's a 271 and 271d. Using 271d
+  - Lr-437a ::
+  - Lroest-1 :: LROEST1
+  - Lroest-14 :: LROEST-14
+
+    #+begin_src sh
+  join -t$'\t'  -j 1 <(sort -k1,1 tmp ) <(sort -k1,1 linkage.map ) > linkage.map.acc
+    #+end_src
+* Blast     
+- Blast against genome
+  #+begin_src sh
+ml singularity/3.5.2
+
+singularity pull docker://ncbi/blast:2.13.0
+
+singularity exec blast_2.13.0.sif \
+    blastn -query genbank.fa -subject rohu.chr.fa -outfmt 6 -max_target_seqs 5 -max_hsps 1 > microsatellite.chr.blast.txt
+
+singularity exec blast_2.13.0.sif \
+    blastn -query genbank.fa -subject rohu.scf.fa -outfmt 6 -max_target_seqs 5 -max_hsps 1 > microsatellite.scf.blast.txt
+
+  #+end_src
+
+- Linkage groups vs chrs
+  #+begin_src sh
+sed 's/\.1//'  microsatellite.chr.blast.txt |
+    sort -k1,1  |
+    join -t$'\t' -1 2 -2 1 <(sort -k2,2 linkage.map.acc ) - |
+    uniq |
+    cut -f 3,4 |
+    sort |
+    uniq -c |
+    awk '{$1=$1} $1 > 1' OFS="\t" |
+    sort -k2,2 | 
+    join -j2 - <(cut -f 3 linkage.map.acc | sort | uniq -c )
+  #+end_src
+
+  #+RESULTS:
+  | Linkage |   Total | Marker |                     |
+  | Group   | Markers | in Chr | Chr                 |
+  |---------+---------+--------+---------------------|
+  | LG1     |       4 |      2 | Chr12_RagTag        |
+  | LG15    |       4 |      2 | Chr05_RagTag        |
+  | LG17    |       2 |      2 | scaffold_846_RagTag |
+  | LG19    |       2 |      2 | Chr16_RagTag        |
+  | LG2     |       4 |      2 | Chr12_RagTag        |
+  | LG24    |       2 |      2 | Chr13_RagTag        |
+  | LG4     |       3 |      3 | Chr17_RagTag        |
+  | LG5     |       2 |      2 | Chr04_RagTag        |
+  | LG6     |       4 |      2 | Chr14_RagTag        |
+  | LG6     |       4 |      3 | Chr01_RagTag        |
+  | LG7     |       3 |      2 | Chr16_RagTag        |
+  | LG8     |       3 |      2 | Chr02_RagTag        |
+
+* GMAP (DID NOT USE)
+
+#+begin_src sh
+wget http://research-pub.gene.com/gmap/src/gmap-gsnap-2021-12-17.tar.gz
+tar -xzf gmap-gsnap-2021-12-17.tar.gz
+cd gmap-2021-12-17 &&
+    ./configure -prefix=`pwd` &&
+    make &&
+    make install
+#+end_src
+
+
+#+begin_src sh
+PATH=$PATH:./apps/gmap-2021-12-17/bin
+gmap_build -d rohu.chr rohu.chr.fa
+
+
+gmap -f 3 -D apps/gmap-2021-12-17/share/ -d rohu.chr genbank.fa > microsatellite.gmap.gff
+#+end_src
+
