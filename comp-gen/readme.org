@@ -59,8 +59,13 @@ library(scales)
 files <- list.files('1-stats/length.rohu', pattern="*.len", full.names = T)
 names(files) <- sub('1-stats/length.rohu/(.*).len', '\\1', files)
 
+
 lengths <- lapply(files, read.table, header=F, col.names=c("Length")) %>%
-  bind_rows(.id="Genome")
+  bind_rows(.id="Genome") %>%
+  mutate(Genome = factor(Genome,
+                         levels=c("GCA_004120215", "GCA_017311145", "Rohu"),
+                         labels=c("CIFA", "HRRL", "IGBB"))) %>%
+  filter(Genome != 'HRRL')
 
 p <- ggplot(lengths, aes(Length, weight=Length, group=Genome)) +
   geom_histogram(bins = 500) +
@@ -70,8 +75,8 @@ p <- ggplot(lengths, aes(Length, weight=Length, group=Genome)) +
   ylab("Number of Bases in Bin") +
   xlab("Length (bp, log scale)")
 
-ggsave('1-stats/length.rohu.hires.png', p, width=8, height=6)
-ggsave('1-stats/length.rohu.lores.png', p, width=8, height=6,dpi=72)
+ggsave('1-stats/length.rohu.hires.png', p, width=8, height=3)
+ggsave('1-stats/length.rohu.lores.png', p, width=8, height=3,dpi=72)
 #+end_src
 
 #+RESULTS:
@@ -634,7 +639,7 @@ data %>%
 
 #+header: :var data=long-busco
 #+header: :width 900 :height 300
-#+begin_src R :results output graphics file :file 1-busco/cypriniformes/busco.summary.png
+#+begin_src R :results output graphics file :file 1-busco/combined.summary.png
 library(tidyverse)
 
 rohu.data <- read.delim("1-busco/rohu/table.txt",header=F)
@@ -686,4 +691,4 @@ ggplot(data, aes(Lab, value, fill=fct_rev(key))) +
 #+end_src
 
 #+RESULTS:
-[[file:1-busco/cypriniformes/busco.summary.png]]
+[[file:1-busco/combined.summary.png]]
