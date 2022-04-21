@@ -1,0 +1,192 @@
+#+TITLE: Readme
+#+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
+
+* Ratio
+https://www.nature.com/articles/s41598-017-08476-y
+
+- Get read counts for high-quality maps to each ddRAD fragment window
+  #+header: :var samples=../gbs/readme.org:gbs_samples[,0]
+  #+begin_src sh :tangle 1-depth/windows.sh
+ROOT=$(git rev-parse --show-toplevel)
+ml singularity
+
+bedtools () {
+    singularity exec -B$ROOT \
+        /apps/singularity-3/bedtools/bedtools-2.28.0.sif \
+        bedtools "$@"
+}
+samtools () {
+    singularity exec -B$ROOT \
+        /apps/singularity-3/samtools/samtools-v1.9-4-deb_cv1.sif \
+        samtools "$@"
+}
+
+export -f bedtools samtools
+export DIR ROOT
+
+parallel -j15 --eta\
+   samtools view -b -q 30 $ROOT/gbs/1-bwa/{}.bam '|' \
+    bedtools coverage -nonamecheck -a $ROOT/gbs/2-egads/rohu.bed -b stdin  \
+    '>' $DIR/1-depth/{}.read-counts.mapq-30.window \
+    ::: "${samples[@]}"
+
+  #+end_src
+- Get read depth for each sequence
+  #+header: :var samples=../gbs/readme.org:gbs_samples[,0]
+  #+begin_src sh :tangle 1-depth/run.sh
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity
+samtools () {
+    singularity exec -B$ROOT \
+        /apps/singularity-3/samtools/samtools-v1.9-4-deb_cv1.sif \
+        samtools $@
+}
+
+
+# for sample in "${samples[@]}"; do
+#    samtools index $ROOT/gbs/1-bwa/$sample.bam
+#    samtools idxstats $ROOT/gbs/1-bwa/$sample.bam \
+#        > $DIR/1-depth/$sample.read-counts
+# done
+
+export -f samtools
+export DIR ROOT
+
+parallel -j15 \
+   samtools view -q 30 $ROOT/gbs/1-bwa/{}.bam '|' \
+    cut -f 3 '|' \
+    uniq -c  '>' $DIR/1-depth/{}.read-counts.mapq-30 \
+    ::: "${samples[@]}"
+
+  #+end_src
+- normalize and filter coverage data
+ #+begin_src R
+library(data.table)
+library(tidyverse)
+
+pheno.data <- read.delim('pheno.txt', h=T, stringsAsFactors=F)
+pheno.data$ID <- pheno.data$IID
+files <- file.path("1-depth", paste0(pheno.data$IID, ".read-counts.mapq-30.window"))
+names(files) <- pheno.data$IID
+
+data <- lapply(files, fread, header=F,
+               select=c(1,2,3,6,9),
+               col.names=c('Contig', 'Start', 'End', "Reads", "Coverage")) %>%
+  rbindlist(idcol='ID')
+
+totals <- data[, .(Total=sum(Reads)), by=ID]
+totals$Factor <- mean(totals$Total)/totals$Total
+
+
+summary(totals)
+ ##       ID                Total              Factor
+ ## Length:119         Min.   : 9780189   Min.   :0.7177
+ ## Class :character   1st Qu.:15160899   1st Qu.:0.8939
+ ## Mode  :character   Median :16711296   Median :1.0052
+ ##                    Mean   :16798866   Mean   :1.0346
+ ##                    3rd Qu.:18793698   3rd Qu.:1.1081
+ ##                    Max.   :23408044   Max.   :1.7176
+
+data.norm <- data[Coverage >= 0.5] %>%
+  .[totals,NormReads := Reads*Factor,on='ID'] %>%
+  .[ pheno.data, Gender:=Gender, on="ID" ] %>%
+  .[, Fragment := paste0(Contig, ":", Start, "-", End)]
+
+
+
+frag.summary <- data.norm[, .N, by=Fragment]
+
+summary(frag.summary)
+ ##    Fragment               N
+ ## Length:227436      Min.   :  1
+ ## Class :character   1st Qu.:110
+ ## Mode  :character   Median :119
+ ##                    Mean   :102
+ ##                    3rd Qu.:119
+ ##                    Max.   :119
+
+table(frag.summary$N >= 50)
+
+ ## FALSE   TRUE
+ ## 26893 200543
+
+## Filter fragments with fewer than 50 samples
+frag.fltr <- frag.summary[N >= 50, Fragment ]
+data.fltr <- data.norm[Fragment %in% frag.fltr][order(Fragment)]
+
+data.norm.reads <- dcast(data.fltr[order(Fragment)], Fragment~ID,
+                         value.var = "NormReads", fill=0)
+
+write.table(data.norm.reads, "reads.txt",
+            col.names = T,
+            row.names = F,
+            quote = F,
+            sep="\t")
+ #+end_src
+- Run Monte Carlo tests
+  #+begin_src sh
+gcc -o mc mc.c && ./mc pheno.txt reads.txt > pval.100k.txt
+  #+end_src
+- Significant (BH adj. p <= 0.05) fragments
+  #+begin_src R
+library(data.table)
+library(tidyverse)
+
+pheno.data <- read.delim('pheno.txt', h=T, stringsAsFactors=F)
+pheno.data$ID <- pheno.data$IID
+
+data <- fread("reads.txt") %>%
+  melt(id.vars="Fragment", variable.name = "ID", value.name = 'Reads')  %>%
+  merge(pheno.data, by="ID") %>%
+  .[Reads > 0] %>%
+  .[,.(Fragment, ID, Reads, Gender)]
+
+pvals <- fread("pval.100k.txt", header=F,
+               col.names = c("Fragment", "Stat", "Count", "P.value")) %>%
+  mutate(FDR = p.adjust(P.value, method='BH'));
+
+data.ratios <- data[,.(Reads = mean(Reads), Samples=.N),
+                    by=c('Fragment', 'Gender')] %>%
+  dcast(Fragment ~ Gender, value.var=c("Reads", "Samples"), fill=0) %>%
+  mutate(Ratio = log2(Reads_Female/Reads_Male)) %>%
+  merge(pvals, by="Fragment")
+
+data.ratios
+
+write.table(data.ratios, "ratios.100k.txt",
+            col.names = T,
+            row.names = F,
+            quote = F,
+            sep="\t")
+
+data.ratios[FDR <= 0.05 ]
+
+  #+end_src
+
+#+RESULTS:
+| Chr25_RagTag:26052217-26052497  |                0 | 43.0808430800622 |  0 | 63 |              -Inf |   42.4077 | 0 | 0 | 0 |
+| Chr25_RagTag:26053519-26053589  |                0 | 17.2662922895823 |  0 | 63 |              -Inf | 16.996506 | 0 | 0 | 0 |
+| Chr25_RagTag:26072060-26072166  |                0 | 2.99722374155431 |  0 | 52 |              -Inf |  2.435244 | 0 | 0 | 0 |
+| Chr25_RagTag:26074566-26074951  |                0 | 10.8386754848229 |  0 | 61 |              -Inf | 10.330612 | 0 | 0 | 0 |
+| Chr25_RagTag:26082735-26083117  |                0 | 29.1319379189841 |  0 | 62 |              -Inf | 28.221563 | 0 | 0 | 0 |
+| Chr25_RagTag:26083279-26083442  | 2.12538100826565 | 78.5418950670488 |  2 | 62 | -5.20766901239882 |  76.01017 | 0 | 0 | 0 |
+| Chr25_RagTag:26083441-26083955  |                0 | 46.1423304545075 |  0 | 53 |              -Inf | 38.211617 | 0 | 0 | 0 |
+| scaffold_1958_RagTag:1508-1550  | 1.89198882216987 | 9.56298658493896 |  1 | 62 | -2.33755768663803 |  9.229743 | 0 | 0 | 0 |
+| scaffold_1958_RagTag:2025-2078  | 1.63317678274626 | 14.9833599279143 |  2 | 63 | -3.19760830714924 | 14.689857 | 0 | 0 | 0 |
+| scaffold_1958_RagTag:5971-6414  |                0 | 41.4314402040169 |  0 | 59 |              -Inf | 38.194603 | 0 | 0 | 0 |
+| scaffold_1958_RagTag:6413-6570  | 20.4514085505977 | 81.1677062043191 | 36 | 64 | -1.98870563421708 | 67.781342 | 0 | 0 | 0 |
+| scaffold_1958_RagTag:7222-7688  |                0 | 9.41812967793477 |  0 | 57 |              -Inf |  8.388021 | 0 | 0 | 0 |
+| scaffold_971_RagTag:1314-1568   | 40.6290161786134 | 24.0064294928269 | 52 | 48 | 0.759089584862771 | 20.408073 | 0 | 0 | 0 |
+| scaffold_971_RagTag:1567-1760   | 61.3836154451118 | 37.9376428463216 | 55 | 54 |  0.69422357832616 | 29.373737 | 0 | 0 | 0 |
+| scaffold_971_RagTag:17550-17767 | 97.2138677178412 | 50.7822599561487 | 55 | 64 | 0.936837530848514 | 46.431625 | 0 | 0 | 0 |
+| scaffold_971_RagTag:17766-18019 | 85.8307929426089 | 44.8219689140257 | 55 | 64 | 0.937289302565346 | 41.008831 | 0 | 0 | 0 |
+| scaffold_971_RagTag:18825-19085 | 62.6901068717387 | 33.1085298270947 | 54 | 60 | 0.921034839449032 | 30.511028 | 0 | 0 | 0 |
+| scaffold_971_RagTag:2073-2364   | 33.1770053199719 | 17.3515229326228 | 55 | 64 | 0.935121376316943 | 15.825483 | 0 | 0 | 0 |
+| scaffold_971_RagTag:20974-21011 | 42.2049619811568 | 22.9634099229917 | 53 | 50 |   0.8780757355114 | 22.730066 | 0 | 0 | 0 |
+| scaffold_971_RagTag:21010-21477 | 81.2045224344589 | 41.3307931150202 | 55 | 64 | 0.974343027584839 | 39.873737 | 0 | 0 | 0 |
+| scaffold_971_RagTag:23944-24230 | 65.1088588900001 | 37.8122672340029 | 55 | 64 | 0.783999497480124 | 27.296597 | 0 | 0 | 0 |
+| scaffold_971_RagTag:24229-24536 | 65.0295765032059 | 34.3869355083181 | 55 | 64 | 0.919235476809505 | 30.642639 | 0 | 0 | 0 |
+| scaffold_971_RagTag:24535-25047 | 36.8877384398124 | 17.5269262340425 | 51 | 59 |  1.07356833398963 | 18.047356 | 0 | 0 | 0 |
+| scaffold_971_RagTag:27785-27890 | 40.5442699435564 |  19.972347205889 | 55 | 64 |  1.02149414279369 | 20.571924 | 0 | 0 | 0 |
+| scaffold_971_RagTag:28039-28218 | 75.2145298247481 | 42.4038137683974 | 55 | 64 | 0.826817360813524 | 32.810715 | 0 | 0 | 0 |
