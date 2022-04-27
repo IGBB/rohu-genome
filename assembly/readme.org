@@ -157,7 +157,7 @@ Total length (Mbp) = 1127.602
 Results saved in 4-bionano/210416_Rohu_ChipRun1_HS_cur_results_999225.tar.gz
 
 
-** SALSA
+* SALSA
 
 #+begin_src sh :tangle 5-salsa/0-ref/run.sh
 cd $DIR
@@ -254,7 +254,7 @@ python $DIR/5-salsa/apps/SALSA/run_pipeline.py \
 #+end_src
 
 
-** Ragtag
+* Ragtag
 #+begin_src sh :tangle 6-ragtag/run.sh
 cd $DIR/6-ragtag
 ml python/3
