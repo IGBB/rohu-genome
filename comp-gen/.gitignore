@@ -1,0 +1,11 @@
+1-busco/cypriniformes/*/logs/
+1-busco/cypriniformes/*/run_actinopterygii_odb10/busco_sequences/
+1-busco/cypriniformes/*/run_actinopterygii_odb10/hmmer_output.tar.gz
+1-busco/cypriniformes/*/run_actinopterygii_odb10/metaeuk_output/
+1-busco/cypriniformes/*/short_summary.specific.actinopterygii_odb10.*.txt
+
+1-busco/rohu/*/logs/
+1-busco/rohu/*/run_actinopterygii_odb10/busco_sequences/
+1-busco/rohu/*/run_actinopterygii_odb10/hmmer_output.tar.gz
+1-busco/rohu/*/run_actinopterygii_odb10/metaeuk_output/
+1-busco/rohu/*/short_summary.specific.actinopterygii_odb10.*.txt

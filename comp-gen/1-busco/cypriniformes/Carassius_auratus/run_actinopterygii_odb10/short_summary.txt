@@ -1,0 +1,19 @@
+# BUSCO version is: 5.2.2 
+# The lineage dataset is: actinopterygii_odb10 (Creation date: 2021-02-19, number of genomes: 26, number of BUSCOs: 3640)
+# Summarized benchmarking in BUSCO notation for file /work/maa146/rohu-genome-new/comp-gen/0-ref/ncbi/cypriniformes/GCF_003368295.1/GCF_003368295.1.genome.fa
+# BUSCO was run in mode: genome
+# Gene predictor used: metaeuk
+
+	***** Results: *****
+
+	C:98.3%[S:37.3%,D:61.0%],F:0.7%,M:1.0%,n:3640	   
+	3577	Complete BUSCOs (C)			   
+	1357	Complete and single-copy BUSCOs (S)	   
+	2220	Complete and duplicated BUSCOs (D)	   
+	26	Fragmented BUSCOs (F)			   
+	37	Missing BUSCOs (M)			   
+	3640	Total BUSCO groups searched		   
+
+Dependencies and versions:
+	hmmsearch: 3.1
+	metaeuk: 4.a0f584d
