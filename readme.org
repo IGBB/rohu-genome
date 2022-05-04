@@ -5,9 +5,10 @@ Genome assembly and ddRAD analysis of Labeo rohita
 
 ** ddRAD
 
-- Sample selection 
-  Select 100 samples, removing full siblings and minimizing half siblings
-  #+begin_src R
+1. *Sample selection*
+   
+   Select 100 samples, removing full siblings and minimizing half siblings
+   #+begin_src R
 #code to select sample of 100 distantly related indivdiuals from the rohu founders
 vanraden <- read.table("All_grm_vanraden.dist.matrix.fun.heat.csv",
 header=TRUE, sep=",")[,-1]
@@ -18,4 +19,4 @@ clusters100 <- cutree(hc, k = 100, h = NULL)
 set.seed(20190317)
 clusters100 <- clusters100[order(sample(length(clusters100)))] #randomise order
 rand100 <- clusters100[!duplicated(clusters100)] #select 100 individuals
-  #+end_src
+   #+end_src
