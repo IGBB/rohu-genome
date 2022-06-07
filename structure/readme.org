@@ -55,7 +55,7 @@ snmf("fish.geno",
    #+name: graph-entropy
    #+header: :var project.dir="fish.snmfProject"
    #+header: :results output graphics file :file fish.entropy.png
-   #+begin_src R :width 800 :height 400
+   #+begin_src R :width 400 :height 400
 library(tidyverse)
 library(LEA)
 
@@ -92,6 +92,9 @@ as.data.frame(t(summary.info)) %>%
 
 
   #+end_src
+
+  #+RESULTS: graph-entropy
+  [[file:fish.entropy.png]]
 
   [[./fish.entropy.png]]
 
@@ -130,8 +133,8 @@ summary[index,]
 
      #+header: :var prefix="fish"
      #+header: :results output graphics file :file fish.structure.png
-     #+begin_src R :width 600 :height 900
-    library(data.table)
+     #+begin_src R :width 800 :height 200
+library(data.table)
 library(tidyverse)
 library(hues)
 library(LEA)
@@ -146,7 +149,7 @@ sample.names <- fread(paste0(prefix, ".ped"),
                       col.names=c("sample"))
 
 
-meta.data <- read.csv("../raw/Rohu_sampling_data.csv")
+meta.data <- read.delim("../raw/attributes.tsv")
 
 
 r = data.frame("K"=2, "Run"=6)
@@ -161,8 +164,8 @@ r = data.frame("K"=2, "Run"=6)
   data <- cbind(sample=sample.names$sample, raw.data)
 
   ordered.data <- data[data.order, ] %>%
-    merge(meta.data, by.x="sample", by.y="Barcode", all.x=T) %>%
-    select("sample", starts_with('V'), "location"="Population") %>%
+    merge(meta.data, by.x="sample", by.y="sample_name", all.x=T) %>%
+    select("sample", starts_with('V'), "location"="ecotype") %>%
     filter(!is.na(location)) %>%
     mutate(sample=fct_reorder(factor(sample), V1)) %>%
     gather(-c("sample", "location"), key="cluster", value="percent")
@@ -175,14 +178,12 @@ plot<-  ggplot(ordered.data, aes(y = percent, x =sample, fill=cluster)) +
          fill = "Population") +
     scale_y_continuous(labels=scales::percent, expand = c(0,0)) +
     scale_x_discrete(expand = c(0,0)) +
-    coord_flip() +
     theme_minimal() +
     theme( plot.background = element_rect(fill="white"),
-          axis.text.y=element_blank(),
+          axis.text.x=element_blank(),
           legend.position = 'bottom') +
-    guides(fill=guide_legend(nrow=1)) +
-    facet_grid(rows='location',scales="free_y", space = "free")
-
+    guides(fill="none") +
+    facet_grid(cols=vars(location),scales="free_x", space = "free")
 
   plot + scale_fill_manual(values = c("#61acd0","#3d7287"))
 
