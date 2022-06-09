@@ -54,11 +54,10 @@ snmf("fish.geno",
 3) Cross-Entropy
    #+name: graph-entropy
    #+header: :var project.dir="fish.snmfProject"
-   #+header: :results output graphics file :file fish.entropy.png
-   #+begin_src R :width 400 :height 400
+   #+begin_src R
 library(tidyverse)
 library(LEA)
-
+project.dir<-"fish.snmfProject"
 project.dir <- scan(text=project.dir, what="character", allowEscapes = T)
 #Load snmf project
 project = load.snmfProject(project.dir)
@@ -89,7 +88,7 @@ as.data.frame(t(summary.info)) %>%
         panel.grid.minor.x=element_blank(),
         plot.background = element_rect(fill="white"))
 
-
+ggsave("fish.entropy.png", scale=2, width=4, height=3.5)
 
   #+end_src
 
@@ -133,7 +132,7 @@ summary[index,]
 
      #+header: :var prefix="fish"
      #+header: :results output graphics file :file fish.structure.png
-     #+begin_src R :width 800 :height 200
+     #+begin_src R :width 4800 :height 1800
 library(data.table)
 library(tidyverse)
 library(hues)
@@ -188,6 +187,7 @@ plot<-  ggplot(ordered.data, aes(y = percent, x =sample, fill=cluster)) +
   plot + scale_fill_manual(values = c("#61acd0","#3d7287"))
 
 
+ggsave("fish.structure.png", scale=2, width=8, height=2.5)
 
      #+end_src
 
