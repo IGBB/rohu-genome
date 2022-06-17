@@ -1,0 +1,43 @@
+* Rohu genome
+Genome assembly and ddRAD analysis of Labeo rohita
+
+** Genome Assembly
+
+** ddRAD
+
+1. *Sample selection*
+   
+   Select 100 samples, removing full siblings and minimizing half siblings
+   #+begin_src R
+#code to select sample of 100 distantly related indivdiuals from the rohu founders
+vanraden <- read.table("All_grm_vanraden.dist.matrix.fun.heat.csv",
+header=TRUE, sep=",")[,-1]
+vanraden <- as.matrix(vanraden)
+hc <- hclust(as.dist(1-vanraden), method="ward.D2")
+clusters100 <- cutree(hc, k = 100, h = NULL)
+
+set.seed(20190317)
+clusters100 <- clusters100[order(sample(length(clusters100)))] #randomise order
+rand100 <- clusters100[!duplicated(clusters100)] #select 100 individuals
+   #+end_src
+
+2. Figure 3
+   Combine diversity/divergence map, entropy, and structure into one figure
+   #+begin_src sh
+convert \( \( \
+    \( -resize x1800 Figure\ Fish\ Map.jpg \) \
+    \( -background transparent -fill grey -pointsize 150 -size 1800x1800 -gravity center label:A \
+    -trim +repage -bordercolor none -border 10x10 \) \
+    -gravity northwest -composite \) \
+    \( \( -resize x1800 structure/fish.entropy.png \) \
+    \( -fill grey -pointsize 150 -size 1800x1800 -gravity center label:C \
+    -trim +repage -bordercolor none -border 10x10 \) \
+    -gravity northwest -composite \) +append -resize 4000x \) \
+    \( \( -resize 4000x structure/fish.structure.png \) \
+    \( -fill grey -pointsize 150 -size 1800x1800 -gravity center label:B \
+    -trim +repage -bordercolor none -border 10x10 \) \
+    -gravity northwest -composite \) -append fig3.png
+
+   #+end_src
+
+   #+RESULTS:

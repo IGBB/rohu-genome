@@ -638,7 +638,7 @@ data %>%
 * Combined
 
 #+header: :var data=long-busco
-#+header: :width 900 :height 300
+#+header: :width 14 :height 4.5 :units in :res 300
 #+begin_src R :results output graphics file :file 1-busco/combined.summary.png
 library(tidyverse)
 
@@ -691,4 +691,7 @@ ggplot(data, aes(Lab, value, fill=fct_rev(key))) +
 #+end_src
 
 #+RESULTS:
+[[file:1-busco/combined.summary.png]]
+
+#+ATTR_ORG: :width 800
 [[file:1-busco/combined.summary.png]]

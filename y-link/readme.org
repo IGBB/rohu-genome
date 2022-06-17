@@ -1,6 +1,69 @@
 #+TITLE: Readme
 #+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
 
+* Plink
+
+- Prepare chr map
+  #+begin_src sh
+ROOT=$(git rev-parse --show-toplevel)
+
+awk '{print $1, NR}' OFS="\t" FS="\t" $ROOT/ncbi/rohu.chr.fa.fai |
+    grep "Chr" > $DIR/chr-map
+  #+end_src
+- Convert vcf to plink
+  #+begin_src sh
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity
+vcftools () {
+    singularity exec -B$ROOT \
+        /apps/singularity-3/vcftools/vcftools-v0.1.16-1-deb_cv1.sif \
+        vcftools $@
+}
+
+ vcftools --vcf $ROOT/structure/fish.vcf \
+    --remove-indv SRR12102514 \
+    --remove-indv BFA0224 \
+    --remove-indv RBFA0431 \
+    --remove-indels \
+    --recode \
+    --out $DIR/fish
+
+ --bed <(awk '$1 ~ /Chr/ {print $1, 0, $2}' OFS="\t" FS="\t" \
+              $ROOT/ncbi/rohu.chr.fa.fai ) \
+
+vcftools --vcf $DIR/fish.recode.vcf \
+    --plink \
+    --chrom-map $DIR/chr-map \
+    --out $DIR/fish
+  #+end_src
+- Prepare pheno data
+  #+begin_src sh
+ROOT=$(git rev-parse --show-toplevel)
+
+grep -f <(cut -f 1 fish.ped) $ROOT/raw/Rohu_sampling_data.csv |
+    awk 'BEGIN {printf "FID\tIID\tGender\n"}
+               {pheno=1; if($7 =="Female") pheno=2; print $2, $2, pheno}' FS="," OFS="\t" \
+                   > $DIR/pheno
+  #+end_src
+
+  #+RESULTS:
+
+- Run plink
+ #+begin_src sh
+$DIR/apps/plink-1.90b6.24 --vcf $DIR/fish.recode.vcf \
+    --no-sex \
+    --model \
+    --out $DIR/sex-trait \
+    --autosome-num 25 \
+    --allow-extra-chr 26 \
+    --pheno $DIR/pheno \
+    --all-pheno --vcf-half-call  m
+
+
+    --assoc \
+ #+end_src
+
 * Ratio
 https://www.nature.com/articles/s41598-017-08476-y
 
@@ -31,6 +94,7 @@ parallel -j15 --eta\
     ::: "${samples[@]}"
 
   #+end_src
+
 - Get read depth for each sequence
   #+header: :var samples=../gbs/readme.org:gbs_samples[,0]
   #+begin_src sh :tangle 1-depth/run.sh
@@ -60,6 +124,7 @@ parallel -j15 \
     ::: "${samples[@]}"
 
   #+end_src
+
 - normalize and filter coverage data
  #+begin_src R
 library(data.table)
@@ -164,29 +229,156 @@ data.ratios[FDR <= 0.05 ]
 
   #+end_src
 
-#+RESULTS:
-| Chr25_RagTag:26052217-26052497  |                0 | 43.0808430800622 |  0 | 63 |              -Inf |   42.4077 | 0 | 0 | 0 |
-| Chr25_RagTag:26053519-26053589  |                0 | 17.2662922895823 |  0 | 63 |              -Inf | 16.996506 | 0 | 0 | 0 |
-| Chr25_RagTag:26072060-26072166  |                0 | 2.99722374155431 |  0 | 52 |              -Inf |  2.435244 | 0 | 0 | 0 |
-| Chr25_RagTag:26074566-26074951  |                0 | 10.8386754848229 |  0 | 61 |              -Inf | 10.330612 | 0 | 0 | 0 |
-| Chr25_RagTag:26082735-26083117  |                0 | 29.1319379189841 |  0 | 62 |              -Inf | 28.221563 | 0 | 0 | 0 |
-| Chr25_RagTag:26083279-26083442  | 2.12538100826565 | 78.5418950670488 |  2 | 62 | -5.20766901239882 |  76.01017 | 0 | 0 | 0 |
-| Chr25_RagTag:26083441-26083955  |                0 | 46.1423304545075 |  0 | 53 |              -Inf | 38.211617 | 0 | 0 | 0 |
-| scaffold_1958_RagTag:1508-1550  | 1.89198882216987 | 9.56298658493896 |  1 | 62 | -2.33755768663803 |  9.229743 | 0 | 0 | 0 |
-| scaffold_1958_RagTag:2025-2078  | 1.63317678274626 | 14.9833599279143 |  2 | 63 | -3.19760830714924 | 14.689857 | 0 | 0 | 0 |
-| scaffold_1958_RagTag:5971-6414  |                0 | 41.4314402040169 |  0 | 59 |              -Inf | 38.194603 | 0 | 0 | 0 |
-| scaffold_1958_RagTag:6413-6570  | 20.4514085505977 | 81.1677062043191 | 36 | 64 | -1.98870563421708 | 67.781342 | 0 | 0 | 0 |
-| scaffold_1958_RagTag:7222-7688  |                0 | 9.41812967793477 |  0 | 57 |              -Inf |  8.388021 | 0 | 0 | 0 |
-| scaffold_971_RagTag:1314-1568   | 40.6290161786134 | 24.0064294928269 | 52 | 48 | 0.759089584862771 | 20.408073 | 0 | 0 | 0 |
-| scaffold_971_RagTag:1567-1760   | 61.3836154451118 | 37.9376428463216 | 55 | 54 |  0.69422357832616 | 29.373737 | 0 | 0 | 0 |
-| scaffold_971_RagTag:17550-17767 | 97.2138677178412 | 50.7822599561487 | 55 | 64 | 0.936837530848514 | 46.431625 | 0 | 0 | 0 |
-| scaffold_971_RagTag:17766-18019 | 85.8307929426089 | 44.8219689140257 | 55 | 64 | 0.937289302565346 | 41.008831 | 0 | 0 | 0 |
-| scaffold_971_RagTag:18825-19085 | 62.6901068717387 | 33.1085298270947 | 54 | 60 | 0.921034839449032 | 30.511028 | 0 | 0 | 0 |
-| scaffold_971_RagTag:2073-2364   | 33.1770053199719 | 17.3515229326228 | 55 | 64 | 0.935121376316943 | 15.825483 | 0 | 0 | 0 |
-| scaffold_971_RagTag:20974-21011 | 42.2049619811568 | 22.9634099229917 | 53 | 50 |   0.8780757355114 | 22.730066 | 0 | 0 | 0 |
-| scaffold_971_RagTag:21010-21477 | 81.2045224344589 | 41.3307931150202 | 55 | 64 | 0.974343027584839 | 39.873737 | 0 | 0 | 0 |
-| scaffold_971_RagTag:23944-24230 | 65.1088588900001 | 37.8122672340029 | 55 | 64 | 0.783999497480124 | 27.296597 | 0 | 0 | 0 |
-| scaffold_971_RagTag:24229-24536 | 65.0295765032059 | 34.3869355083181 | 55 | 64 | 0.919235476809505 | 30.642639 | 0 | 0 | 0 |
-| scaffold_971_RagTag:24535-25047 | 36.8877384398124 | 17.5269262340425 | 51 | 59 |  1.07356833398963 | 18.047356 | 0 | 0 | 0 |
-| scaffold_971_RagTag:27785-27890 | 40.5442699435564 |  19.972347205889 | 55 | 64 |  1.02149414279369 | 20.571924 | 0 | 0 | 0 |
-| scaffold_971_RagTag:28039-28218 | 75.2145298247481 | 42.4038137683974 | 55 | 64 | 0.826817360813524 | 32.810715 | 0 | 0 | 0 |
+  #+RESULTS:
+  | Chr25_RagTag:26052217-26052497  |                0 | 43.0808430800622 |  0 | 63 |              -Inf |   42.4077 | 0 | 0 | 0 |
+  | Chr25_RagTag:26053519-26053589  |                0 | 17.2662922895823 |  0 | 63 |              -Inf | 16.996506 | 0 | 0 | 0 |
+  | Chr25_RagTag:26072060-26072166  |                0 | 2.99722374155431 |  0 | 52 |              -Inf |  2.435244 | 0 | 0 | 0 |
+  | Chr25_RagTag:26074566-26074951  |                0 | 10.8386754848229 |  0 | 61 |              -Inf | 10.330612 | 0 | 0 | 0 |
+  | Chr25_RagTag:26082735-26083117  |                0 | 29.1319379189841 |  0 | 62 |              -Inf | 28.221563 | 0 | 0 | 0 |
+  | Chr25_RagTag:26083279-26083442  | 2.12538100826565 | 78.5418950670488 |  2 | 62 | -5.20766901239882 |  76.01017 | 0 | 0 | 0 |
+  | Chr25_RagTag:26083441-26083955  |                0 | 46.1423304545075 |  0 | 53 |              -Inf | 38.211617 | 0 | 0 | 0 |
+  | scaffold_1958_RagTag:1508-1550  | 1.89198882216987 | 9.56298658493896 |  1 | 62 | -2.33755768663803 |  9.229743 | 0 | 0 | 0 |
+  | scaffold_1958_RagTag:2025-2078  | 1.63317678274626 | 14.9833599279143 |  2 | 63 | -3.19760830714924 | 14.689857 | 0 | 0 | 0 |
+  | scaffold_1958_RagTag:5971-6414  |                0 | 41.4314402040169 |  0 | 59 |              -Inf | 38.194603 | 0 | 0 | 0 |
+  | scaffold_1958_RagTag:6413-6570  | 20.4514085505977 | 81.1677062043191 | 36 | 64 | -1.98870563421708 | 67.781342 | 0 | 0 | 0 |
+  | scaffold_1958_RagTag:7222-7688  |                0 | 9.41812967793477 |  0 | 57 |              -Inf |  8.388021 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:1314-1568   | 40.6290161786134 | 24.0064294928269 | 52 | 48 | 0.759089584862771 | 20.408073 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:1567-1760   | 61.3836154451118 | 37.9376428463216 | 55 | 54 |  0.69422357832616 | 29.373737 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:17550-17767 | 97.2138677178412 | 50.7822599561487 | 55 | 64 | 0.936837530848514 | 46.431625 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:17766-18019 | 85.8307929426089 | 44.8219689140257 | 55 | 64 | 0.937289302565346 | 41.008831 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:18825-19085 | 62.6901068717387 | 33.1085298270947 | 54 | 60 | 0.921034839449032 | 30.511028 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:2073-2364   | 33.1770053199719 | 17.3515229326228 | 55 | 64 | 0.935121376316943 | 15.825483 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:20974-21011 | 42.2049619811568 | 22.9634099229917 | 53 | 50 |   0.8780757355114 | 22.730066 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:21010-21477 | 81.2045224344589 | 41.3307931150202 | 55 | 64 | 0.974343027584839 | 39.873737 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:23944-24230 | 65.1088588900001 | 37.8122672340029 | 55 | 64 | 0.783999497480124 | 27.296597 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:24229-24536 | 65.0295765032059 | 34.3869355083181 | 55 | 64 | 0.919235476809505 | 30.642639 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:24535-25047 | 36.8877384398124 | 17.5269262340425 | 51 | 59 |  1.07356833398963 | 18.047356 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:27785-27890 | 40.5442699435564 |  19.972347205889 | 55 | 64 |  1.02149414279369 | 20.571924 | 0 | 0 | 0 |
+  | scaffold_971_RagTag:28039-28218 | 75.2145298247481 | 42.4038137683974 | 55 | 64 | 0.826817360813524 | 32.810715 | 0 | 0 | 0 |
+- Graph
+  #+header: :results output graphics file :file male-female-bar.png
+  #+begin_src R :width 14 :height 6 :units in :res 300
+library(data.table)
+library(tidyverse)
+library(grid)
+library(gridExtra)
+g_legend <- function(a.gplot){
+    tmp <- ggplot_gtable(ggplot_build(a.gplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    legend
+}
+
+
+data <- fread("ratios.100k.txt.gz") %>%
+  mutate(Fragment = sub('_RagTag', '', Fragment)) %>%
+  separate(Fragment, into=c("Chr", "Start", "Stop"), sep='[:-]', convert=T, remove=F) %>%
+  arrange(Chr, Start) %>%
+  mutate(Sig = (FDR<0.05),
+         Ratio = (Reads_Female / Reads_Male),
+         idx = row_number())
+
+data.range <- data %>%
+  filter(Sig) %>%
+  group_by(Chr) %>%
+  summarise(idx.start = min(idx) - 20, idx.stop = max(idx) + 20)
+
+data.sig <- data %>%
+  inner_join(data.range, by="Chr") %>%
+  filter(idx >= idx.start & idx <= idx.stop) %>%
+  mutate(Fragment = fct_inorder(factor(paste(format(Start, big.mark = ',', trim = T),
+                          format(Stop, big.mark = ',', trim=T),
+                          sep='-')))) %>%
+  group_by(Chr) %>%
+  mutate(idx = row_number()) %>%
+  ungroup() %>%
+  pivot_longer(cols=ends_with("ale"), names_to=c(".value", "Sex"), names_sep = '_')
+
+
+data.sig.split <- split(data.sig, data.sig$Chr)
+
+plots <- lapply(data.sig.split, function(x) {
+  ggplot(x) +
+    geom_col(aes(x=Fragment, y=Reads, alpha=Samples, fill=Sex), position = position_dodge2(padding=0), width=0.75 ) +
+    facet_grid(cols=vars(Chr), scales='free_x', space='free_x', switch = 'x') +
+    scale_fill_brewer(type='qual', palette = 3) +
+    ylab("Average Read Counts") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle=25, hjust=1, size=8),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          strip.background = element_rect(fill="#EEEEEE", color='#EEEEEE'),
+          strip.placement = 'bottom')
+
+})
+
+plots[[1]] <- plots[[1]] + theme(plot.margin = margin(0.5,0.25,0.25,1.5,'cm'))
+
+sig.annotation <- lapply(data.sig.split, filter, Sex=='Male') %>%
+  lapply(mutate, idx=row_number()) %>%
+  lapply(filter, Sig) %>%
+  lapply(mutate, idxdiff=cumsum(c(1, diff(idx) -1 ))) %>%
+  lapply(group_by, idxdiff) %>%
+  lapply(summarise, min=min(idx)-0.5, max=max(idx)+0.5)
+
+plots <- mapply(function(plot, sig){
+  plot + annotate('rect', xmin=sig$min, xmax=sig$max, ymin=-Inf, ymax=Inf, color='black', fill=NA)
+}, plots, sig.annotation, SIMPLIFY=F)
+
+legend <- g_legend(plots[[1]])
+
+plots <- lapply(plots, function(x) x + theme(legend.position = 'none'))
+
+plots[[4]] <- legend
+
+lay <- rbind(c(1,1,1,1,1),
+             c(2,3,3,3,4))
+grid.arrange(grobs = plots, layout_matrix = lay)
+  #+end_src
+
+  #+RESULTS:
+  [[file:male-female-bar.png]]
+
+  #+ATTR_ORG: :width 800
+  [[file:male-female-bar.png]]
+
+
+
+
+#+ATTR_ORG: :width 800
+[[file:scatter.png]]
+
+
+* SRR Markers
+https://www.sciencedirect.com/science/article/pii/S0378111913004058
+
+Markers from Supplementary Table 4 saved in [[./2-srr/supp.tbl4.acc]]
+Supplementary Table 1: [[./2-srr/supp1.tbl]]
+- Get sequences
+  #+begin_src sh
+cat ./2-srr/supp.tbl4.acc |
+    $DIR/apps/edirect/efetch -db nuccore -format fasta > $DIR/2-srr/markers.fa
+  #+end_src
+
+- Blast against rohu genome
+  #+begin_src sh
+ROOT=$(git rev-parse --show-toplevel)
+ml singularity/3.7.3
+
+singularity exec -B $ROOT /apps/singularity-3/blast/blast-2.9.0.sif \
+    blastn -query 2-srr/markers.fa -subject $ROOT/ncbi/rohu.chr.fa \
+    -outfmt '6 std qcovs' > 2-srr/markers.blast
+
+  #+end_src
+
+
+supp1
+JK671933.1
+JK715145.1
+JK714921.1
+
+supp4
+GR958064.1
+HO758634.1
+JK714451.1
+JK714485.1
