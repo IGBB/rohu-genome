@@ -1,8 +1,69 @@
 #+TITLE: Population Structure
 #+PROPERTY:  header-args :var DIR=(file-name-directory buffer-file-name)
 
+* PCA
 
-* All
+#+header: :results output graphics file :file fish.pca.png
+#+begin_src R :width 6 :height 6 :units in :res 300
+#+begin_src R
+library(tidyverse)
+library(ggrepel)
+library(SNPRelate)
+
+
+
+#load in VCF file
+vcf.fn <- "fish.pass2.90pct.all.recode.vcf.gz"
+
+#Reformat
+snpgdsVCF2GDS(vcf.fn, "fish.pass2.90pct.tmp.gds", method="biallelic.only")
+snpgdsSummary("fish.pass2.90pct.tmp.gds")
+
+#Open the GDS file
+genofile <- snpgdsOpen("fish.pass2.90pct.tmp.gds")
+
+#Get create vectors from genofile
+samplenames <- read.gdsn(index.gdsn(genofile, path = "sample.id" ))
+
+############# Turning the sample.id list into a population code list.
+pop_code <- read.csv("Rohu_sampling_data.csv", header =T)
+pop_code <- pop_code[,c(2,4,5,7)]
+names(pop_code)[1] <- "sample.id"
+
+#Remove outgroup
+sample.id <- samplenames[!(samplenames %in% c("SRR12102514"))]
+
+                                        #Principal Component Analysis(PCA)
+pca <- snpgdsPCA(genofile,
+                 sample.id=sample.id,
+                 num.thread=12,
+                 autosome.only=F)
+pc.percent <- pca$varprop*100
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+tab$sample.id[tab$sample.id == "BFA0224"] = "BFA0229"
+tab$sample.id[tab$sample.id == "RBFA0431"] = "BFA0431"
+
+PCAtab <- merge(tab,pop_code, by="sample.id", all.x=T)
+
+ggplot(PCAtab, aes(x=EV2, y=EV1, color=Population)) +
+  geom_point(alpha=1) +
+  scale_color_brewer(type='qual', palette="Set1") +
+  xlab(sprintf("EV2 (%.2f%%)", pc.percent[2])) +
+  ylab(sprintf("EV1 (%.2f%%)", pc.percent[1])) +
+  theme_minimal()
+
+
+#+end_src
+
+#+RESULTS:
+[[file:fish.pca.png]]
+
+* LEA
 1) convert vcf to ped file
   #+begin_src sh :tangle 1-convert.sh
 ROOT=$(git rev-parse --show-toplevel)
@@ -195,3 +256,258 @@ ggsave("fish.structure.png", scale=2, width=8, height=2.5)
      [[file:fish.structure.png]]
 
      [[./fish.structure.png]]
+
+* Figure 3
+   Combine diversity/divergence map, entropy, and structure into one figure
+
+   #+begin_src sh
+convert \( \( \( -resize x1800 Figure\ Fish\ Map.jpg \) \
+              \( -background transparent -fill grey -pointsize 150 \
+                 -size 1800x1800 -gravity center label:A \
+                 -trim +repage -bordercolor none -border 10x10 \) \
+              -gravity northwest -composite \) \
+           \( \( -resize x1800 fish.pca.png \) \
+              \( -fill grey -pointsize 150 -size 1800x1800 -gravity center \
+                    label:C -trim +repage -bordercolor none -border 10x10 \) \
+              -gravity northwest -composite \) \
+           +append -resize 4000x \) \
+        \( \( \( -resize x1000 fish.structure.png \) \
+              \( -fill grey -pointsize 150 -size 1800x1800 -gravity center \
+                 label:B -trim +repage -bordercolor none -border 10x10 \) \
+              -gravity northwest -composite \) \
+           \( \( -resize x1000 fish.entropy.png \) \
+              \( -fill grey -pointsize 150 -size 1800x1800 -gravity center \
+                 label:D -trim +repage -bordercolor none -border 10x10 \) \
+              -gravity northwest -composite \) \
+        +append -resize 4000x \) \
+    -append fig3.png
+
+   #+end_src
+
+   [[./fig3.png]]
+   #+RESULTS:
+
+* Supplemental Figure Manhattan
+   #+begin_src sh
+convert \( \( -resize x1800 pixyFst.jpg \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:A \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+        \( \( -resize x1800 pixyPi.jpg \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:B \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+        \( \( -resize x1800 pixyDxy.jpg \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:C \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+    -append supp.fig.manhattan.png
+
+   #+end_src
+
+[[./supp.fig.manhattan.png]]
+
+* Supplemental Figure Summary
+#+name: pi
+| Chr        | type |   Halda |  Jamuna |   Padma |
+| Overall    | sum  | 0.00063 | 0.00065 | 0.00064 |
+| Chromosome | sum  | 0.00057 | 0.00058 | 0.00058 |
+| Chr01      | chr  | 0.00056 | 0.00059 | 0.00058 |
+| Chr02      | chr  | 0.00057 | 0.00057 | 0.00057 |
+| Chr03      | chr  | 0.00076 | 0.00080 | 0.00078 |
+| Chr04      | chr  | 0.00073 | 0.00077 | 0.00076 |
+| Chr05      | chr  | 0.00053 | 0.00053 | 0.00053 |
+| Chr06      | chr  | 0.00048 | 0.00050 | 0.00049 |
+| Chr07      | chr  | 0.00052 | 0.00053 | 0.00053 |
+| Chr08      | chr  | 0.00060 | 0.00063 | 0.00061 |
+| Chr09      | chr  | 0.00054 | 0.00057 | 0.00056 |
+| Chr10      | chr  | 0.00054 | 0.00056 | 0.00056 |
+| Chr11      | chr  | 0.00054 | 0.00055 | 0.00054 |
+| Chr12      | chr  | 0.00050 | 0.00052 | 0.00052 |
+| Chr13      | chr  | 0.00051 | 0.00052 | 0.00051 |
+| Chr14      | chr  | 0.00056 | 0.00058 | 0.00057 |
+| Chr15      | chr  | 0.00058 | 0.00060 | 0.00058 |
+| Chr16      | chr  | 0.00053 | 0.00054 | 0.00053 |
+| Chr17      | chr  | 0.00053 | 0.00055 | 0.00054 |
+| Chr18      | chr  | 0.00053 | 0.00054 | 0.00053 |
+| Chr19      | chr  | 0.00062 | 0.00063 | 0.00062 |
+| Chr20      | chr  | 0.00049 | 0.00052 | 0.00051 |
+| Chr21      | chr  | 0.00051 | 0.00052 | 0.00052 |
+| Chr22      | chr  | 0.00085 | 0.00086 | 0.00085 |
+| Chr23      | chr  | 0.00053 | 0.00055 | 0.00054 |
+| Chr24      | chr  | 0.00054 | 0.00055 | 0.00055 |
+| Chr25      | chr  | 0.00056 | 0.00057 | 0.00057 |
+
+#+name: fst
+| Chr        | type | Jamuna-Halda | Padma-Halda | Padma-Jamuna |
+| Overall    | sum  |       0.0108 |      0.0115 |       0.0049 |
+| Chr01      | chr  |       0.0110 |      0.0120 |       0.0052 |
+| Chr02      | chr  |       0.0116 |      0.0125 |       0.0041 |
+| Chr03      | chr  |       0.0116 |      0.0127 |       0.0056 |
+| Chr04      | chr  |       0.0116 |      0.0127 |       0.0047 |
+| Chr05      | chr  |       0.0107 |      0.0113 |       0.0050 |
+| Chr06      | chr  |       0.0113 |      0.0117 |       0.0045 |
+| Chr07      | chr  |       0.0098 |      0.0102 |       0.0051 |
+| Chr08      | chr  |       0.0105 |      0.0112 |       0.0051 |
+| Chr09      | chr  |       0.0119 |      0.0117 |       0.0050 |
+| Chr10      | chr  |       0.0115 |      0.0112 |       0.0044 |
+| Chr11      | chr  |       0.0101 |      0.0115 |       0.0050 |
+| Chr12      | chr  |       0.0106 |      0.0109 |       0.0052 |
+| Chr13      | chr  |       0.0112 |      0.0125 |       0.0050 |
+| Chr14      | chr  |       0.0102 |      0.0108 |       0.0042 |
+| Chr15      | chr  |       0.0102 |      0.0117 |       0.0048 |
+| Chr16      | chr  |       0.0095 |      0.0099 |       0.0046 |
+| Chr17      | chr  |       0.0107 |      0.0120 |       0.0048 |
+| Chr18      | chr  |       0.0116 |      0.0130 |       0.0052 |
+| Chr19      | chr  |       0.0105 |      0.0117 |       0.0054 |
+| Chr20      | chr  |       0.0102 |      0.0104 |       0.0044 |
+| Chr21      | chr  |       0.0098 |      0.0103 |       0.0050 |
+| Chr22      | chr  |       0.0131 |      0.0137 |       0.0054 |
+| Chr23      | chr  |       0.0099 |      0.0111 |       0.0050 |
+| Chr24      | chr  |       0.0096 |      0.0106 |       0.0050 |
+| Chr25      | chr  |       0.0107 |      0.0114 |       0.0049 |
+
+#+name: dxy
+| Chr        | type | Jamuna-Halda | Padma-Halda | Padma-Jamuna |
+| Overall    | sum  |      0.00065 |     0.00064 |      0.00065 |
+| Chromosome | sum  |      0.00058 |     0.00058 |      0.00058 |
+| Chr01      | chr  |      0.00058 |     0.00058 |      0.00059 |
+| Chr02      | chr  |      0.00058 |     0.00058 |      0.00057 |
+| Chr03      | chr  |      0.00079 |     0.00079 |      0.00079 |
+| Chr04      | chr  |      0.00076 |     0.00076 |      0.00077 |
+| Chr05      | chr  |      0.00054 |     0.00054 |      0.00053 |
+| Chr06      | chr  |      0.00050 |     0.00049 |      0.00049 |
+| Chr07      | chr  |      0.00053 |     0.00053 |      0.00053 |
+| Chr08      | chr  |      0.00062 |     0.00061 |      0.00062 |
+| Chr09      | chr  |      0.00056 |     0.00055 |      0.00056 |
+| Chr10      | chr  |      0.00056 |     0.00056 |      0.00056 |
+| Chr11      | chr  |      0.00055 |     0.00055 |      0.00054 |
+| Chr12      | chr  |      0.00052 |     0.00051 |      0.00052 |
+| Chr13      | chr  |      0.00052 |     0.00052 |      0.00052 |
+| Chr14      | chr  |      0.00058 |     0.00057 |      0.00058 |
+| Chr15      | chr  |      0.00060 |     0.00059 |      0.00059 |
+| Chr16      | chr  |      0.00054 |     0.00054 |      0.00054 |
+| Chr17      | chr  |      0.00055 |     0.00054 |      0.00054 |
+| Chr18      | chr  |      0.00054 |     0.00054 |      0.00054 |
+| Chr19      | chr  |      0.00063 |     0.00063 |      0.00063 |
+| Chr20      | chr  |      0.00051 |     0.00050 |      0.00051 |
+| Chr21      | chr  |      0.00052 |     0.00052 |      0.00052 |
+| Chr22      | chr  |      0.00087 |     0.00086 |      0.00086 |
+| Chr23      | chr  |      0.00055 |     0.00055 |      0.00055 |
+| Chr24      | chr  |      0.00055 |     0.00055 |      0.00055 |
+| Chr25      | chr  |      0.00057 |     0.00057 |      0.00057 |
+
+#+header: :var data=pi :session
+#+header: :width 8 :height 4 :res 600 :units in
+#+header: :results graphics file :file summary-pi.png
+#+begin_src R
+library(tidyverse)
+library(janitor)
+
+
+data <- data %>% row_to_names(1) %>%
+  gather(-Chr,-type, key="River", value="value") %>%
+  mutate(value = as.numeric(value))
+
+ggplot(data, aes(Chr, value, color=River, shape=River)) +
+  geom_point() +
+  scale_shape_manual(values=1:3) +
+  scale_y_continuous(labels=scales::label_number()) +
+  ylab(expression(pi)) +
+  facet_grid(~type, scales="free_x", space="free_x") +
+  ggtitle("Mean within population nucleotide diversity (π)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1),
+        axis.title.x =element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.x = element_blank())
+
+#+end_src
+
+#+RESULTS:
+[[file:summary-pi.png]]
+
+#+header: :var data=dxy :session
+#+header: :width 8 :height 4 :res 600 :units in
+#+header: :results graphics file :file summary-dxy.png
+#+begin_src R
+library(tidyverse)
+library(janitor)
+
+
+data <- data %>% row_to_names(1) %>%
+  gather(-Chr,-type, key="River", value="value") %>%
+  mutate(value = as.numeric(value))
+
+ggplot(data, aes(Chr, value, color=River, shape=River)) +
+  geom_point() +
+  scale_shape_manual(values=1:3) +
+  scale_y_continuous(labels=scales::label_number()) +
+  ylab(expression(pi * "xy")) +
+  facet_grid(~type, scales="free_x", space="free_x") +
+  ggtitle("Mean between population nucleotide divergence (πxy)" ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1),
+        axis.title.x =element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.x = element_blank())
+
+#+end_src
+
+#+RESULTS:
+[[file:summary-dxy.png]]
+
+#+header: :var data=fst :session
+#+header: :width 8 :height 4 :res 600 :units in
+#+header: :results graphics file :file summary-fst.png
+#+begin_src R
+library(tidyverse)
+library(janitor)
+
+
+data <- data %>% row_to_names(1) %>%
+  gather(-Chr,-type, key="River", value="value") %>%
+  mutate(value = as.numeric(value))
+
+ggplot(data, aes(Chr, value, color=River, shape=River)) +
+  geom_point() +
+  scale_shape_manual(values=1:3) +
+  scale_y_continuous(labels=scales::label_number()) +
+  ylab("Fst") +
+  facet_grid(~type, scales="free_x", space="free_x") +
+  ggtitle("Mean Weir and Cockerham's Fst between fish populations") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1),
+        axis.title.x =element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.x = element_blank())
+
+#+end_src
+
+#+RESULTS:
+[[file:summary-fst.png]]
+
+   #+begin_src sh
+convert \( \( -resize x1800 summary-fst.png \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:A \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+        \( \( -resize x1800 summary-pi.png \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:B \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+        \( \( -resize x1800 summary-dxy.png \) \
+           \( -background transparent -fill grey -pointsize 150 \
+              -size 1800x1800 -gravity center label:C \
+              -trim +repage -bordercolor none -border 10x10 \) \
+           -gravity northwest -composite \) \
+    -append supp.fig.summary.png
+
+   #+end_src
+
+[[./supp.fig.summary.png]]

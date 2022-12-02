@@ -5,7 +5,7 @@ Genome assembly and ddRAD analysis of Labeo rohita
 
 ** ddRAD
 
-1. *Sample selection*
+*** Sample selection
    
    Select 100 samples, removing full siblings and minimizing half siblings
    #+begin_src R
@@ -21,23 +21,4 @@ clusters100 <- clusters100[order(sample(length(clusters100)))] #randomise order
 rand100 <- clusters100[!duplicated(clusters100)] #select 100 individuals
    #+end_src
 
-2. Figure 3
-   Combine diversity/divergence map, entropy, and structure into one figure
-   #+begin_src sh
-convert \( \( \
-    \( -resize x1800 Figure\ Fish\ Map.jpg \) \
-    \( -background transparent -fill grey -pointsize 150 -size 1800x1800 -gravity center label:A \
-    -trim +repage -bordercolor none -border 10x10 \) \
-    -gravity northwest -composite \) \
-    \( \( -resize x1800 structure/fish.entropy.png \) \
-    \( -fill grey -pointsize 150 -size 1800x1800 -gravity center label:C \
-    -trim +repage -bordercolor none -border 10x10 \) \
-    -gravity northwest -composite \) +append -resize 4000x \) \
-    \( \( -resize 4000x structure/fish.structure.png \) \
-    \( -fill grey -pointsize 150 -size 1800x1800 -gravity center label:B \
-    -trim +repage -bordercolor none -border 10x10 \) \
-    -gravity northwest -composite \) -append fig3.png
 
-   #+end_src
-
-   #+RESULTS:

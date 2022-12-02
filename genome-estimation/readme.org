@@ -108,3 +108,73 @@ Read Error Rate               0.211507%         0.211507%
 #+END_EXAMPLE
 
 file:genomescope/50/plot.png
+
+* Flow cyto
+
+#+Caption: Flow cytometry results for 5 rohu blood samples, all except Rohu-1 measured twice.
+#+NAME: flow-cyto
+| Specimen Name  | Number of Sample nuclei | Average sample fluorescence | Number of standard nuclei | Average standard fluorescence | Estimated Genome size² | HAPLOID |
+|----------------+-------------------------+-----------------------------+---------------------------+-------------------------------+------------------------+---------|
+| Rohu-1 Rep 1   |                   16020 |                       27350 |                      2065 |                         69247 |                   2.05 |    1.02 |
+| Rohu-2 Rep 1   |                   13082 |                       25929 |                      6570 |                         66671 |                   2.02 |    1.01 |
+| Rohu-2 Rep 2   |                   15402 |                       25665 |                      4354 |                         67489 |                   1.97 |    0.99 |
+| Rohu-3 Rep 1   |                   15124 |                       25798 |                      4442 |                         68195 |                   1.96 |    0.98 |
+| Rohu-3 Rep 2   |                   14923 |                       25763 |                      4823 |                         68837 |                   1.94 |    0.97 |
+| Rohu-4 Rep 1   |                   13320 |                       26346 |                      5913 |                         69665 |                   1.96 |    0.98 |
+| Rohu-4 Rep 2   |                    5624 |                       26612 |                      4097 |                         68876 |                   2.01 |    1.00 |
+| Rohu-5 Rep 1   |                    6771 |                       25761 |                      3080 |                         68825 |                   1.94 |    0.97 |
+| Rohu-5 Rep 2   |                   15926 |                       26369 |                      3352 |                         68832 |                   1.99 |    0.99 |
+| Standard only¹ |                       3 |                       25258 |                      3311 |                         64331 |                     NA |         |
+|                |                         |                             |                           |                       Average |                   1.98 |    0.99 |
+|                |                         |                             |                           |            Standard Deviation |                   0.04 |    0.02 |
+
+¹ Trout erythrocyte nuclei: Genome size = 5.19pg. ² Genome estimate calculated
+as (average sample fluorescence/ average standard fluorescence * standard genome
+size) in picograms DIPLOID (i.e., 2C).
+
+
+* Figure
+#+name: sizes
+| Method               | Label        | Name         | C-value |    Size |
+|----------------------+--------------+--------------+---------+---------|
+| Flow Cytometry       |              | Rohu-1 Rep 1 |    1.02 |  984.30 |
+| Flow Cytometry       |              | Rohu-2 Rep 1 |    1.01 |  974.65 |
+| Flow Cytometry       |              | Rohu-2 Rep 2 |    0.99 |  955.35 |
+| Flow Cytometry       |              | Rohu-3 Rep 1 |    0.98 |  945.70 |
+| Flow Cytometry       |              | Rohu-3 Rep 2 |    0.97 |  936.05 |
+| Flow Cytometry       |              | Rohu-4 Rep 1 |    0.98 |  945.70 |
+| Flow Cytometry       |              | Rohu-4 Rep 2 |    1.00 |  965.00 |
+| Flow Cytometry       |              | Rohu-5 Rep 1 |    0.97 |  936.05 |
+| Flow Cytometry       |              | Rohu-5 Rep 2 |    0.99 |  955.35 |
+| Feulgen Densitometry | Patel et al. | Patel et al. |    1.99 | 1920.35 |
+| K-mer Estimation     |              | Rohu-1       |         |  968.20 |
+| Assembly             | IGBB         | IGBB         |         |   945.5 |
+| Assembly             | Das et al.   | CIFA         |         |    1427 |
+
+#+header: :results graphics file :file genome-size.png
+#+header: :width 8 :height 1.5 :units in :res 600
+#+begin_src R :var data=sizes :session
+library(tidyverse)
+library(ggrepel)
+library(scales)
+colnames(data) <- c("Method", "Label", "Name", "C.value", "Size")
+data$Size <- data$Size * 1000000
+
+pos <- position_jitter(width = 0.3, seed = 2)
+
+ggplot(data, aes(Size, factor(1), label=Label, color=Method)) +
+  geom_jitter(position=pos) +
+  geom_text_repel(position=pos, show_guide=F ) +
+  scale_x_continuous(limits=c(0,2000000000),
+                     labels = label_number(scale_cut=cut_si("b"))) +
+  scale_color_brewer(type="qual", palette="Set1") +
+  xlab("Genome Size") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        legend.position = 'top')
+#+end_src
+
+#+RESULTS:
+[[file:genome-size.png]]
