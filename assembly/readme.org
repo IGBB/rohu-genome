@@ -264,3 +264,49 @@ source $DIR/ragtag/bin/activate
 ragtag.py scaffold -u -t 48 -q 60 -o $DIR/6-ragtag/high-conf-scaff -i 0.75  \
     Om.chr.fa $DIR/5-scaffolds/scaffolds/scaffolds_FINAL.fasta
 #+end_src
+
+* Validate
+
+- Create bwa database for assembly
+  #+begin_src sh :tangle 7-validate/0-ref.run.sh
+ROOT=$(git rev-parse --show-toplevel)
+
+ml singularity/3.7.3
+bwa () {
+    singularity exec -B $ROOT \
+        /apps/singularity-3/bwa/bwa-0.7.17.sif bwa $@
+}
+samtools () {
+    singularity exec -B $ROOT \
+        /apps/singularity-3/samtools/samtools-v1.9-4-deb_cv1.sif \
+        samtools $@
+}
+
+bwa index -a bwtsw $DIR/6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta
+samtools faidx $DIR/6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta
+  #+end_src
+
+- Align Hi-C data to assembly
+  #+begin_src sh :tangle 7-validate/1-bwa.sh
+ROOT=$(git rev-parse --show-toplevel)
+RAW="$ROOT/raw/rohu.gbs-hic/X202SC20040643-Z01-F001/raw_data/R_HiC/"
+
+ml singularity/3.7.3
+bwa () {
+    singularity exec -B $ROOT \
+        /apps/singularity-3/bwa/bwa-0.7.17.sif bwa $@
+}
+samtools () {
+    singularity exec -B $ROOT \
+        /apps/singularity-3/samtools/samtools-v1.9-4-deb_cv1.sif \
+        samtools $@
+}
+PATH=$PATH:$DIR/apps/samblaster-v.0.1.26/
+
+bwa mem -5SP -t 24 $DIR/6-ragtag/high-conf-scaff/ragtag.scaffolds.fasta \
+    $RAW/R_HiC_CKDL200153257-1a_H7Y5FCCX2_L2_{1,2}.fq.gz |
+    samblaster |
+    samtools view -bS -F 2316 > $DIR/7-validate/1-bwa.bam
+
+  #+end_src
+
