@@ -638,7 +638,7 @@ data %>%
 * Combined
 
 #+header: :var data=long-busco
-#+header: :width 14 :height 4.5 :units in :res 300
+#+header: :width 14 :height 4.5 :units in :res 300 :bg white
 #+begin_src R :results output graphics file :file 1-busco/combined.summary.png
 library(tidyverse)
 
@@ -668,7 +668,7 @@ data$Species = relevel(data$Species, "Labeo rohita")
 
 data
 ## align label location
-breaks = c(700,1700, 2400, 3477, 3512)
+breaks = c(700,1700, 2400, 3477, 3550)
 data <- data %>%
   mutate(label_y = breaks[sapply(label_y, function(y) which.min(abs(breaks-y)))])
 
@@ -683,7 +683,6 @@ ggplot(data, aes(Lab, value, fill=fct_rev(key))) +
   theme(axis.title = element_blank(),
         axis.text.x = element_blank(),
         legend.title = element_blank(),
-        plot.background = element_rect(fill='white'),
         strip.text.y.left = element_text(angle=0, hjust=1),
         strip.placement = 'outside') +
   theme(panel.spacing = unit(0, "lines"))
@@ -691,7 +690,4 @@ ggplot(data, aes(Lab, value, fill=fct_rev(key))) +
 #+end_src
 
 #+RESULTS:
-[[file:1-busco/combined.summary.png]]
-
-#+ATTR_ORG: :width 800
 [[file:1-busco/combined.summary.png]]
